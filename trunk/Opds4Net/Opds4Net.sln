@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Web", "Opds4Net.Web\Opds4Net.Web.csproj", "{D5C41E44-CF77-4BD2-A6F6-169F818F305A}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Opds4Net.vsmdi
@@ -29,6 +31,10 @@ Global
 		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

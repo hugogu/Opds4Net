@@ -33,6 +33,18 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
+        public OpdsFeed() { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="items"></param>
+        public OpdsFeed(IEnumerable<SyndicationItem> items)
+            : base(items) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public string ToXml()
         {

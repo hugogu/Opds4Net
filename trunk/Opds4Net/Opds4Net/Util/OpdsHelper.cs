@@ -14,22 +14,22 @@ namespace Opds4Net.Util
     {
         private static Dictionary<string, string> extensionMimeMap = new Dictionary<string, string>()
         {
-            { "7z", "application/x-7z-compressed" },
-            { "cebx", "application/cebx" },
-            { "chm", "application/x-chm" },
-            { "doc", "application/msword" },
-            { "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-            { "epub", "application/epub+zip" },
-            { "htm", "text/html" },
-            { "html", "text/html" },
-            { "mobi", "application/x-mobipocket-ebook" },
-            { "pdf", "application/pdf" },
-            { "rar", "application/x-rar-compressed" },
-            { "rtf", "application/rtf" },
-            { "snb", "application/snb" },
-            { "txt", "text/plain" },
-            { "zip", "application/zip" },
-            { "xps", "application/vnd.ms-xpsdocument" },
+            { ".7z", "application/x-7z-compressed" },
+            { ".cebx", "application/cebx" },
+            { ".chm", "application/x-chm" },
+            { ".doc", "application/msword" },
+            { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+            { ".epub", "application/epub+zip" },
+            { ".htm", "text/html" },
+            { ".html", "text/html" },
+            { ".mobi", "application/x-mobipocket-ebook" },
+            { ".pdf", "application/pdf" },
+            { ".rar", "application/x-rar-compressed" },
+            { ".rtf", "application/rtf" },
+            { ".snb", "application/snb" },
+            { ".txt", "text/plain" },
+            { ".zip", "application/zip" },
+            { ".xps", "application/vnd.ms-xpsdocument" },
         };
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Opds4Net.Util
         public static string DetectFileMimeType(string path)
         {
             string mimeType;
-            if (extensionMimeMap.TryGetValue(Path.GetExtension(path), out mimeType))
+            if (extensionMimeMap.TryGetValue(Path.GetExtension(path).ToLowerInvariant(), out mimeType))
             {
                 return mimeType;
             }

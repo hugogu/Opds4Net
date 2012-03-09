@@ -33,6 +33,28 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
+        public OpdsLink() : base() { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uri"></param>
+        public OpdsLink(Uri uri) : base(uri) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="relationship"></param>
+        /// <param name="title"></param>
+        /// <param name="mediaType"></param>
+        /// <param name="length"></param>
+        public OpdsLink(Uri uri, string relationship, string title, string mediaType, long length)
+            : base(uri, relationship, title, mediaType, length) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="name"></param>
         /// <param name="ns"></param>
         /// <param name="value"></param>
