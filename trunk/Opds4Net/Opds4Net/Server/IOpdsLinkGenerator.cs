@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel.Syndication;
+using Opds4Net.Model;
 
 namespace Opds4Net.Server
 {
@@ -12,14 +13,14 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        SyndicationLink GetNavigationLink(string id, string title);
+        OpdsLink GetNavigationLink(string id, string title);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        SyndicationLink GetDetailLink(string id, string title);
+        OpdsLink GetDetailLink(string id, string title);
 
         /// <summary>
         /// 
@@ -27,6 +28,14 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        SyndicationLink GetDownloadLink(string id, string title);
+        OpdsLink GetDownloadLink(string id, string title);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        OpdsLink GetBuyLink(string id, string title, decimal price);
     }
 }

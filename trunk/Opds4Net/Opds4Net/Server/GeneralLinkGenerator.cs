@@ -29,6 +29,11 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
+        public string BuyLinkPattern { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="navigationPattern"></param>
         /// <param name="detailPattern"></param>
         /// <param name="downloadPattern"></param>
@@ -36,11 +41,13 @@ namespace Opds4Net.Server
         public GeneralLinkGenerator(
             [Import("NavigationLinkPattern")]string navigationPattern,
             [Import("DetailLinkPattern")]string detailPattern,
-            [Import("DownloadLinkPattern")]string downloadPattern)
+            [Import("DownloadLinkPattern")]string downloadPattern,
+            [Import("BuyLinkPattern")]string buyPattern)
         {
             NavigationLinkPattern = navigationPattern;
             DetailLinkPattern = detailPattern;
             DownloadLinkPattern = downloadPattern;
+            BuyLinkPattern = buyPattern;
         }
 
         /// <summary>
@@ -49,12 +56,13 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public SyndicationLink GetNavigationLink(string id, string title)
+        public OpdsLink GetNavigationLink(string id, string title)
         {
             var link = new OpdsLink()
             {
                 Title = title,
                 MediaType = OpdsMediaType.NavigationFeed,
+                RelationshipType = OpdsRelations.Alternate,
                 Uri = new Uri(String.Format(NavigationLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
 
@@ -67,12 +75,13 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public SyndicationLink GetDetailLink(string id, string title)
+        public OpdsLink GetDetailLink(string id, string title)
         {
             var link = new OpdsLink()
             {
                 Title = title,
                 MediaType = OpdsMediaType.Entry,
+                RelationshipType = OpdsRelations.Alternate,
                 Uri = new Uri(String.Format(DetailLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
 
@@ -85,13 +94,27 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public SyndicationLink GetDownloadLink(string id, string title)
+        public OpdsLink GetDownloadLink(string id, string title)
         {
             var link = new OpdsLink()
             {
                 Title = title,
+                RelationshipType = OpdsRelations.OpenAcquisition,
                 Uri = new Uri(String.Format(DownloadLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
+
+            return link;
+        }
+
+        public OpdsLink GetBuyLink(string id, string title, decimal price)
+        {
+            var link = new OpdsLink()
+            {
+                Title = title,
+                RelationshipType = OpdsRelations.Buy,
+                Uri = new Uri(String.Format(BuyLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute),
+            };
+            link.Prices.Add(new OpdsPrice(price));
 
             return link;
         }

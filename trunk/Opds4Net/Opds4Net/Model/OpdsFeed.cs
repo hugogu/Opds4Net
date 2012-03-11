@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -41,18 +40,6 @@ namespace Opds4Net.Model
         /// <param name="items"></param>
         public OpdsFeed(IEnumerable<SyndicationItem> items)
             : base(items) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public string ToXml()
-        {
-            var writer = new StringWriter();
-            SaveAsAtom10(new XmlTextWriter(writer));
-
-            return writer.GetStringBuilder().ToString();
-        }
 
         protected override SyndicationItem CreateItem()
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -47,6 +48,32 @@ namespace Opds4Net.Util
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <returns></returns>
+        public static string ToXml(this SyndicationFeed feed)
+        {
+            var writer = new StringWriter();
+            feed.SaveAsAtom10(new XmlTextWriter(writer));
+
+            return writer.GetStringBuilder().ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static string ToXml(this SyndicationItem item)
+        {
+            var writer = new StringWriter();
+            item.SaveAsAtom10(new XmlTextWriter(writer));
+
+            return writer.GetStringBuilder().ToString();
+        }
+
+        /// <summary>
         /// Get the mime type from the extension name of a file.
         /// </summary>
         /// <param name="path"></param>
@@ -60,6 +87,16 @@ namespace Opds4Net.Util
             }
             else
                 throw new NotSupportedException(String.Format("Cannot detect mime type from {0}", path));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsFileSupported(string path)
+        {
+            return extensionMimeMap.ContainsKey(Path.GetExtension(path).ToLowerInvariant());
         }
 
         /// <summary>

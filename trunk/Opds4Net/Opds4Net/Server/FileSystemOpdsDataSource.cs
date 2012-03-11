@@ -22,7 +22,9 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="linkGenerator"></param>
         [ImportingConstructor]
-        public FileSystemOpdsDataSource([Import]IOpdsLinkGenerator linkGenerator, [Import("BookFolder")] string bookFolder)
+        public FileSystemOpdsDataSource(
+            [Import]IOpdsLinkGenerator linkGenerator,
+            [Import("BookFolder")] string bookFolder)
         {
             this.bookFolder = bookFolder;
             this.linkGenerator = linkGenerator;
@@ -44,11 +46,14 @@ namespace Opds4Net.Server
 
             foreach (var path in Directory.GetFiles(root))
             {
-                var item = GetDetail(path);
-                item.Links.Clear();
-                item.Links.Add(linkGenerator.GetDetailLink(Path.Combine(id, Path.GetDirectoryName(path)), "详细信息"));
+                if (OpdsHelper.IsFileSupported(path))
+                {
+                    var item = GetDetail(path);
+                    item.Links.Clear();
+                    item.Links.Add(linkGenerator.GetDetailLink(Path.Combine(id, Path.GetFileName(path)), "详细信息"));
 
-                yield return item;
+                    yield return item;
+                }
             }
 
             foreach (var path in Directory.GetDirectories(root))
@@ -83,7 +88,7 @@ namespace Opds4Net.Server
 
             var item = new SyndicationItem(fileInfo.Name, fileVersionInfo.FileDescription, null, id, DateTimeOffset.Parse(fileInfo.LastWriteTimeUtc.ToString("o")));
             item.PublishDate = DateTimeOffset.Parse(fileInfo.CreationTimeUtc.ToString("o"));
-            var downloadLink = linkGenerator.GetDetailLink(id, "下载");
+            var downloadLink = linkGenerator.GetDownloadLink(id, "下载");
             downloadLink.MediaType = OpdsHelper.DetectFileMimeType(path);
             downloadLink.Length = fileInfo.Length;
             item.Links.Add(downloadLink);

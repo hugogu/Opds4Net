@@ -49,14 +49,6 @@ namespace Opds4Net.Model
             return SyndicationItem.Load<OpdsItem>(reader);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public new IEnumerable<OpdsLink> Links
-        {
-            get { return base.Links.Cast<OpdsLink>(); }
-        }
-
         protected override SyndicationLink CreateLink()
         {
             return new OpdsLink();

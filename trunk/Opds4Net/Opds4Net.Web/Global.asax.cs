@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -7,10 +8,10 @@ using Opds4Net.Server;
 
 namespace Opds4Net.Web
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : System.Web.HttpApplication
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MvcApplication : HttpApplication
     {
         private static bool initialized = false;
         private static CompositionContainer container = new CompositionContainer(new AggregateCatalog(new DirectoryCatalog(@".\bin")));
@@ -24,18 +25,35 @@ namespace Opds4Net.Web
         /// <summary>
         /// 
         /// </summary>
+        public static MvcApplication Current
+        {
+            get { return HttpContext.Current.ApplicationInstance as MvcApplication; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static CompositionContainer Container
+        {
+            get { return container; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public MvcApplication()
         {
             if (!initialized)
             {
-                container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
-                container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
-                container.ComposeExportedValue("DetailLinkPattern", "/Detail?id={0}");
-                container.ComposeExportedValue("DownloadLinkPattern", "/Download?id={0}");
+                Container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
+                Container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
+                Container.ComposeExportedValue("DetailLinkPattern", "/Detail?id={0}");
+                Container.ComposeExportedValue("DownloadLinkPattern", "/Download?id={0}");
+                Container.ComposeExportedValue("BuyLinkPattern", "/Buy?id={0}");
                 initialized = true;
             }
 
-            container.ComposeParts(this);
+            Container.ComposeParts(this);
         }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -48,9 +66,27 @@ namespace Opds4Net.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                "Default", // Route name
-                "{action}/{id}", // URL with parameters
-                new { controller = "Category", action = "Category", id = UrlParameter.Optional } // Parameter defaults
+                "BookEditor",
+                "Book/{action}/{id}",
+                new { controller = "Book", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "CategoryEditor",
+                "Category/{action}/{id}",
+                new { controller = "Category", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "FSOpds",
+                "FS/{action}/{id}",
+                new { controller = "FileSystemOpds", action = "Category", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "Default",
+                "{action}/{id}",
+                new { controller = "DbOpds", action = "Category", id = UrlParameter.Optional }
             );
         }
 

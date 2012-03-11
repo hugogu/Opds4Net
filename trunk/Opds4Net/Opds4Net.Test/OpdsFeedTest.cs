@@ -49,7 +49,7 @@ namespace Opds4Net.Test
         {
             var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/detail/1724.atom"));
             var entry = feed.Items.First();
-            var link = entry.Links.Single(l => l.Prices.Count > 0);
+            var link = entry.Links.Single(l => (l as OpdsLink).Prices.Count > 0) as OpdsLink;
             var indirectAcquisition = new OpdsIndirectAcquisition("application/zip");
             indirectAcquisition.Items.Add(new OpdsIndirectAcquisition("application/epub+zip"));
             indirectAcquisition.Items.Add(new OpdsIndirectAcquisition("application/pdf"));
@@ -60,7 +60,7 @@ namespace Opds4Net.Test
 
             feed = OpdsFeed.Load(new XmlTextReader(new StringReader(xml)));
             entry = feed.Items.First();
-            link = entry.Links.Single(l => l.Prices.Count > 0);
+            link = entry.Links.Single(l => (l as OpdsLink).Prices.Count > 0) as OpdsLink;
             Assert.AreEqual(1, link.IndirectAcquisitions.Count);
             Assert.AreEqual(3, link.IndirectAcquisitions.First().Items.Count);
             Assert.AreEqual(xml, feed.ToXml());

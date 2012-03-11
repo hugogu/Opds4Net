@@ -14,7 +14,8 @@ namespace Opds4Net
 
         static CurrencyCodes()
         {
-            validCurrencyCodes = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(c => new RegionInfo(c.LCID).ISOCurrencySymbol);
+            var specifiedCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            validCurrencyCodes = specifiedCultures.Select(c => new RegionInfo(c.LCID).ISOCurrencySymbol);
         }
 
         /// <summary>

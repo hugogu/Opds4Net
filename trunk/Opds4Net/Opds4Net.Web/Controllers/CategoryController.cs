@@ -1,54 +1,115 @@
-﻿using System.Text;
-using System.Web;
+﻿using System;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
-using Opds4Net.Model;
+using Opds4Net.Web.Models;
 
 namespace Opds4Net.Web.Controllers
-{
-    /// <summary>
-    /// 
-    /// </summary>
+{ 
     public class CategoryController : Controller
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Category(string id)
-        {
-            var items = (HttpContext.ApplicationInstance as MvcApplication).FileSystemOpds.GetItems(id);
-            var feed = new OpdsFeed(items);
+        private BookDBContext db = new BookDBContext();
 
-            return new ContentResult {
-                ContentType = "text/xml",
-                Content = feed.ToXml(),
-                ContentEncoding = Encoding.UTF8
-            };
+        //
+        // GET: /Category/
+
+        public ViewResult Index()
+        {
+            return View(db.Categories.ToList());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Detail(string id)
+        //
+        // GET: /Category/Details/5
+
+        public ViewResult Details(Guid id)
         {
-            return new ContentResult
+            Category category = db.Categories.Find(id);
+            return View(category);
+        }
+
+        //
+        // GET: /Category/Create
+
+        public ActionResult Create()
+        {
+            ViewBag.Categories = new SelectList(db.PickCategories, "Id", "FullName");
+
+            return View();
+        }
+
+        //
+        // POST: /Category/Create
+
+        [HttpPost]
+        public ActionResult Create(Category category)
+        {
+            if (ModelState.IsValid)
             {
-                ContentType = "text/xml",
-                Content = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><a></a>",
-                ContentEncoding = Encoding.UTF8
-            };
+                category.Id = Guid.NewGuid();
+                db.Categories.Add(category);
+                // Otherwise EF will try to insert the parent and failed.
+                db.Entry(category.Parent).State = EntityState.Unchanged;
+                db.SaveChanges();
+                return RedirectToAction("Index");  
+            }
+
+            return View(category);
+        }
+        
+        //
+        // GET: /Category/Edit/5
+ 
+        public ActionResult Edit(Guid id)
+        {
+            Category category = db.Categories.Include(c => c.Parent).Single(c => c.Id == id);
+            ViewBag.Categories = new SelectList(db.PickCategories, "Id", "FullName", db.PickCategories.Find(category.Parent.Id));
+            return View(category);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Download(string id)
+        //
+        // POST: /Category/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(Category category)
         {
-            return new FilePathResult("", "");
+            if (ModelState.IsValid)
+            {
+                var existing = db.Categories.Include(c => c.Parent).Single(c => c.Id == category.Id);
+                existing.Name = category.Name;
+                category.Parent = db.Categories.Find(category.Parent.Id);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(category);
+        }
+
+        //
+        // GET: /Category/Delete/5
+ 
+        public ActionResult Delete(Guid id)
+        {
+            Category category = db.Categories.Find(id);
+            return View(category);
+        }
+
+        //
+        // POST: /Category/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(Guid id)
+        {            
+            Category category = db.Categories.Find(id);
+            db.Categories.Remove(category);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

@@ -6,6 +6,11 @@
     public static class OpdsRelations
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public static readonly string Alternate = "alternate";
+
+        /// <summary>
         /// A generic relation that indicates that the complete representation of the content Resource may be retrieved.
         /// </summary>
         public static readonly string Acquisition = "http://opds-spec.org/acquisition";

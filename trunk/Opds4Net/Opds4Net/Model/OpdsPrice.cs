@@ -12,6 +12,21 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
+        public OpdsPrice()
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public OpdsPrice(Decimal price)
+        {
+            Price = price;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Decimal Price { get; set; }
 
         /// <summary>
