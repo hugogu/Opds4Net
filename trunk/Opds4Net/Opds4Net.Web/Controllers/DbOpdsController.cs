@@ -48,6 +48,10 @@ namespace Opds4Net.Web.Controllers
         public ActionResult Detail(string id)
         {
             var item = DbOpds.GetDetail(id);
+            if (item == null)
+            {
+                return new HttpNotFoundResult();
+            }
 
             return Content(item.ToXml(), "text/xml");
         }
@@ -59,7 +63,13 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Download(string id)
         {
-            return Redirect(db.Books.Single(b => b.Id == new Guid(id)).DownloadAddress);
+            var book = db.Books.Find(new Guid(id));
+            if (book == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new FilePathResult("~/App_Data/Uploaded/" + id + OpdsHelper.GetExtensionName(book.MimeType), book.MimeType);
         }
     }
 }

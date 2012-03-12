@@ -90,6 +90,26 @@ namespace Opds4Net.Util
         }
 
         /// <summary>
+        /// Get the extension name from a mimeType.
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        public static string GetExtensionName(string mimeType)
+        {
+            mimeType = mimeType.ToLowerInvariant();
+
+            foreach (var pair in extensionMimeMap)
+            {
+                if (pair.Value.Equals(mimeType, StringComparison.Ordinal))
+                {
+                    return pair.Key;
+                }
+            }
+
+            throw new NotSupportedException(String.Format("I don't know the extension of mime type {0}", mimeType));
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="path"></param>

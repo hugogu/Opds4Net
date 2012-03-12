@@ -71,7 +71,7 @@
             @Html.DisplayFor(modelItem => item.SalePrice)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DownloadAddress)
+            @Html.ActionLink("Download", "Download", "DbOpds", new { id = item.Id }, new { })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UpdateTime)

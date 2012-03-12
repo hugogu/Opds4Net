@@ -9,7 +9,7 @@
                 <tr>
                     @{
                         int cnt = 0;
-                        System.Data.Entity.DbSet<Opds4Net.Web.Models.PickerCategory> categories = ViewBag.Categories;
+                        IEnumerable<Opds4Net.Web.Models.PickerCategory> categories = ViewBag.Categories;
 
                         foreach (var category in categories)
                         {

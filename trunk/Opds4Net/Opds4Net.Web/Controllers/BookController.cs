@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using Opds4Net.Util;
 using Opds4Net.Web.Models;
 
 namespace Opds4Net.Web.Controllers
-{ 
+{
     public class BookController : Controller
     {
         private BookDBContext db = new BookDBContext();
@@ -24,9 +25,12 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Book/Details/5
 
-        public ViewResult Details(Guid id)
+        public ActionResult Details(Guid id)
         {
             Book book = db.Books.Find(id);
+            if (book == null)
+                return new HttpNotFoundResult();
+
             return View(book);
         }
 
@@ -38,7 +42,7 @@ namespace Opds4Net.Web.Controllers
             ViewBag.Categories = db.PickCategories;
 
             return View();
-        } 
+        }
 
         //
         // POST: /Book/Create
@@ -49,19 +53,44 @@ namespace Opds4Net.Web.Controllers
             if (ModelState.IsValid)
             {
                 book.Id = Guid.NewGuid();
+                // Files count should be 1.
+                foreach (string file in Request.Files)
+                {
+                    if (Request.Files[file] == null || Request.Files[file].ContentLength == 0)
+                    {
+                        continue;
+                    }
+
+                    var path = HostingEnvironment.MapPath("~/App_Data/Uploaded");
+                    var filename = book.Id + Path.GetExtension(Request.Files[file].FileName);
+                    Request.Files[file].SaveAs(Path.Combine(path, filename));
+
+                    book.DownloadAddress = "/Download?id=" + book.Id.ToString();
+                    book.MimeType = OpdsHelper.DetectFileMimeType(Request.Files[file].FileName);
+                    book.FileSize = Request.Files[file].ContentLength;
+                }
+
+                book.UpdateTime = DateTime.Now;
                 db.Books.Add(book);
-                var guids = selectedCategories.Select(s => new Guid(s));
-                book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
+                if (selectedCategories != null && selectedCategories.Any())
+                {
+                    var guids = selectedCategories.Select(s => new Guid(s));
+                    book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
+                }
+
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+
+                return RedirectToAction("Index");
             }
+
+            ViewBag.Categories = db.PickCategories;
 
             return View(book);
         }
-        
+
         //
         // GET: /Book/Edit/5
- 
+
         public ActionResult Edit(Guid id)
         {
             ViewBag.Categories = db.PickCategories;
@@ -88,7 +117,7 @@ namespace Opds4Net.Web.Controllers
 
         //
         // GET: /Book/Delete/5
- 
+
         public ActionResult Delete(Guid id)
         {
             Book book = db.Books.Find(id);
@@ -100,7 +129,7 @@ namespace Opds4Net.Web.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
-        {            
+        {
             Book book = db.Books.Find(id);
             db.Books.Remove(book);
             db.SaveChanges();

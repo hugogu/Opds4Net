@@ -20,7 +20,7 @@ namespace Opds4Net.Web.Models
 
         public string Publisher { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime IssueTime { get; set; }
 
         [Required]
