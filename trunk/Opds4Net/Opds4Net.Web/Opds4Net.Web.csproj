@@ -74,6 +74,7 @@
     <Compile Include="Models\PickerCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\HtmlExtension.cs" />
+    <Compile Include="Util\WebLocalStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\BooksDB.mdf" />

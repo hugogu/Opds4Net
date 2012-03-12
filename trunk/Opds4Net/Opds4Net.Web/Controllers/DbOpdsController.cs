@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using Opds4Net.Model;
 using Opds4Net.Server;
@@ -68,8 +69,8 @@ namespace Opds4Net.Web.Controllers
             {
                 return new HttpNotFoundResult();
             }
-
-            return new FilePathResult("~/App_Data/Uploaded/" + id + OpdsHelper.GetExtensionName(book.MimeType), book.MimeType);
+            var extName = OpdsHelper.GetExtensionName(book.MimeType);
+            return new RangeFileResult(Request, HostingEnvironment.MapPath("~/App_Data/Uploaded/") + id + extName, book.Name + extName , book.MimeType);
         }
     }
 }

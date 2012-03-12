@@ -36,6 +36,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
@@ -54,8 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\GeneralLinkGenerator.cs" />
     <Compile Include="Server\FileSystemOpdsDataSource.cs" />
+    <Compile Include="Server\IContentStorage.cs" />
     <Compile Include="Server\IOpdsDataSource.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
+    <Compile Include="Server\RangeFileResult.cs" />
     <Compile Include="Util\OpdsHelper.cs" />
     <Compile Include="Util\WebRequestSettingsHelper.cs" />
   </ItemGroup>

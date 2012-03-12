@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using Opds4Net.Util;
 using Opds4Net.Web.Models;
@@ -61,11 +60,7 @@ namespace Opds4Net.Web.Controllers
                         continue;
                     }
 
-                    var path = HostingEnvironment.MapPath("~/App_Data/Uploaded");
-                    var filename = book.Id + Path.GetExtension(Request.Files[file].FileName);
-                    Request.Files[file].SaveAs(Path.Combine(path, filename));
-
-                    book.DownloadAddress = "/Download?id=" + book.Id.ToString();
+                    book.DownloadAddress = MvcApplication.Current.ContentSaver.Store(book.Id + Path.GetExtension(Request.Files[file].FileName), Request.Files[file].InputStream);
                     book.MimeType = OpdsHelper.DetectFileMimeType(Request.Files[file].FileName);
                     book.FileSize = Request.Files[file].ContentLength;
                 }

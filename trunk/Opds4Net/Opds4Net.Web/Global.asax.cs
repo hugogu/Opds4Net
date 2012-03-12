@@ -25,6 +25,12 @@ namespace Opds4Net.Web
         /// <summary>
         /// 
         /// </summary>
+        [Import("Local")]
+        public IContentStorage ContentSaver { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public static MvcApplication Current
         {
             get { return HttpContext.Current.ApplicationInstance as MvcApplication; }
@@ -45,11 +51,12 @@ namespace Opds4Net.Web
         {
             if (!initialized)
             {
-                Container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
-                Container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
+                Container.ComposeExportedValue("BuyLinkPattern", "/Buy?id={0}");
                 Container.ComposeExportedValue("DetailLinkPattern", "/Detail?id={0}");
                 Container.ComposeExportedValue("DownloadLinkPattern", "/Download?id={0}");
-                Container.ComposeExportedValue("BuyLinkPattern", "/Buy?id={0}");
+                Container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
+                Container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
+                Container.ComposeExportedValue("LocalStorageFolder", HostingEnvironment.MapPath("~/App_Data/Uploaded"));
                 initialized = true;
             }
 
