@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Opds4Net.Web.Models.Book>
+﻿@model PagedList.IPagedList<Opds4Net.Web.Models.Book>
 
 @{
     ViewBag.Title = "Books";
@@ -7,39 +7,39 @@
 <h2>Books</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Book", "Create")
 </p>
 <table>
     <tr>
         <th>
-            Name
+            @Html.ActionLink("Name", "Index", new { orderBy = "Name", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Name" ? !ViewBag.Direction : false })
         </th>
         <th>
-            Author
+            @Html.ActionLink("Author", "Index", new { orderBy = "Author", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Author" ? !ViewBag.Direction : false })
         </th>
         <th>
-            Publisher
+            @Html.ActionLink("Publisher", "Index", new { orderBy = "Publisher", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Publisher" ? !ViewBag.Direction : false })
         </th>
         <th>
-            IssueTime
+            @Html.ActionLink("IssueTime", "Index", new { orderBy = "IssueTime", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "IssueTime" ? !ViewBag.Direction : false })
         </th>
         <th>
-            MimeType
+            @Html.ActionLink("MimeType", "Index", new { orderBy = "MimeType", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "MimeType" ? !ViewBag.Direction : false })
         </th>
         <th>
-            FileSize
+            @Html.ActionLink("FileSize", "Index", new { orderBy = "FileSize", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "FileSize" ? !ViewBag.Direction : false })
         </th>
         <th>
-            OriginalPrice
+            @Html.ActionLink("OriginalPrice", "Index", new { orderBy = "OriginalPrice", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "OriginalPrice" ? !ViewBag.Direction : false })
         </th>
         <th>
-            SalePrice
+            @Html.ActionLink("SalePrice", "Index", new { orderBy = "SalePrice", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "SalePrice" ? !ViewBag.Direction : false })
         </th>
         <th>
             DownloadAddress
         </th>
         <th>
-            UpdateTime
+            @Html.ActionLink("UpdateTime", "Index", new { orderBy = "UpdateTime", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "UpdateTime" ? !ViewBag.Direction : false })
         </th>
         <th></th>
     </tr>
@@ -83,3 +83,5 @@
 }
 
 </table>
+
+@Html.PagedListPager(Model, p => String.Format("book?page={0}&pageSize={1}&orderBy={2}&direction={3}", p, ViewBag.PageSize, ViewBag.OrderBy, ViewBag.Direction))

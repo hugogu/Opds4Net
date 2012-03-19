@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Opds4Net.Util;
 using Opds4Net.Web.Models;
+using PagedList;
 
 namespace Opds4Net.Web.Controllers
 {
@@ -16,9 +18,21 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Book/
 
-        public ViewResult Index()
+        public ViewResult Index(string orderBy, bool? direction, int? page, int? pageSize)
         {
-            return View(db.Books.ToList());
+            pageSize = pageSize ?? 10;
+            ViewBag.PageSize = pageSize;
+            ViewBag.OrderBy = orderBy;
+            ViewBag.Direction = direction ?? false;
+            ViewBag.Page = page ?? 1;
+            IEnumerable<Book> sortedBooks;
+            if (direction.HasValue && direction.Value)
+                sortedBooks = db.Books.OrderBy(Book.FindKeySelector(orderBy));
+            else
+                sortedBooks = db.Books.OrderByDescending(Book.FindKeySelector(orderBy));
+            var pagedBooks = sortedBooks.ToPagedList(page ?? 1, pageSize.Value);
+
+            return View(pagedBooks);
         }
 
         //

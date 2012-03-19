@@ -51,6 +51,8 @@ namespace Opds4Net.Server
             if (!File.Exists(filePath))
             {
                 response.StatusCode = 404;
+                response.End();
+                return;
             }
             #endregion
 

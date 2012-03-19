@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Opds4Net.Web.Models;
+using PagedList;
 
 namespace Opds4Net.Web.Controllers
 { 
@@ -14,9 +15,18 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Category/
 
-        public ViewResult Index()
+        public ViewResult Index(int? page, int? pageSize)
         {
-            return View(db.Categories.ToList());
+            page = page ?? 1;
+            pageSize = pageSize ?? 15;
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+
+            var orderedCategores = db.Categories.OrderBy(c => c.Name);
+            var categories = orderedCategores.ToPagedList(page.Value, pageSize.Value);
+
+            return View(categories);
         }
 
         //

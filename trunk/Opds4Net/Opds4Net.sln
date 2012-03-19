@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net", "Opds4Net\Opds4Net.csproj", "{68C2BC77-F068-472E-A5BE-BF1DD47446A4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Test", "Opds4Net.Test\Opds4Net.Test.csproj", "{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2EEF95DB-9EBB-4E0E-83B2-F91EB3B252BE}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		Opds4Net.vsmdi = Opds4Net.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net", "Opds4Net\Opds4Net.csproj", "{68C2BC77-F068-472E-A5BE-BF1DD47446A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Test", "Opds4Net.Test\Opds4Net.Test.csproj", "{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Web", "Opds4Net.Web\Opds4Net.Web.csproj", "{D5C41E44-CF77-4BD2-A6F6-169F818F305A}"
 EndProject
@@ -27,14 +27,14 @@ Global
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E67E5A9A-7955-441D-9B9E-14689A3DA6C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

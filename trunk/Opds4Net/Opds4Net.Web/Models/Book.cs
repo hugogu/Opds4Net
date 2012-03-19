@@ -42,5 +42,40 @@ namespace Opds4Net.Web.Models
 
         [Display(Name = "Category")]
         public ICollection<Category> Categories { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public static Func<Book, object> FindKeySelector(string propertyName)
+        {
+            if (String.IsNullOrWhiteSpace(propertyName))
+                return b => b.UpdateTime;
+
+            switch (propertyName.ToLowerInvariant())
+            {
+                case "updatetime":
+                    return b => b.UpdateTime;
+                case "name":
+                    return b => b.Name;
+                case "saleprice":
+                    return b => b.SalePrice;
+                case "originalprice":
+                    return b => b.OriginalPrice;
+                case "filesize":
+                    return b => b.FileSize;
+                case "publisher":
+                    return b => b.Publisher;
+                case "issuetime":
+                    return b => b.IssueTime;
+                case "mimetype":
+                    return b => b.MimeType;
+                case "author":
+                    return b => b.Author;
+                default:
+                    return b => b.Name;
+            }
+        }
     }
 }

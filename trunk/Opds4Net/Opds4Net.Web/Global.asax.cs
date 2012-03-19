@@ -14,7 +14,7 @@ namespace Opds4Net.Web
     public class MvcApplication : HttpApplication
     {
         private static bool initialized = false;
-        private static CompositionContainer container = new CompositionContainer(new AggregateCatalog(new DirectoryCatalog(@".\bin")));
+        private static CompositionContainer container = new CompositionContainer(new AggregateCatalog(new DirectoryCatalog(@".\bin")), true);
 
         /// <summary>
         /// 
