@@ -60,6 +60,7 @@
     <Compile Include="Server\IOpdsDataSource.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
     <Compile Include="Server\RangeFileResult.cs" />
+    <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
     <Compile Include="Util\ModelHelper.cs" />
     <Compile Include="Util\OpdsHelper.cs" />
     <Compile Include="Util\WebRequestSettingsHelper.cs" />

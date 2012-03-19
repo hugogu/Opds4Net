@@ -27,9 +27,9 @@ namespace Opds4Net.Web.Controllers
             ViewBag.Page = page ?? 1;
             IEnumerable<Book> sortedBooks;
             if (direction.HasValue && direction.Value)
-                sortedBooks = db.Books.OrderBy(Book.FindKeySelector(orderBy));
+                sortedBooks = db.Books.OrderBy(ModelHelper<Book>.FindKeySelector(orderBy));
             else
-                sortedBooks = db.Books.OrderByDescending(Book.FindKeySelector(orderBy));
+                sortedBooks = db.Books.OrderByDescending(ModelHelper<Book>.FindKeySelector(orderBy));
             var pagedBooks = sortedBooks.ToPagedList(page ?? 1, pageSize.Value);
 
             return View(pagedBooks);
