@@ -1,7 +1,14 @@
 ﻿@model Opds4Net.Web.Models.Book
+        <script type="text/javascript" src="../../Scripts/Common/Url.js"></script>
+        <script type="text/javascript">
+             function navigate(a) {
+                 self.location = changeUrlParameter(self.location, 'leaf', a);
+             }
+        </script>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Categories)
+            @Html.CheckBox("checkLeafNode", (bool)ViewBag.LeafNodeOnly, new { onClick =  @String.Format("navigate('{0}')", !(bool)ViewBag.LeafNodeOnly) }) Only shows leaf node.
         </div>
 
         <div class="editor-field">

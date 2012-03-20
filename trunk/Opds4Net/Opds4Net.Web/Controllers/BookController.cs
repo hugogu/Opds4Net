@@ -50,9 +50,13 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Book/Create
 
-        public ActionResult Create()
+        public ActionResult Create(bool? leaf)
         {
-            ViewBag.Categories = db.PickCategories;
+            ViewBag.LeafNodeOnly = leaf ?? false;
+            ViewBag.Categories = db.PickCategories
+                .Include(c => c.SubCategories)
+                .OrderBy(c => c.FullName)
+                .Where(c => !leaf.Value || c.SubCategories.Count == 0);
 
             return View();
         }

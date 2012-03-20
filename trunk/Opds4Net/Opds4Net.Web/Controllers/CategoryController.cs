@@ -23,7 +23,7 @@ namespace Opds4Net.Web.Controllers
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
 
-            var orderedCategores = db.Categories.OrderBy(c => c.Name);
+            var orderedCategores = db.Categories.OrderByDescending(c => c.Id);
             var categories = orderedCategores.ToPagedList(page.Value, pageSize.Value);
 
             return View(categories);
@@ -43,7 +43,7 @@ namespace Opds4Net.Web.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Categories = new SelectList(db.PickCategories, "Id", "FullName");
+            ViewBag.Categories = new SelectList(db.PickCategories.OrderBy(c => c.FullName), "Id", "FullName");
 
             return View();
         }
