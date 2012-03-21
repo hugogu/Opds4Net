@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\TestInitializer.cs" />
+    <Compile Include="Common\TestTimer.cs" />
     <Compile Include="CurrencyCodesTest.cs" />
     <Compile Include="DataModelOpdsDataSourceTest.cs" />
     <Compile Include="ModelHelperTest.cs" />
