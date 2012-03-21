@@ -124,6 +124,29 @@ namespace Opds4Net.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
+        public static TextSyndicationContent MakeSyndicationContent(this object value)
+        {
+            if (value == null)
+                return null;
+            else
+                return new TextSyndicationContent(Convert.ToString(value));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToNullableString(this object value)
+        {
+            return value == null ? null : Convert.ToString(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string GetXmlEnumName(this Enum value)
         {
             var type = value.GetType();

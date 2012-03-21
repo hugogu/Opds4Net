@@ -22,7 +22,7 @@ namespace Opds4Net.Test
 
             var value = ModelHelper<DataModel>.GetProperty(model, "Name");
             Assert.AreEqual(name, value);
-            value = ModelHelper<DataModel>.GetProperty(model, "CategoryName");
+            value = ModelHelper<DataModel>.GetProperty(model, "Title");
             Assert.AreEqual(name, value);
             value = ModelHelper<DataModel>.GetProperty(model, "CategoryNameNotExists");
             Assert.AreEqual(null, value);
@@ -38,7 +38,7 @@ namespace Opds4Net.Test
             var model = new DataModel() { Name = name };
 
             Assert.AreEqual(name, model.GetProperty("Name"));
-            Assert.AreEqual(name, model.GetProperty("CategoryName"));
+            Assert.AreEqual(name, model.GetProperty("Title"));
         }
     }
 }

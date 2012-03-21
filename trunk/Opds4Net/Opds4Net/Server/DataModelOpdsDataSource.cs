@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using Opds4Net.Model;
+using Opds4Net.Util;
 using Opds4Net.Util.Extension;
 
 namespace Opds4Net.Server
@@ -14,14 +14,13 @@ namespace Opds4Net.Server
     /// </summary>
     public abstract class DataModelOpdsDataSource : IOpdsDataSource
     {
-        private IOpdsLinkGenerator linkGenerator;
+        protected IOpdsLinkGenerator linkGenerator;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="linkGenerator"></param>
-        [ImportingConstructor]
-        public DataModelOpdsDataSource([Import]IOpdsLinkGenerator linkGenerator)
+        public DataModelOpdsDataSource(IOpdsLinkGenerator linkGenerator)
         {
             this.linkGenerator = linkGenerator;
         }
@@ -72,15 +71,17 @@ namespace Opds4Net.Server
                 downloadLink.MediaType = accessor.GetProperty(item, "MimeType").ToString();
                 downloadLink.Prices.Add(new OpdsPrice(Convert.ToDecimal(accessor.GetProperty(item, "Price")))
                 {
-                    CurrencyCode = Convert.ToString(accessor.GetProperty(item, "CurrencyCode")) ?? "CNY"
+                    CurrencyCode = accessor.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY"
                 });
                 syndicationItem.Links.Add(downloadLink);
-                syndicationItem.Content = new TextSyndicationContent(Convert.ToString(accessor.GetProperty(item, "Content")));
-                syndicationItem.Copyright = new TextSyndicationContent(Convert.ToString(accessor.GetProperty(item, "Copyright")));
-                syndicationItem.ISBN = Convert.ToString(accessor.GetProperty(item, "ISBN"));
-                syndicationItem.Language = Convert.ToString(accessor.GetProperty(item, "Language"));
-                syndicationItem.Issued = Convert.ToString(accessor.GetProperty(item, "IssueTime"));
-                syndicationItem.PublishDate = new DateTimeOffset(Convert.ToDateTime(accessor.GetProperty(item, "PublishDate")));
+                syndicationItem.Content = accessor.GetProperty(item, "Content").MakeSyndicationContent();
+                syndicationItem.Copyright = accessor.GetProperty(item, "Copyright").MakeSyndicationContent();
+                syndicationItem.ISBN = accessor.GetProperty(item, "ISBN").ToNullableString();
+                syndicationItem.Language = accessor.GetProperty(item, "Language").ToNullableString();
+                syndicationItem.Issued = accessor.GetProperty(item, "IssueTime").ToNullableString();
+                var publishDate = accessor.GetProperty(item, "PublishDate");
+                if (publishDate != null)
+                    syndicationItem.PublishDate = new DateTimeOffset(Convert.ToDateTime(publishDate));
             }
             // 书籍列表项
             else
@@ -88,7 +89,7 @@ namespace Opds4Net.Server
                 syndicationItem.Links.Add(linkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
             }
 
-            syndicationItem.Publisher = Convert.ToString(accessor.GetProperty(item, "Publisher"));
+            syndicationItem.Publisher = accessor.GetProperty(item, "Publisher").ToNullableString();
             OnEntityItemCreated(syndicationItem);
 
             return syndicationItem;
@@ -96,17 +97,22 @@ namespace Opds4Net.Server
 
         private OpdsItem CreateBasicDataItems(IPropertyAccessor accessor, IOpdsData item)
         {
+            
             var syndicationItem = new OpdsItem()
             {
-                Title = new TextSyndicationContent(Convert.ToString(accessor.GetProperty(item, "Title"))),
+                Title = accessor.GetProperty(item, "Title").MakeSyndicationContent(),
                 Id = accessor.GetProperty(item, "Id").ToString(),
-                Summary = new TextSyndicationContent(Convert.ToString(accessor.GetProperty(item, "Summary"))),
-                LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(accessor.GetProperty(item, "UpdateTime"))),
+                Summary = accessor.GetProperty(item, "Summary").MakeSyndicationContent(),
             };
-            syndicationItem.Authors.Add(new SyndicationPerson()
-            {
-                Name = Convert.ToString(accessor.GetProperty(item, "Author")),
-            });
+            var updateTime = accessor.GetProperty(item, "UpdateTime");
+            if (updateTime != null)
+                syndicationItem.LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(updateTime));
+            var author = accessor.GetProperty(item, "Author");
+            if (author != null)
+                syndicationItem.Authors.Add(new SyndicationPerson()
+                {
+                    Name = Convert.ToString(author),
+                });
 
             return syndicationItem;
         }
