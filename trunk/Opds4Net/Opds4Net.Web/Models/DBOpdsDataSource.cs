@@ -14,7 +14,7 @@ namespace Opds4Net.Web.Models
     [Export("DB", typeof(IOpdsDataSource))]
     public class DBOpdsDataSource : IOpdsDataSource
     {
-        private BookDBContext dbContext;
+        private AbstractBookDBContext dbContext;
         private IOpdsLinkGenerator linkGenerator;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Opds4Net.Web.Models
         /// <param name="linkGenerator"></param>
         [ImportingConstructor]
         public DBOpdsDataSource(
-            [Import]BookDBContext dbContext,
+            [Import]AbstractBookDBContext dbContext,
             [Import]IOpdsLinkGenerator linkGenerator)
         {
             this.dbContext = dbContext;
@@ -33,7 +33,7 @@ namespace Opds4Net.Web.Models
         /// <summary>
         /// 
         /// </summary>
-        public BookDBContext DbContext
+        public AbstractBookDBContext DbContext
         {
             get { return dbContext; }
             set { dbContext = value; }

@@ -83,6 +83,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AbstractBookDBContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BookDBContext.cs" />
     <Compile Include="Models\Category.cs" />

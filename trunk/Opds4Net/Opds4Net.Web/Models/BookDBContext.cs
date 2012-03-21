@@ -5,23 +5,8 @@ namespace Opds4Net.Web.Models
     /// <summary>
     /// 
     /// </summary>
-    public class BookDBContext : DbContext
+    public class BookDBContext : AbstractBookDBContext
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public DbSet<Category> Categories { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public DbSet<PickerCategory> PickCategories { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public DbSet<Book> Books { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PickerCategory>().ToTable("PickerCategory");

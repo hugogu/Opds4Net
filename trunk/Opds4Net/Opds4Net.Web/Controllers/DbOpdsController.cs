@@ -19,14 +19,14 @@ namespace Opds4Net.Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        public IOpdsDataSource DbOpds { get; set; }
+        public IOpdsDataSource DbOpdsData { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         public DbOpdsController()
         {
-            DbOpds = new DBOpdsDataSource(db, MvcApplication.Container.GetExport<IOpdsLinkGenerator>().Value);
+            DbOpdsData = new DBOpdsDataSource(db, MvcApplication.Container.GetExport<IOpdsLinkGenerator>().Value);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Category(string id)
         {
-            var items = DbOpds.GetItems(id).OrderByDescending(i => i.LastUpdatedTime);
+            var items = DbOpdsData.GetItems(id).OrderByDescending(i => i.LastUpdatedTime);
             var feed = new OpdsFeed(items);
 
             return Content(feed.ToXml(), "text/xml");
@@ -48,7 +48,7 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Detail(string id)
         {
-            var item = DbOpds.GetDetail(id);
+            var item = DbOpdsData.GetDetail(id);
             if (item == null)
             {
                 return new HttpNotFoundResult();
