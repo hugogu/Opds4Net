@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,7 +7,7 @@ using Opds4Net.Util;
 namespace Opds4Net.Model
 {
     /// <summary>
-    /// 
+    /// Represents an opds entry.
     /// </summary>
     public class OpdsItem : SyndicationItem
     {
@@ -49,11 +47,21 @@ namespace Opds4Net.Model
             return SyndicationItem.Load<OpdsItem>(reader);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected override SyndicationLink CreateLink()
         {
             return new OpdsLink();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         protected override bool TryParseElement(XmlReader reader, string version)
         {
             if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore, "language"))
@@ -82,6 +90,11 @@ namespace Opds4Net.Model
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="version"></param>
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
             if (!String.IsNullOrEmpty(Language))

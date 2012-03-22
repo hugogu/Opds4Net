@@ -3,6 +3,7 @@ using Opds4Net.Model;
 
 namespace Opds4Net.Test.Model
 {
+    [OpdsData(OpdsDataType.Category)]
     internal class DataModel : IOpdsData
     {
         [OpdsName("Title")]
@@ -14,10 +15,22 @@ namespace Opds4Net.Test.Model
 
         public string Summary { get; set; }
 
+        public virtual OpdsDataType DataType
+        {
+            get { return OpdsDataType.Category; }
+        }
+    }
+
+    [OpdsData(OpdsDataType.Entity)]
+    internal class DataEntry : DataModel
+    {
         public Decimal Price { get; set; }
 
         public string MimeType { get; set; }
 
-        public OpdsDataType DataType { get; set; }
+        public override OpdsDataType DataType
+        {
+            get { return OpdsDataType.Entity; }
+        }
     }
 }

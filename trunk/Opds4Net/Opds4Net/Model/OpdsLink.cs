@@ -8,7 +8,7 @@ using Opds4Net.Util;
 namespace Opds4Net.Model
 {
     /// <summary>
-    /// 
+    /// Represents an opds link element.
     /// </summary>
     public class OpdsLink : SyndicationLink
     {
@@ -21,12 +21,12 @@ namespace Opds4Net.Model
         public int? Count { get; set; }
 
         /// <summary>
-        /// 
+        /// The price information if the link an aquisition link requires purchase.
         /// </summary>
         public Collection<OpdsPrice> Prices { get { return prices; } }
 
         /// <summary>
-        /// 
+        /// The information about the acquisition media type after purchase.
         /// </summary>
         public Collection<OpdsIndirectAcquisition> IndirectAcquisitions { get { return indirectAcquisitions; } }
 
@@ -74,6 +74,12 @@ namespace Opds4Net.Model
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         protected override bool TryParseElement(XmlReader reader, string version)
         {
             if (reader.IsReadingElementOf(OpdsNamespaces.Opds, "price"))
@@ -112,6 +118,11 @@ namespace Opds4Net.Model
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="version"></param>
         protected override void WriteAttributeExtensions(XmlWriter writer, string version)
         {
             if (Count.HasValue)
@@ -120,6 +131,11 @@ namespace Opds4Net.Model
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="version"></param>
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
             foreach (var price in Prices)

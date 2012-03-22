@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Opds4Net.Model;
+using Opds4Net.Server;
 using Opds4Net.Util;
 
 namespace Opds4Net.Web.Controllers
@@ -17,7 +18,13 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Category(string id)
         {
-            var items = MvcApplication.Current.FileSystemOpds.GetItems(id).OrderByDescending(i => i.LastUpdatedTime);
+            var request = new OpdsCategoryItemsRequest()
+            {
+                Id = id,
+                PageIndex = 1,
+                PageSize = 10,
+            };
+            var items = MvcApplication.Current.FileSystemOpds.GetItems(request).OrderByDescending(i => i.LastUpdatedTime);
             var feed = new OpdsFeed(items);
 
             return Content(feed.ToXml(), "text/xml");

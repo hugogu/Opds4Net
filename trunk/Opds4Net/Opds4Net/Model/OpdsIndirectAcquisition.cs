@@ -3,7 +3,7 @@
 namespace Opds4Net.Model
 {
     /// <summary>
-    /// 
+    /// Represents the acquisition information for an OpdsLink.
     /// </summary>
     public class OpdsIndirectAcquisition
     {
@@ -26,12 +26,12 @@ namespace Opds4Net.Model
         }
 
         /// <summary>
-        /// 
+        /// The meida type of the acquisition.
         /// </summary>
         public string MimeType { get; set; }
 
         /// <summary>
-        /// 
+        /// The sub acquisitions items. Usually used for a zip file that contains many files of different mime types.
         /// </summary>
         public Collection<OpdsIndirectAcquisition> Items
         {

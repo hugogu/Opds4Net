@@ -22,7 +22,12 @@ namespace Opds4Net.Test.Model
         {
         }
 
-        protected override IEnumerable<IOpdsData> ExtractItems(string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        protected override IEnumerable<IOpdsData> ExtractItems(OpdsCategoryItemsRequest request)
         {
             yield return new DataModel()
             {
@@ -40,16 +45,20 @@ namespace Opds4Net.Test.Model
             };
         }
 
-        protected override IOpdsData ExtraceDetail(string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        protected override IOpdsData ExtractDetail(string id)
         {
-            return new DataModel()
+            return new DataEntry()
             {
                 Id = Guid.Empty.ToString(),
                 Name = "书名",
                 Summary = "Summary",
                 UpdateTime = new DateTime(2012, 1, 1),
                 Price = 5M,
-                DataType = OpdsDataType.Entity,
                 MimeType = "application/epub+zip"
             };
         }

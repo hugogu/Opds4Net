@@ -42,22 +42,22 @@ namespace Opds4Net.Web.Models
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(string id)
+        public IEnumerable<SyndicationItem> GetItems(OpdsCategoryItemsRequest request)
         {
             // 取主分类
-            if (id == null)
+            if (request.Id == null)
             {
                 return GetItems(dbContext.Categories.Where(c => c.Parent == null));
             }
             else
             {
-                var current = dbContext.Categories.Single(c => c.Id == new Guid(id));
+                var current = dbContext.Categories.Single(c => c.Id == new Guid(request.Id));
                 // 取子分类
                 if (current.SubCategories != null && current.SubCategories.Any())
                 {
-                    return GetItems(dbContext.Categories.Where(c => c.Parent != null && c.Parent.Id == new Guid(id)));
+                    return GetItems(dbContext.Categories.Where(c => c.Parent != null && c.Parent.Id == new Guid(request.Id)));
                 }
                 // 无子分类，则取书
                 else

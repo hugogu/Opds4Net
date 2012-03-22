@@ -21,6 +21,7 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="linkGenerator"></param>
+        /// <param name="bookFolder"></param>
         [ImportingConstructor]
         public FileSystemOpdsDataSource(
             [Import]IOpdsLinkGenerator linkGenerator,
@@ -33,13 +34,13 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(string id)
+        public IEnumerable<SyndicationItem> GetItems(OpdsCategoryItemsRequest request)
         {
-            id = id ?? String.Empty;
+            request.Id = request.Id ?? String.Empty;
 
-            var root = Path.Combine(bookFolder, id);
+            var root = Path.Combine(bookFolder, request.Id);
 
             if (!Directory.Exists(root))
                 throw new ArgumentException("id");
@@ -50,7 +51,7 @@ namespace Opds4Net.Server
                 {
                     var item = GetDetail(path);
                     item.Links.Clear();
-                    item.Links.Add(linkGenerator.GetDetailLink(Path.Combine(id, Path.GetFileName(path)), "详细信息"));
+                    item.Links.Add(linkGenerator.GetDetailLink(Path.Combine(request.Id, Path.GetFileName(path)), "详细信息"));
 
                     yield return item;
                 }
@@ -64,7 +65,7 @@ namespace Opds4Net.Server
                     Title = new TextSyndicationContent(directoryInfo.Name, TextSyndicationContentKind.Plaintext),
                     LastUpdatedTime = DateTimeOffset.Parse(directoryInfo.LastWriteTime.ToString("o")),
                 };
-                item.Links.Add(linkGenerator.GetNavigationLink(Path.Combine(id, Path.GetFileName(path)), directoryInfo.Name));
+                item.Links.Add(linkGenerator.GetNavigationLink(Path.Combine(request.Id, Path.GetFileName(path)), directoryInfo.Name));
 
                 yield return item;
             }

@@ -35,7 +35,13 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Category(string id)
         {
-            var items = DbOpdsData.GetItems(id).OrderByDescending(i => i.LastUpdatedTime);
+            var request = new OpdsCategoryItemsRequest()
+            {
+                Id = id,
+                PageIndex = 1,
+                PageSize = 10,
+            };
+            var items = DbOpdsData.GetItems(request).OrderByDescending(i => i.LastUpdatedTime);
             var feed = new OpdsFeed(items);
 
             return Content(feed.ToXml(), "text/xml");

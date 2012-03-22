@@ -5,6 +5,7 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Serialization;
+using Opds4Net.Model;
 
 namespace Opds4Net.Util
 {
@@ -152,6 +153,16 @@ namespace Opds4Net.Util
             var type = value.GetType();
 
             return (type.GetField(value.ToString()).GetCustomAttributes(true).Where(a => a is XmlEnumAttribute).Single() as XmlEnumAttribute).Name;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static OpdsDataAttribute GetOpdsDataAttribute(this object model)
+        {
+            return model.GetType().GetCustomAttributes(typeof(OpdsDataAttribute), false).SingleOrDefault() as OpdsDataAttribute;
         }
     }
 }

@@ -25,7 +25,6 @@ namespace Opds4Net.Util
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="KeyType"></typeparam>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         public static Func<T, object> FindKeySelector(string propertyName)

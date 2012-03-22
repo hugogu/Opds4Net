@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Opds4Net.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +47,9 @@
     <Compile Include="CurrencyCodes.cs" />
     <Compile Include="FeedLinkRelation.cs" />
     <Compile Include="Model\IOpdsData.cs" />
+    <Compile Include="Model\OpdsDataAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\OpdsDataType.cs" />
     <Compile Include="Model\OpdsNameAttribute.cs" />
     <Compile Include="OpdsRelations.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="Server\IContentStorage.cs" />
     <Compile Include="Server\IOpdsDataSource.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
+    <Compile Include="Server\OpdsCategoryItemsRequest.cs" />
     <Compile Include="Server\RangeFileResult.cs" />
     <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
     <Compile Include="Util\Extension\IPropertyAccessor.cs">

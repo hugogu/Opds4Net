@@ -12,6 +12,7 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="title"></param>
         /// <returns></returns>
         OpdsLink GetNavigationLink(string id, string title);
 
@@ -19,6 +20,7 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="title"></param>
         /// <returns></returns>
         OpdsLink GetDetailLink(string id, string title);
 
@@ -35,6 +37,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
+        /// <param name="price"></param>
         /// <returns></returns>
         OpdsLink GetBuyLink(string id, string title, decimal price);
     }
