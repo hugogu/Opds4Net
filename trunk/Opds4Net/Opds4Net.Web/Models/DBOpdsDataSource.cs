@@ -44,7 +44,7 @@ namespace Opds4Net.Web.Models
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(OpdsCategoryItemsRequest request)
+        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
         {
             // 取主分类
             if (request.Id == null)

@@ -33,7 +33,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(OpdsCategoryItemsRequest request)
+        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
@@ -44,27 +44,30 @@ namespace Opds4Net.Server
             if (request.PageSize <= 0)
                 throw new ArgumentException("pageSize should larger than 0");
 
-            var items = ExtractItems(request);
-            if (items.Count() > request.PageSize)
-                throw new InvalidProgramException("The items count given exceed the required amount");
-
-            if (items.Any())
+            var items = request.Process().Data;
+            if (items != null)
             {
-                // Assuming every item is of different type.
-                // PropertyAccessor should be retreived for every item.
-                foreach (var item in items)
-                {
-                    if (item.DataType == OpdsDataType.Category)
-                    {
-                        var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
-                        syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
-                        OnCategoryItemCreated(syndicationItem);
+                if (items.Count() > request.PageSize)
+                    throw new InvalidProgramException("The items count given exceed the required amount");
 
-                        yield return syndicationItem;
-                    }
-                    else
+                if (items.Any())
+                {
+                    // Assuming every item is of different type.
+                    // PropertyAccessor should be retreived for every item.
+                    foreach (var item in items)
                     {
-                        yield return BuildEntity(item.GetType().GetPropertyAccessor(), item, false);
+                        if (item.DataType == OpdsDataType.Category)
+                        {
+                            var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
+                            syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
+                            OnCategoryItemCreated(syndicationItem);
+
+                            yield return syndicationItem;
+                        }
+                        else
+                        {
+                            yield return BuildEntity(item.GetType().GetPropertyAccessor(), item, false);
+                        }
                     }
                 }
             }
@@ -188,13 +191,6 @@ namespace Opds4Net.Server
         protected virtual void OnEntityItemCreated(SyndicationItem item)
         {
         }
-
-        /// <summary>
-        /// Extract DataItems used to generate OPDS Entries from given id and etc.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Must not return null, use empty list represents "no items"</returns>
-        protected abstract IEnumerable<IOpdsData> ExtractItems(OpdsCategoryItemsRequest request);
 
         /// <summary>
         /// Extract Item Detail information by a given id.

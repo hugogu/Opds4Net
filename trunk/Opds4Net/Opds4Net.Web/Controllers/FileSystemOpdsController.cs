@@ -18,7 +18,7 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Category(string id)
         {
-            var request = new OpdsCategoryItemsRequest()
+            var request = new OpdsItemsRequest()
             {
                 Id = id,
                 PageIndex = 1,

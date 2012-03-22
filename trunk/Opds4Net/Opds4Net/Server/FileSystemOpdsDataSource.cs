@@ -36,7 +36,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(OpdsCategoryItemsRequest request)
+        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
         {
             request.Id = request.Id ?? String.Empty;
 

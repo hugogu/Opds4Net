@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Opds4Net.Model;
 using Opds4Net.Server;
 using Opds4Net.Test.Common;
+using Opds4Net.Test.Model;
 
 namespace Opds4Net.Test
 {
@@ -31,7 +32,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void GetCategoriesTest()
         {
-            var request = new OpdsCategoryItemsRequest();
+            var request = new MockupOpdsCategoryItemsRequest();
             var items = mockSource.GetItems(request);
 
             Assert.IsNotNull(items);
