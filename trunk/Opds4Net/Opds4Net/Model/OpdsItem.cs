@@ -64,22 +64,22 @@ namespace Opds4Net.Model
         /// <returns></returns>
         protected override bool TryParseElement(XmlReader reader, string version)
         {
-            if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore, "language"))
+            if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "language"))
             {
                 Language = reader.ReadElementContentAsString();
                 return true;
             }
-            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore, "issued"))
+            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "issued"))
             {
                 Issued = reader.ReadElementContentAsString();
                 return true;
             }
-            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore, "identifier"))
+            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "identifier"))
             {
                 ISBN = reader.ReadElementContentAsString();
                 return true;
             }
-            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore, "publisher"))
+            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "publisher"))
             {
                 Publisher = reader.ReadElementContentAsString();
                 return true;
@@ -98,13 +98,13 @@ namespace Opds4Net.Model
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
             if (!String.IsNullOrEmpty(Language))
-                writer.WriteElementString("language", OpdsNamespaces.DublinCore, Language);
+                writer.WriteElementString("language", OpdsNamespaces.DublinCore.Value, Language);
             if (!String.IsNullOrEmpty(Issued))
-                writer.WriteElementString("issued", OpdsNamespaces.DublinCore, Issued);
+                writer.WriteElementString("issued", OpdsNamespaces.DublinCore.Value, Issued);
             if (!String.IsNullOrEmpty(ISBN))
-                writer.WriteElementString("identifier", OpdsNamespaces.DublinCore, ISBN);
+                writer.WriteElementString("identifier", OpdsNamespaces.DublinCore.Value, ISBN);
             if (!String.IsNullOrEmpty(Publisher))
-                writer.WriteElementString("publisher", OpdsNamespaces.DublinCore, Publisher);
+                writer.WriteElementString("publisher", OpdsNamespaces.DublinCore.Value, Publisher);
 
             base.WriteElementExtensions(writer, version);
         }

@@ -32,14 +32,20 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
-        public OpdsFeed() { }
+        public OpdsFeed()
+        {
+            InitializeOpdsNamespaces();
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="items"></param>
         public OpdsFeed(IEnumerable<SyndicationItem> items)
-            : base(items) { }
+            : base(items)
+        {
+            InitializeOpdsNamespaces();
+        }
 
         /// <summary>
         /// 
@@ -102,6 +108,17 @@ namespace Opds4Net.Model
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
             base.WriteElementExtensions(writer, version);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void InitializeOpdsNamespaces()
+        {
+            foreach (var namespaceDefinition in OpdsNamespaces.GetAll())
+            {
+                AttributeExtensions.Add(namespaceDefinition.Key, namespaceDefinition.Value);
+            }
         }
     }
 }

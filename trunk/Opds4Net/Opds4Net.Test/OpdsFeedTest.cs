@@ -66,9 +66,6 @@ namespace Opds4Net.Test
             Assert.AreEqual(xml, feed.ToXml());
         }
 
-        /// <summary>
-        ///A test for FindLink
-        ///</summary>
         [TestMethod()]
         public void FindLinkTest()
         {
@@ -78,6 +75,20 @@ namespace Opds4Net.Test
             feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/popular.atom"));
             Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=2", feed.FindLink(FeedLinkRelation.Next).Uri.ToString());
             Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=5", feed.FindLink(FeedLinkRelation.Last).Uri.ToString());
+        }
+
+        [TestMethod]
+        public void GetAllOpdsNamespacesTest()
+        {
+            var namespaces = OpdsNamespaces.GetAll();
+            Assert.AreEqual(3, namespaces.Count());
+            foreach (var ns in namespaces)
+            {
+                Assert.IsNotNull(ns);
+                Assert.IsNotNull(ns.Value);
+                Assert.IsNotNull(ns.Key);
+                Assert.IsNotNull(ns.Key.Name);
+            }
         }
     }
 }

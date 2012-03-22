@@ -62,7 +62,7 @@ namespace Opds4Net.Model
         /// <returns></returns>
         protected override bool TryParseAttribute(string name, string ns, string value, string version)
         {
-            if (name == "count" && ns == OpdsNamespaces.Threading)
+            if (name == "count" && ns == OpdsNamespaces.Threading.Value)
             {
                 var count = 0;
                 if (Int32.TryParse(value, out count))
@@ -82,7 +82,7 @@ namespace Opds4Net.Model
         /// <returns></returns>
         protected override bool TryParseElement(XmlReader reader, string version)
         {
-            if (reader.IsReadingElementOf(OpdsNamespaces.Opds, "price"))
+            if (reader.IsReadingElementOf(OpdsNamespaces.Opds.Value, "price"))
             {
                 var price = new OpdsPrice();
                 if (reader.HasAttributes)
@@ -107,7 +107,7 @@ namespace Opds4Net.Model
 
                 return true;
             }
-            else if (reader.IsReadingElementOf(OpdsNamespaces.Opds, "indirectAcquisition"))
+            else if (reader.IsReadingElementOf(OpdsNamespaces.Opds.Value, "indirectAcquisition"))
             {
                 ReadIndirectAcquisitions(reader, IndirectAcquisitions);
                 return true;
@@ -127,7 +127,7 @@ namespace Opds4Net.Model
         {
             if (Count.HasValue)
             {
-                writer.WriteAttributeString("count", OpdsNamespaces.Threading, Count.Value.ToString());
+                writer.WriteAttributeString("count", OpdsNamespaces.Threading.Value, Count.Value.ToString());
             }
         }
 
@@ -140,7 +140,7 @@ namespace Opds4Net.Model
         {
             foreach (var price in Prices)
             {
-                writer.WriteStartElement("opds", "price", OpdsNamespaces.Opds);
+                writer.WriteStartElement("opds", "price", OpdsNamespaces.Opds.Value);
                 writer.WriteAttributeString("currencycode", price.CurrencyCode);
                 writer.WriteValue(price.Price);
                 writer.WriteEndElement();
@@ -152,7 +152,7 @@ namespace Opds4Net.Model
 
         private static void ReadIndirectAcquisitions(XmlReader reader, IList<OpdsIndirectAcquisition> indirectAcquisitions)
         {
-            while (reader.IsReadingElementOf(OpdsNamespaces.Opds, "indirectAcquisition"))
+            while (reader.IsReadingElementOf(OpdsNamespaces.Opds.Value, "indirectAcquisition"))
             {
                 var indirectAcquisition = new OpdsIndirectAcquisition();
 
@@ -174,7 +174,7 @@ namespace Opds4Net.Model
                         reader.MoveToElement();
                         // Then check if it has a sub element.
                         if (!reader.IsEmptyElement &&
-                            reader.ReadToDescendant("indirectAcquisition", OpdsNamespaces.Opds))
+                            reader.ReadToDescendant("indirectAcquisition", OpdsNamespaces.Opds.Value))
                             ReadIndirectAcquisitions(reader, indirectAcquisition.Items);
                         else
                         {
@@ -195,7 +195,7 @@ namespace Opds4Net.Model
         {
             foreach (var acquisition in indirectAcquisitions)
             {
-                writer.WriteStartElement("opds", "indirectAcquisition", OpdsNamespaces.Opds);
+                writer.WriteStartElement("opds", "indirectAcquisition", OpdsNamespaces.Opds.Value);
                 writer.WriteAttributeString("type", acquisition.MimeType);
                 WriteIndirectAcquisitions(writer, acquisition.Items);
                 writer.WriteEndElement();
