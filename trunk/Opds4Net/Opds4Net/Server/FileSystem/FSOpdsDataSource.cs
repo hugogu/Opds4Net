@@ -6,13 +6,13 @@ using System.IO;
 using System.ServiceModel.Syndication;
 using Opds4Net.Util;
 
-namespace Opds4Net.Server
+namespace Opds4Net.Server.FileSystem
 {
     /// <summary>
     /// 
     /// </summary>
     [Export("FileSystem", typeof(IOpdsDataSource))]
-    public class FileSystemOpdsDataSource : IOpdsDataSource
+    public class FSOpdsDataSource : IOpdsDataSource
     {
         private string bookFolder;
         private IOpdsLinkGenerator linkGenerator;
@@ -23,7 +23,7 @@ namespace Opds4Net.Server
         /// <param name="linkGenerator"></param>
         /// <param name="bookFolder"></param>
         [ImportingConstructor]
-        public FileSystemOpdsDataSource(
+        public FSOpdsDataSource(
             [Import]IOpdsLinkGenerator linkGenerator,
             [Import("BookFolder")] string bookFolder)
         {

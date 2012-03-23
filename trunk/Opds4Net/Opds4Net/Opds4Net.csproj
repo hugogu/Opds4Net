@@ -70,9 +70,14 @@
     <Compile Include="Server\DataModelOpdsDataSource.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Server\Detection\DynamicObjectDetector.cs" />
+    <Compile Include="Server\FileSystem\FSCategoryRequest.cs" />
+    <Compile Include="Server\FileSystem\FSDataItemsRequest.cs" />
+    <Compile Include="Server\FileSystem\FSSearchRequest.cs" />
     <Compile Include="Server\GeneralLinkGenerator.cs" />
-    <Compile Include="Server\FileSystemOpdsDataSource.cs" />
+    <Compile Include="Server\FileSystem\FSOpdsDataSource.cs" />
     <Compile Include="Server\IContentStorage.cs" />
+    <Compile Include="Server\Detection\IDataTypeDetector.cs" />
     <Compile Include="Server\IOpdsDataSource.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
     <Compile Include="Server\IDataRequest.cs">
@@ -82,6 +87,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Server\DataResponse.cs" />
+    <Compile Include="Server\Detection\OpdsDataDetector.cs" />
     <Compile Include="Server\OpdsItemsResult.cs" />
     <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
     <Compile Include="Util\Extension\IPropertyAccessor.cs">

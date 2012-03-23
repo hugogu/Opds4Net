@@ -29,9 +29,12 @@ namespace Opds4Net.Util.Extension
         {
             var type = typeof(T);
             IPropertyAccessor accessor = null;
-            if (!propertyAccessors.TryGetValue(type, out accessor))
+            lock (propertyAccessors)
             {
-                accessor = InitializeAccessor<T>();
+                if (!propertyAccessors.TryGetValue(type, out accessor))
+                {
+                    accessor = InitializeAccessor<T>();
+                }
             }
 
             return accessor;
@@ -45,9 +48,12 @@ namespace Opds4Net.Util.Extension
         public static IPropertyAccessor GetPropertyAccessor(this Type type)
         {
             IPropertyAccessor accessor = null;
-            if (!propertyAccessors.TryGetValue(type, out accessor))
+            lock (propertyAccessors)
             {
-                accessor = InitializeAccessor(type);
+                if (!propertyAccessors.TryGetValue(type, out accessor))
+                {
+                    accessor = InitializeAccessor(type);
+                }
             }
 
             return accessor;

@@ -20,12 +20,18 @@ namespace Opds4Net.Server
         protected IOpdsLinkGenerator linkGenerator;
 
         /// <summary>
+        /// A injected tools to detect the data type of the given object.
+        /// </summary>
+        protected IDataTypeDetector dataTypeDetector;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="linkGenerator"></param>
-        public DataModelOpdsDataSource(IOpdsLinkGenerator linkGenerator)
+        public DataModelOpdsDataSource(IOpdsLinkGenerator linkGenerator, IDataTypeDetector dataTypeDetector)
         {
             this.linkGenerator = linkGenerator;
+            this.dataTypeDetector = dataTypeDetector;
         }
 
         /// <summary>
@@ -75,13 +81,13 @@ namespace Opds4Net.Server
             return BuildEntity(accessor, detail, true);
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(IEnumerable<IOpdsData> items)
+        private IEnumerable<SyndicationItem> ConvertDataItems(IEnumerable<object> items)
         {
             // Assuming every item is of different type.
             // PropertyAccessor should be retreived for every item.
             foreach (var item in items ?? new IOpdsData[] { })
             {
-                if (item.DataType == OpdsDataType.Category)
+                if (dataTypeDetector.DetectType(item) == OpdsDataType.Category)
                 {
                     var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
                     syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
@@ -96,7 +102,7 @@ namespace Opds4Net.Server
             }
         }
 
-        private SyndicationItem BuildEntity(IPropertyAccessor accessor, IOpdsData item, bool withDetail)
+        private SyndicationItem BuildEntity(IPropertyAccessor accessor, object item, bool withDetail)
         {
             var syndicationItem = CreateBasicDataItems(accessor, item);
 
@@ -156,7 +162,7 @@ namespace Opds4Net.Server
             return syndicationItem;
         }
 
-        private OpdsItem CreateBasicDataItems(IPropertyAccessor accessor, IOpdsData item)
+        private OpdsItem CreateBasicDataItems(IPropertyAccessor accessor, object item)
         {
             var syndicationItem = new OpdsItem()
             {

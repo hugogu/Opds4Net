@@ -16,6 +16,7 @@ namespace Opds4Net.Test.Common
             Container.ComposeExportedValue("DetailLinkPattern", "/Detail?id={0}");
             Container.ComposeExportedValue("DownloadLinkPattern", "/Download?id={0}");
             Container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
+            Container.ComposeExportedValue("BookFolder", @"G:\Books");
         }
 
         /// <summary>

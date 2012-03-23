@@ -58,19 +58,19 @@ namespace Opds4Net.Test
             var timeDynamic = new TestTimer(() =>
             {
                 globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
-            }).Run(time);
+            }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
             var timeStatic = new TestTimer(() =>
             {
                 globalTarget = model.Name;
-            }).Run(time);
+            }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
             var timeRandomClass = new TestTimer(() =>
             {
                 globalTarget = model.GetProperty("Name").ToNullableString();
-            }).Run(time);
+            }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
             Assert.IsTrue(timeDynamic > timeStatic);
@@ -78,6 +78,31 @@ namespace Opds4Net.Test
 
             Assert.IsTrue(timeDynamic.TotalMilliseconds < timeStatic.TotalMilliseconds * 10);
             Assert.IsTrue(timeRandomClass.TotalMilliseconds < timeStatic.TotalMilliseconds * 15);
+        }
+
+        [TestMethod]
+        public void MultiThreadGetPropertyPerformanceTest()
+        {
+            var time = 20000000;
+            var name = "Dummy";
+            var model = new DataModel() { Name = name };
+            var classSpecifiedAccessor = model.GetPropertyAccessor();
+            var globalTarget = String.Empty;
+
+            var timeDynamic = new TestTimer(() =>
+            {
+                globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
+            }).TimeForTimes(time);
+            Assert.AreEqual(name, globalTarget);
+
+            var timeDynamicMT = new TestTimer(() =>
+            {
+                globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
+            }).TimeForTimesParallel(time, 4);
+            Assert.AreEqual(name, globalTarget);
+
+            // The performance is not improved too much by using multi-thread.
+            Assert.IsTrue(timeDynamic.TotalMilliseconds > timeDynamicMT.TotalMilliseconds * 1.4);
         }
     }
 }

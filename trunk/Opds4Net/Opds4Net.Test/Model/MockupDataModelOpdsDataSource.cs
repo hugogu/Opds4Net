@@ -17,8 +17,10 @@ namespace Opds4Net.Test.Model
         /// </summary>
         /// <param name="linkGenerator"></param>
         [ImportingConstructor]
-        public MockupDataModelOpdsDataSource([Import]IOpdsLinkGenerator linkGenerator)
-            : base(linkGenerator)
+        public MockupDataModelOpdsDataSource(
+            [Import]IOpdsLinkGenerator linkGenerator,
+            [Import("OpdsData")]IDataTypeDetector typeDetector)
+            : base(linkGenerator, typeDetector)
         {
         }
 

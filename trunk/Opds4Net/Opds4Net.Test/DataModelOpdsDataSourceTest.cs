@@ -58,12 +58,16 @@ namespace Opds4Net.Test
         [TestMethod]
         public void ItemsGenerationPerformanceTest()
         {
+            var duration = new TimeSpan(0, 0, 1);
             var request = new MockupOpdsCategoryItemsRequest();
             var result = mockSource.GetItems(request);
             var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(request).Items.Count() == 10));
-            var times = timer.TimesInTime(new TimeSpan(0, 0, 1));
+            var timesMT = timer.TimesInTimeParallel(duration, 3);
+            var times = timer.TimesInTime(duration);
 
-            Assert.IsTrue(times > 20000);
+            Assert.IsTrue(times > 30000);
+            Assert.IsTrue(timesMT > 60000);
+            Assert.IsTrue(timesMT > times * 1.7);
         }
     }
 }

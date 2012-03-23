@@ -55,6 +55,7 @@
     <Compile Include="Common\TestTimer.cs" />
     <Compile Include="CurrencyCodesTest.cs" />
     <Compile Include="DataModelOpdsDataSourceTest.cs" />
+    <Compile Include="FSOpdsDataSourceTest.cs" />
     <Compile Include="ModelHelperTest.cs" />
     <Compile Include="Model\DataModel.cs" />
     <Compile Include="Model\MockupDataModelOpdsDataSource.cs" />

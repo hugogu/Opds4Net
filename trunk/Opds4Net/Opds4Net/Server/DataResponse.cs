@@ -11,7 +11,7 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<IOpdsData> Data { get; set; }
+        public IEnumerable<object> Data { get; set; }
 
         /// <summary>
         /// 
