@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IOpdsRequest
+    public interface IDataRequest
     {
         /// <summary>
         /// Identify the request.
@@ -34,6 +34,6 @@
         /// 
         /// </summary>
         /// <returns></returns>
-        OpdsResponse Process();
+        DataResponse Process();
     }
 }

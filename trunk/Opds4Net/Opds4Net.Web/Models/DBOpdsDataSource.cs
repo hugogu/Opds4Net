@@ -44,12 +44,13 @@ namespace Opds4Net.Web.Models
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
+        public OpdsItemsResult GetItems(IDataRequest request)
         {
+            var result = new OpdsItemsResult();
             // 取主分类
             if (request.Id == null)
             {
-                return GetItems(dbContext.Categories.Where(c => c.Parent == null));
+                result.Items = GetItems(dbContext.Categories.Where(c => c.Parent == null));
             }
             else
             {
@@ -57,14 +58,16 @@ namespace Opds4Net.Web.Models
                 // 取子分类
                 if (current.SubCategories != null && current.SubCategories.Any())
                 {
-                    return GetItems(dbContext.Categories.Where(c => c.Parent != null && c.Parent.Id == new Guid(request.Id)));
+                    result.Items = GetItems(dbContext.Categories.Where(c => c.Parent != null && c.Parent.Id == new Guid(request.Id)));
                 }
                 // 无子分类，则取书
                 else
                 {
-                    return GetItems(current.Books);
+                    result.Items = GetItems(current.Books);
                 }
             }
+
+            return result;
         }
 
         /// <summary>

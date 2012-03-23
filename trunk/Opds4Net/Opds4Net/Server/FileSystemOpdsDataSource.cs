@@ -36,9 +36,12 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
+        public OpdsItemsResult GetItems(IDataRequest request)
         {
             request.Id = request.Id ?? String.Empty;
+
+            var items = new List<SyndicationItem>();
+            var result = new OpdsItemsResult() { Items = items };
 
             var root = Path.Combine(bookFolder, request.Id);
 
@@ -53,7 +56,7 @@ namespace Opds4Net.Server
                     item.Links.Clear();
                     item.Links.Add(linkGenerator.GetDetailLink(Path.Combine(request.Id, Path.GetFileName(path)), "详细信息"));
 
-                    yield return item;
+                    items.Add(item);
                 }
             }
 
@@ -67,8 +70,11 @@ namespace Opds4Net.Server
                 };
                 item.Links.Add(linkGenerator.GetNavigationLink(Path.Combine(request.Id, Path.GetFileName(path)), directoryInfo.Name));
 
-                yield return item;
+                items.Add(item);
             }
+            result.TotalCount = items.Count;
+
+            return result;
         }
 
         /// <summary>

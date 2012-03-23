@@ -33,7 +33,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IEnumerable<SyndicationItem> GetItems(IOpdsRequest request)
+        public OpdsItemsResult GetItems(IDataRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
@@ -44,33 +44,16 @@ namespace Opds4Net.Server
             if (request.PageSize <= 0)
                 throw new ArgumentException("pageSize should larger than 0");
 
-            var items = request.Process().Data;
-            if (items != null)
+            var data = request.Process();
+
+            if (data.Data.Count() > request.PageSize)
+                throw new InvalidProgramException("the data processor provide more items than requested.");
+
+            return new OpdsItemsResult()
             {
-                if (items.Count() > request.PageSize)
-                    throw new InvalidProgramException("The items count given exceed the required amount");
-
-                if (items.Any())
-                {
-                    // Assuming every item is of different type.
-                    // PropertyAccessor should be retreived for every item.
-                    foreach (var item in items)
-                    {
-                        if (item.DataType == OpdsDataType.Category)
-                        {
-                            var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
-                            syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
-                            OnCategoryItemCreated(syndicationItem);
-
-                            yield return syndicationItem;
-                        }
-                        else
-                        {
-                            yield return BuildEntity(item.GetType().GetPropertyAccessor(), item, false);
-                        }
-                    }
-                }
-            }
+                TotalCount = data.TotalCount,
+                Items = ConvertDataItems(data.Data)
+            };
         }
 
         /// <summary>
@@ -90,6 +73,27 @@ namespace Opds4Net.Server
             Debug.Assert(detail.DataType == OpdsDataType.Entity);
 
             return BuildEntity(accessor, detail, true);
+        }
+
+        private IEnumerable<SyndicationItem> ConvertDataItems(IEnumerable<IOpdsData> items)
+        {
+            // Assuming every item is of different type.
+            // PropertyAccessor should be retreived for every item.
+            foreach (var item in items ?? new IOpdsData[] { })
+            {
+                if (item.DataType == OpdsDataType.Category)
+                {
+                    var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
+                    syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
+                    OnCategoryItemCreated(syndicationItem);
+
+                    yield return syndicationItem;
+                }
+                else
+                {
+                    yield return BuildEntity(item.GetType().GetPropertyAccessor(), item, false);
+                }
+            }
         }
 
         private SyndicationItem BuildEntity(IPropertyAccessor accessor, IOpdsData item, bool withDetail)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -19,6 +20,63 @@ namespace Opds4Net.Model
         public new static OpdsFeed Load(XmlReader xmlReader)
         {
             return SyndicationFeed.Load<OpdsFeed>(xmlReader);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="relation"></param>
+        /// <returns></returns>
+        public string GetLinkValue(string relation)
+        {
+            var searchLink = Links.SingleOrDefault(l => relation.Equals(l.RelationshipType, StringComparison.OrdinalIgnoreCase));
+            if (searchLink == null || searchLink.Uri == null)
+                return null;
+
+            return searchLink.Uri.ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="relation"></param>
+        /// <param name="url"></param>
+        /// <param name="title"></param>
+        /// <param name="mediaType"></param>
+        public void SetLinkValue(string relation, string url, string title, string mediaType)
+        {
+            var searchLink = Links.SingleOrDefault(l => relation.Equals(l.RelationshipType, StringComparison.OrdinalIgnoreCase));
+            if (searchLink != null)
+                searchLink.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            else
+                Links.Add(new SyndicationLink(new Uri(url, UriKind.RelativeOrAbsolute), relation, title, mediaType, 0));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string SearchUri
+        {
+            get { return GetLinkValue("search"); }
+            set { SetLinkValue("search", value, "搜索", OpdsMediaType.NavigationFeed); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string NextUri
+        {
+            get { return GetLinkValue("next"); }
+            set { SetLinkValue("next", value, "下一页", OpdsMediaType.NavigationFeed); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string PreviousUri
+        {
+            get { return GetLinkValue("previous"); }
+            set { SetLinkValue("previous", value, "上一页", OpdsMediaType.NavigationFeed); }
         }
 
         /// <summary>

@@ -96,12 +96,14 @@ namespace Opds4Net.Util
             var cases = new List<SwitchCase>();
             foreach (var propertyInfo in type.GetProperties())
             {
-                var property = Expression.Property(instance, propertyInfo.Name);
                 var propertyHash = GetPropertyNamesHashes(propertyInfo).Select(i => Expression.Constant(i, typeof(int)));
-
-                // case property.Name.GetHashCode():
-                //     return property as object;
-                cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), propertyHash));
+                if (propertyHash.Any())
+                {
+                    var property = Expression.Property(instance, propertyInfo.Name);
+                    // case property.Name.GetHashCode():
+                    //     return property as object;
+                    cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), propertyHash));
+                }
             }
             var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
             var methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
@@ -111,10 +113,14 @@ namespace Opds4Net.Util
 
         private static IEnumerable<int> GetPropertyNamesHashes(PropertyInfo propertyInfo)
         {
-            yield return propertyInfo.Name.GetHashCode();
-            foreach (OpdsNameAttribute attribute in propertyInfo.GetCustomAttributes(typeof(OpdsNameAttribute), true))
+            var isIgnored = propertyInfo.GetCustomAttributes(typeof(OpdsIgnoreAttribute), true).Any();
+            if (!isIgnored)
             {
-                yield return attribute.Name.GetHashCode();
+                yield return propertyInfo.Name.GetHashCode();
+                foreach (OpdsNameAttribute attribute in propertyInfo.GetCustomAttributes(typeof(OpdsNameAttribute), true))
+                {
+                    yield return attribute.Name.GetHashCode();
+                }
             }
         }
     }

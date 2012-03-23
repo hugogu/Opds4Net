@@ -14,7 +14,7 @@ namespace Opds4Net.Test
         [TestInitialize]
         public void Initialize()
         {
-            WebRequestSettingsHelper.SetAllowUnsafeHeaderParsing();
+            WebRequestHelper.SetAllowUnsafeHeaderParsing();
         }
 
         [TestMethod]

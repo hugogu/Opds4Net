@@ -15,7 +15,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request">An instance of OpdsCategoryItemsRequest represents the data you want to fetch.</param>
         /// <returns>The opds entries. If the category Id is not given, returns all root categories.</returns>
-        IEnumerable<SyndicationItem> GetItems(IOpdsRequest request);
+        OpdsItemsResult GetItems(IDataRequest request);
 
         /// <summary>
         /// Get the detail information of a book

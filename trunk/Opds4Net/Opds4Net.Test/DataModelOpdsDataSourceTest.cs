@@ -33,11 +33,12 @@ namespace Opds4Net.Test
         public void GetCategoriesTest()
         {
             var request = new MockupOpdsCategoryItemsRequest();
-            var items = mockSource.GetItems(request);
+            var result = mockSource.GetItems(request);
 
-            Assert.IsNotNull(items);
-            Assert.IsTrue(items.Count() > 0);
-            Assert.AreEqual(new DateTime(2012, 1, 1), items.First().LastUpdatedTime.DateTime);
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Items);
+            Assert.IsTrue(result.Items.Count() > 0);
+            Assert.AreEqual(new DateTime(2012, 1, 1), result.Items.First().LastUpdatedTime.DateTime);
         }
 
         /// <summary>

@@ -54,6 +54,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\OpdsDataType.cs" />
+    <Compile Include="Model\OpdsIgnoreAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\OpdsNameAttribute.cs" />
     <Compile Include="OpdsRelations.cs" />
     <Compile Include="Model\OpdsIndirectAcquisition.cs" />
@@ -72,14 +75,14 @@
     <Compile Include="Server\IContentStorage.cs" />
     <Compile Include="Server\IOpdsDataSource.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
-    <Compile Include="Server\IOpdsRequest.cs">
+    <Compile Include="Server\IDataRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\OpdsItemsRequest.cs">
+    <Compile Include="Server\DataItemsRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\OpdsRequest.cs" />
-    <Compile Include="Server\OpdsResponse.cs" />
+    <Compile Include="Server\DataResponse.cs" />
+    <Compile Include="Server\OpdsItemsResult.cs" />
     <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
     <Compile Include="Util\Extension\IPropertyAccessor.cs">
       <SubType>Code</SubType>
@@ -90,7 +93,7 @@
     <Compile Include="Util\RangeFileResult.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\WebRequestSettingsHelper.cs" />
+    <Compile Include="Util\WebRequestHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

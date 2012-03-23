@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Reflection;
+using System.Web;
 
 namespace Opds4Net.Util
 {
     /// <summary>
     /// 
     /// </summary>
-    public static class WebRequestSettingsHelper
+    public static class WebRequestHelper
     {
         /// <summary>
         /// 
@@ -41,6 +42,22 @@ namespace Opds4Net.Util
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string UpdateUrlParameter(string url, string parameterName, string value)
+        {
+            var uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            var parameters = HttpUtility.ParseQueryString(uri.Query);
+            parameters[parameterName] = value;
+
+            return uri.GetComponents(UriComponents.SchemeAndServer | UriComponents.Path, UriFormat.Unescaped) + "?" + parameters.ToString();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Opds4Net.Server
     /// <summary>
     /// 
     /// </summary>
-    public class OpdsResponse
+    public class DataResponse
     {
         /// <summary>
         /// 

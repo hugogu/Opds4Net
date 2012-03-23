@@ -8,15 +8,15 @@ namespace Opds4Net.Test.Model
     /// <summary>
     /// 
     /// </summary>
-    public class MockupOpdsCategoryItemsRequest : OpdsItemsRequest
+    public class MockupOpdsCategoryItemsRequest : DataItemsRequest
     {
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public override OpdsResponse Process()
+        public override DataResponse Process()
         {
-            return new OpdsResponse()
+            return new DataResponse()
             {
                 Data = new List<IOpdsData>()
                 {

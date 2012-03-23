@@ -5,12 +5,12 @@ namespace Opds4Net.Server
     /// <summary>
     /// 
     /// </summary>
-    public class OpdsItemsRequest : IOpdsRequest
+    public class DataItemsRequest : IDataRequest
     {
         /// <summary>
         /// 
         /// </summary>
-        public OpdsItemsRequest()
+        public DataItemsRequest()
         {
             PageSize = 10;
             PageIndex = 1;
@@ -45,9 +45,9 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual OpdsResponse Process()
+        public virtual DataResponse Process()
         {
-            return new OpdsResponse();
+            return new DataResponse();
         }
     }
 }
