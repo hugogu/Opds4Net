@@ -18,25 +18,23 @@ namespace Opds4Net.Test.Model
         {
             return new DataResponse()
             {
-                Data = new List<IOpdsData>()
-                {
-                    new DataModel()
-                    {
-                        Id = Guid.Empty.ToString(),
-                        Name = "小说",
-                        Summary = "Summary",
-                        UpdateTime = new DateTime(2012, 1, 1),
-                    },
-                    new DataModel()
-                    {
-                        Id = Guid.Empty.ToString(),
-                        Name = "历史",
-                        Summary = "Summary",
-                        UpdateTime = new DateTime(2012, 1, 1),
-                    }
-                },
+                Data = GetItems(),
                 TotalCount = 10
             };
+        }
+
+        private IEnumerable<IOpdsData> GetItems()
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                yield return new DataModel()
+                {
+                    Id = i.ToString(),
+                    Name = "历史",
+                    Summary = "Summary",
+                    UpdateTime = new DateTime(2012, 1, i),
+                };
+            }
         }
     }
 }

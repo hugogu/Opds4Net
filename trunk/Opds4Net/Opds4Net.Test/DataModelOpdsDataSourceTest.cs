@@ -16,9 +16,6 @@ namespace Opds4Net.Test
     {
         private IOpdsDataSource mockSource;
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestInitialize]
         public void TestStartup()
         {
@@ -26,9 +23,6 @@ namespace Opds4Net.Test
             Assert.IsNotNull(mockSource);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
         public void GetCategoriesTest()
         {
@@ -41,9 +35,6 @@ namespace Opds4Net.Test
             Assert.AreEqual(new DateTime(2012, 1, 1), result.Items.First().LastUpdatedTime.DateTime);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
         public void GetItemsTest()
         {
@@ -62,6 +53,17 @@ namespace Opds4Net.Test
             }
             Assert.AreEqual("CNY", (item.Links.First() as OpdsLink).Prices.Single().CurrencyCode);
             Assert.AreEqual(5M, (item.Links.First() as OpdsLink).Prices.Single().Price);
+        }
+
+        [TestMethod]
+        public void ItemsGenerationPerformanceTest()
+        {
+            var request = new MockupOpdsCategoryItemsRequest();
+            var result = mockSource.GetItems(request);
+            var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(request).Items.Count() == 10));
+            var times = timer.TimesInTime(new TimeSpan(0, 0, 1));
+
+            Assert.IsTrue(times > 20000);
         }
     }
 }
