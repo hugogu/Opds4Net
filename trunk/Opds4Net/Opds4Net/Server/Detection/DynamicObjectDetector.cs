@@ -16,9 +16,7 @@ namespace Opds4Net.Server
         /// <returns></returns>
         public OpdsDataType DetectType(object data)
         {
-            var dynamic = data as dynamic;
-
-            return (OpdsDataType)dynamic.OpdsDataType;
+            return (OpdsDataType)(data as dynamic).OpdsDataType;
         }
     }
 }

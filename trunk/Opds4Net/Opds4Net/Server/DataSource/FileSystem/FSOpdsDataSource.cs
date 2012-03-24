@@ -72,7 +72,6 @@ namespace Opds4Net.Server.FileSystem
 
                 items.Add(item);
             }
-            result.TotalCount = items.Count;
 
             return result;
         }

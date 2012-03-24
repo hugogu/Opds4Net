@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.IO;
-using Opds4Net.Server;
 
-namespace Opds4Net.Web.Util
+namespace Opds4Net.Server.Storage
 {
     /// <summary>
     /// 
@@ -11,15 +11,20 @@ namespace Opds4Net.Web.Util
     public class WebLocalStorage : IContentStorage
     {
         private string localFolder;
+        private string downloadPattern;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="localFolder"></param>
+        /// <param name="downloadPattern"></param>
         [ImportingConstructor]
-        public WebLocalStorage([Import("LocalStorageFolder")]string localFolder)
+        public WebLocalStorage(
+            [Import("LocalStorageFolder")]string localFolder,
+            [Import("DownloadLinkPattern")]string downloadPattern)
         {
             this.localFolder = localFolder;
+            this.downloadPattern = downloadPattern;
         }
 
         #region IContentStorage Members
@@ -37,7 +42,7 @@ namespace Opds4Net.Web.Util
                 inputStream.CopyTo(file);
             }
 
-            return "/Download/" + Path.GetFileNameWithoutExtension(contentName);
+            return String.Format(downloadPattern, Path.GetFileNameWithoutExtension(contentName));
         }
 
         #endregion

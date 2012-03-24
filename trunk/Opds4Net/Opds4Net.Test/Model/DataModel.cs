@@ -1,10 +1,12 @@
 ﻿using System;
-using Opds4Net.Model;
+using Opds4Net.Server;
 
 namespace Opds4Net.Test.Model
 {
-    [OpdsData(OpdsDataType.Category)]
-    internal class DataModel : IOpdsData
+    /// <summary>
+    /// 
+    /// </summary>
+    public class DataModel : IOpdsData
     {
         [OpdsName("Title")]
         public string Name { get; set; }
@@ -15,20 +17,22 @@ namespace Opds4Net.Test.Model
 
         public string Summary { get; set; }
 
-        public virtual OpdsDataType DataType
+        public virtual OpdsDataType OpdsDataType
         {
             get { return OpdsDataType.Category; }
         }
     }
 
-    [OpdsData(OpdsDataType.Entity)]
-    internal class DataEntry : DataModel
+    /// <summary>
+    /// 
+    /// </summary>
+    public class DataEntry : DataModel
     {
         public Decimal Price { get; set; }
 
         public string MimeType { get; set; }
 
-        public override OpdsDataType DataType
+        public override OpdsDataType OpdsDataType
         {
             get { return OpdsDataType.Entity; }
         }

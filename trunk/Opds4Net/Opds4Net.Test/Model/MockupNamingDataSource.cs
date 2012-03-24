@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Opds4Net.Model;
 using Opds4Net.Server;
 
 namespace Opds4Net.Test.Model
@@ -8,7 +7,7 @@ namespace Opds4Net.Test.Model
     /// <summary>
     /// 
     /// </summary>
-    public class MockupOpdsCategoryItemsRequest : DataItemsRequest
+    public class MockupNamingDataSource : DataItemsRequest
     {
         /// <summary>
         /// 
@@ -23,7 +22,11 @@ namespace Opds4Net.Test.Model
             };
         }
 
-        private IEnumerable<IOpdsData> GetItems()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<IOpdsData> GetItems()
         {
             for (int i = 1; i <= 10; i++)
             {
@@ -35,6 +38,23 @@ namespace Opds4Net.Test.Model
                     UpdateTime = new DateTime(2012, 1, i),
                 };
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static IOpdsData GetDetailedItems()
+        {
+            return new DataEntry()
+            {
+                Id = "1",
+                Name = "历史",
+                Summary = "Summary",
+                UpdateTime = new DateTime(2012, 1, 1),
+                MimeType = "application/epub+zip",
+                Price = 5M,
+            };
         }
     }
 }

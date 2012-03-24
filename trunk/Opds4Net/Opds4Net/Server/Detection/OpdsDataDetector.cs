@@ -24,7 +24,7 @@ namespace Opds4Net.Server
             if (opdsData == null)
                 throw new NotSupportedException(String.Format("This detector work with object implements {0}", typeof(IOpdsData).Name));
 
-            return opdsData.DataType;
+            return opdsData.OpdsDataType;
         }
     }
 }

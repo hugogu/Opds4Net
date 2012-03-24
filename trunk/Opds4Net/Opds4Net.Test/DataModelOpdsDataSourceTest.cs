@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Opds4Net.Model;
 using Opds4Net.Server;
 using Opds4Net.Test.Common;
@@ -14,20 +15,30 @@ namespace Opds4Net.Test
     [TestClass]
     public class DataModelOpdsDataSourceTest
     {
-        private IOpdsDataSource mockSource;
+        private IOpdsItemConverter mockSource;
+        private NamingDataSource itemsDataSource;
 
         [TestInitialize]
         public void TestStartup()
         {
-            mockSource = TestInitializer.Container.GetExportedValue<IOpdsDataSource>("DataModel");
+            mockSource = TestInitializer.Container.GetExportedValue<IOpdsItemConverter>();
             Assert.IsNotNull(mockSource);
+
+            var mockDetector = new Mock<IDataTypeDetector>();
+            mockDetector.Setup(i => i.DetectType(It.IsAny<DataModel>())).Returns(OpdsDataType.Category);
+            mockDetector.Setup(i => i.DetectType(It.IsAny<DataEntry>())).Returns(OpdsDataType.Detial);
+            mockSource.TypeDetector = mockDetector.Object;
+
+            itemsDataSource = new NamingDataSource()
+            {
+                Data = MockupNamingDataSource.GetItems()
+            };
         }
 
         [TestMethod]
         public void GetCategoriesTest()
         {
-            var request = new MockupOpdsCategoryItemsRequest();
-            var result = mockSource.GetItems(request);
+            var result = mockSource.GetItems(itemsDataSource);
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Items);
@@ -38,7 +49,11 @@ namespace Opds4Net.Test
         [TestMethod]
         public void GetItemsTest()
         {
-            var item = mockSource.GetDetail(String.Empty);
+            var dataSource = new NamingDataSource()
+            {
+                Data = new [] { MockupNamingDataSource.GetDetailedItems() }
+            };
+            var item = mockSource.GetItems(dataSource).Items.Single();
 
             Assert.IsNotNull(item);
             Assert.AreEqual(new DateTime(2012, 1, 1), item.LastUpdatedTime.DateTime);
@@ -59,14 +74,12 @@ namespace Opds4Net.Test
         public void ItemsGenerationPerformanceTest()
         {
             var duration = new TimeSpan(0, 0, 1);
-            var request = new MockupOpdsCategoryItemsRequest();
-            var result = mockSource.GetItems(request);
-            var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(request).Items.Count() == 10));
+            var request = new MockupNamingDataSource();
+            var result = mockSource.GetItems(itemsDataSource);
+            var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(itemsDataSource).Items.Count() == 10));
             var timesMT = timer.TimesInTimeParallel(duration, 3);
             var times = timer.TimesInTime(duration);
 
-            Assert.IsTrue(times > 30000);
-            Assert.IsTrue(timesMT > 60000);
             Assert.IsTrue(timesMT > times * 1.7);
         }
     }

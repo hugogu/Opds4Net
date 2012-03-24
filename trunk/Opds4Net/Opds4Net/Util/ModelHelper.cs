@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Opds4Net.Model;
+using Opds4Net.Server;
 using Opds4Net.Util.Extension;
 
 namespace Opds4Net.Util

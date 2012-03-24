@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Opds4Net.Model
+namespace Opds4Net.Server
 {
     /// <summary>
     /// Mapping a Prorperty of existing Data Model to OPDS entry element name.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class OpdsNameAttribute : Attribute
     {
         /// <summary>
@@ -21,5 +21,11 @@ namespace Opds4Net.Model
         /// Opds entry element name mapping to.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The path to read the value in the current property.
+        /// Used to extract OPDS property from custom types.
+        /// </summary>
+        public string PropertyPath { get; set; }
     }
 }

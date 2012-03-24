@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using Opds4Net.Model;
@@ -12,26 +11,27 @@ namespace Opds4Net.Server
     /// <summary>
     /// Provide the capability to generate OPDS Data form custom/existing object model/domain model.
     /// </summary>
-    public abstract class DataModelOpdsDataSource : IOpdsDataSource
+    public abstract class NamingDataOpdsItemConverter : IOpdsItemConverter
     {
         /// <summary>
         /// Generate links of OPDS item. The link value is Site-relative.
         /// </summary>
-        protected IOpdsLinkGenerator linkGenerator;
+        public IOpdsLinkGenerator LinkGenerator { get; set; }
 
         /// <summary>
-        /// A injected tools to detect the data type of the given object.
+        /// 
         /// </summary>
-        protected IDataTypeDetector dataTypeDetector;
+        public IDataTypeDetector TypeDetector { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="linkGenerator"></param>
-        public DataModelOpdsDataSource(IOpdsLinkGenerator linkGenerator, IDataTypeDetector dataTypeDetector)
+        /// <param name="typeDetector"></param>
+        public NamingDataOpdsItemConverter(IOpdsLinkGenerator linkGenerator, IDataTypeDetector typeDetector)
         {
-            this.linkGenerator = linkGenerator;
-            this.dataTypeDetector = dataTypeDetector;
+            this.LinkGenerator = linkGenerator;
+            this.TypeDetector = typeDetector;
         }
 
         /// <summary>
@@ -39,65 +39,47 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public OpdsItemsResult GetItems(IDataRequest request)
+        public OpdsItemsResult GetItems(NamingDataSource request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
 
-            if (request.PageIndex <= 0)
-                throw new ArgumentException("pageIndex start from 1");
+            //if (request.PageIndex <= 0)
+            //    throw new ArgumentException("pageIndex start from 1");
 
-            if (request.PageSize <= 0)
-                throw new ArgumentException("pageSize should larger than 0");
+            //if (request.PageSize <= 0)
+            //    throw new ArgumentException("pageSize should larger than 0");
 
-            var data = request.Process();
+            //var data = request.Process();
 
-            if (data.Data.Count() > request.PageSize)
-                throw new InvalidProgramException("the data processor provide more items than requested.");
+            //if (data.Data.Count() > request.PageSize)
+            //    throw new InvalidProgramException("the data processor provide more items than requested.");
 
             return new OpdsItemsResult()
             {
-                TotalCount = data.TotalCount,
-                Items = ConvertDataItems(data.Data)
+                Items = ConvertDataItems(request)
             };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public SyndicationItem GetDetail(string id)
-        {
-            var detail = ExtractDetail(id);
-            if (detail == null)
-            {
-                return null;
-            }
-
-            var accessor = detail.GetType().GetPropertyAccessor();
-            Debug.Assert(detail.DataType == OpdsDataType.Entity);
-
-            return BuildEntity(accessor, detail, true);
-        }
-
-        private IEnumerable<SyndicationItem> ConvertDataItems(IEnumerable<object> items)
+        private IEnumerable<SyndicationItem> ConvertDataItems(NamingDataSource dataSource)
         {
             // Assuming every item is of different type.
             // PropertyAccessor should be retreived for every item.
-            foreach (var item in items ?? new IOpdsData[] { })
+            foreach (var item in dataSource.Data ?? new IOpdsData[] { })
             {
-                if (dataTypeDetector.DetectType(item) == OpdsDataType.Category)
+                var accessor = item.GetType().GetPropertyAccessor();
+                var dataType = TypeDetector.DetectType(item);
+                if (dataType == OpdsDataType.Category)
                 {
-                    var syndicationItem = CreateBasicDataItems(item.GetType().GetPropertyAccessor(), item);
-                    syndicationItem.Links.Add(linkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
-                    OnCategoryItemCreated(syndicationItem);
+                    var syndicationItem = CreateBasicDataItems(accessor, item);
+                    syndicationItem.Links.Add(LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
+                    OnSyndicationItemCreated(syndicationItem, item);
 
                     yield return syndicationItem;
                 }
                 else
                 {
-                    yield return BuildEntity(item.GetType().GetPropertyAccessor(), item, false);
+                    yield return BuildEntity(accessor, item, dataType == OpdsDataType.Detial);
                 }
             }
         }
@@ -113,13 +95,13 @@ namespace Opds4Net.Server
                 var price = accessor.GetProperty(item, "Price");
                 if (price != null)
                 {
-                    var buyLink = linkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
+                    var buyLink = LinkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
                     buyLink.Prices.Single().CurrencyCode = accessor.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
                     syndicationItem.Links.Add(buyLink);
                 }
 
                 // 下载链接
-                var downloadLink = linkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
+                var downloadLink = LinkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
                 downloadLink.MediaType = accessor.GetProperty(item, "MimeType").ToNullableString();
                 downloadLink.Length = Convert.ToInt64(accessor.GetProperty(item, "Length"));
                 syndicationItem.Links.Add(downloadLink);
@@ -137,7 +119,7 @@ namespace Opds4Net.Server
             // 书籍列表项
             else
             {
-                syndicationItem.Links.Add(linkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
+                syndicationItem.Links.Add(LinkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
             }
 
             // 图片链接
@@ -157,7 +139,7 @@ namespace Opds4Net.Server
                 });
 
             syndicationItem.Publisher = accessor.GetProperty(item, "Publisher").ToNullableString();
-            OnEntityItemCreated(syndicationItem);
+            OnSyndicationItemCreated(syndicationItem, item);
 
             return syndicationItem;
         }
@@ -190,23 +172,9 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="item"></param>
-        protected virtual void OnCategoryItemCreated(SyndicationItem item)
+        /// <param name="data"></param>
+        protected virtual void OnSyndicationItemCreated(SyndicationItem item, object data)
         {
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        protected virtual void OnEntityItemCreated(SyndicationItem item)
-        {
-        }
-
-        /// <summary>
-        /// Extract Item Detail information by a given id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        protected abstract IOpdsData ExtractDetail(string id);
     }
 }

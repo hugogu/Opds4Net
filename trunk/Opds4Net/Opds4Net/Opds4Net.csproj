@@ -49,15 +49,12 @@
   <ItemGroup>
     <Compile Include="CurrencyCodes.cs" />
     <Compile Include="FeedLinkRelation.cs" />
-    <Compile Include="Model\IOpdsData.cs" />
-    <Compile Include="Model\OpdsDataAttribute.cs">
+    <Compile Include="Server\IOpdsData.cs" />
+    <Compile Include="Server\OpdsDataType.cs" />
+    <Compile Include="Server\OpdsIgnoreAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\OpdsDataType.cs" />
-    <Compile Include="Model\OpdsIgnoreAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\OpdsNameAttribute.cs" />
+    <Compile Include="Server\OpdsNameAttribute.cs" />
     <Compile Include="OpdsRelations.cs" />
     <Compile Include="Model\OpdsIndirectAcquisition.cs" />
     <Compile Include="OpdsMediaType.cs" />
@@ -67,28 +64,31 @@
     <Compile Include="Model\OpdsLink.cs" />
     <Compile Include="Model\OpdsPrice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\DataModelOpdsDataSource.cs">
+    <Compile Include="Server\Conveter\NamingDataOpdsItemConverter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Server\Conveter\NamingDataSource.cs" />
     <Compile Include="Server\Detection\DynamicObjectDetector.cs" />
-    <Compile Include="Server\FileSystem\FSCategoryRequest.cs" />
-    <Compile Include="Server\FileSystem\FSDataItemsRequest.cs" />
-    <Compile Include="Server\FileSystem\FSSearchRequest.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSCategoryRequest.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSSearchRequest.cs" />
     <Compile Include="Server\GeneralLinkGenerator.cs" />
-    <Compile Include="Server\FileSystem\FSOpdsDataSource.cs" />
-    <Compile Include="Server\IContentStorage.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSOpdsDataSource.cs" />
+    <Compile Include="Server\Storage\IContentStorage.cs" />
     <Compile Include="Server\Detection\IDataTypeDetector.cs" />
-    <Compile Include="Server\IOpdsDataSource.cs" />
+    <Compile Include="Server\DataSource\IOpdsDataSource.cs" />
+    <Compile Include="Server\Conveter\IOpdsItemConverter.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
-    <Compile Include="Server\IDataRequest.cs">
+    <Compile Include="Server\DataSource\IDataRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\DataItemsRequest.cs">
+    <Compile Include="Server\DataSource\DataItemsRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\DataResponse.cs" />
+    <Compile Include="Server\DataSource\DataResponse.cs" />
     <Compile Include="Server\Detection\OpdsDataDetector.cs" />
-    <Compile Include="Server\OpdsItemsResult.cs" />
+    <Compile Include="Server\Conveter\OpdsItemsResult.cs" />
+    <Compile Include="Server\Storage\WebLocalStorage.cs" />
     <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
     <Compile Include="Util\Extension\IPropertyAccessor.cs">
       <SubType>Code</SubType>

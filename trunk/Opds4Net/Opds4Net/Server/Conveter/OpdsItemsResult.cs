@@ -12,10 +12,5 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         public IEnumerable<SyndicationItem> Items { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int TotalCount { get; set; }
     }
 }

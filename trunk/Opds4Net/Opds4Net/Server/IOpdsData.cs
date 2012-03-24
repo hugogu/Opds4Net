@@ -1,4 +1,4 @@
-﻿namespace Opds4Net.Model
+﻿namespace Opds4Net.Server
 {
     /// <summary>
     /// Provides the ability to provide opds data type information.
@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets the data type of the current data object.
         /// </summary>
-        OpdsDataType DataType { get; }
+        OpdsDataType OpdsDataType { get; }
     }
 }
