@@ -16,32 +16,15 @@ namespace Opds4Net.Server
         /// <summary>
         /// Generate links of OPDS item. The link value is Site-relative.
         /// </summary>
-        public IOpdsLinkGenerator LinkGenerator { get; set; }
+        public IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public IDataTypeDetector TypeDetector { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public IAdapterFactory AdapterFactory { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="linkGenerator"></param>
-        /// <param name="typeDetector"></param>
-        /// <param name="adapterFactory"></param>
-        public NamingDataOpdsItemConverter(
-            IOpdsLinkGenerator linkGenerator,
-            IDataTypeDetector typeDetector,
-            IAdapterFactory adapterFactory)
+        /// <param name="componentFactory"></param>
+        public NamingDataOpdsItemConverter(IOpdsItemConverterComponentFactory componentFactory)
         {
-            AdapterFactory = adapterFactory;
-            LinkGenerator = linkGenerator;
-            TypeDetector = typeDetector;
+            ComponentFactory = componentFactory;
         }
 
         /// <summary>
@@ -63,12 +46,12 @@ namespace Opds4Net.Server
             // PropertyAdapter should be retreived for every item.
             foreach (var item in dataSource.Data ?? new IOpdsData[] { })
             {
-                var adapter = AdapterFactory.GetAdapter(item);
-                var dataType = TypeDetector.DetectType(item);
+                var adapter = ComponentFactory.AdapterFactory.GetAdapter(item);
+                var dataType = ComponentFactory.TypeDetector.DetectType(item);
                 if (dataType == OpdsDataType.Category)
                 {
                     var syndicationItem = CreateBasicDataItems(adapter, item);
-                    syndicationItem.Links.Add(LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
+                    syndicationItem.Links.Add(ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
                     OnSyndicationItemCreated(syndicationItem, item);
 
                     yield return syndicationItem;
@@ -91,13 +74,13 @@ namespace Opds4Net.Server
                 var price = adapter.GetProperty(item, "Price");
                 if (price != null)
                 {
-                    var buyLink = LinkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
+                    var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
                     buyLink.Prices.Single().CurrencyCode = adapter.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
                     syndicationItem.Links.Add(buyLink);
                 }
 
                 // 下载链接
-                var downloadLink = LinkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
+                var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
                 downloadLink.MediaType = adapter.GetProperty(item, "MimeType").ToNullableString();
                 downloadLink.Length = Convert.ToInt64(adapter.GetProperty(item, "Length"));
                 syndicationItem.Links.Add(downloadLink);
@@ -115,7 +98,7 @@ namespace Opds4Net.Server
             // 书籍列表项
             else
             {
-                syndicationItem.Links.Add(LinkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
+                syndicationItem.Links.Add(ComponentFactory.LinkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
             }
 
             // 图片链接

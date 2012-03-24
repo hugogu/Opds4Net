@@ -51,6 +51,7 @@
     <Compile Include="FeedLinkRelation.cs" />
     <Compile Include="Reflection\IAdapterFactory.cs" />
     <Compile Include="Reflection\NamingAdapterFactory.cs" />
+    <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
     <Compile Include="Server\IOpdsData.cs" />
     <Compile Include="Server\OpdsDataType.cs" />
     <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">

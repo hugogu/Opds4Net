@@ -10,17 +10,7 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
-        IOpdsLinkGenerator LinkGenerator { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        IDataTypeDetector TypeDetector { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        IAdapterFactory AdapterFactory { get; set; }
+        IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
 
         /// <summary>
         /// Get opds entries according to a category id.

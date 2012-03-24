@@ -27,7 +27,7 @@ namespace Opds4Net.Test
             var mockDetector = new Mock<IDataTypeDetector>();
             mockDetector.Setup(i => i.DetectType(It.IsAny<DataModel>())).Returns(OpdsDataType.Category);
             mockDetector.Setup(i => i.DetectType(It.IsAny<DataEntry>())).Returns(OpdsDataType.Detial);
-            mockSource.TypeDetector = mockDetector.Object;
+            mockSource.ComponentFactory.TypeDetector = mockDetector.Object;
 
             itemsDataSource = new NamingDataSource()
             {
