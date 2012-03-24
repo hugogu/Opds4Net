@@ -36,7 +36,7 @@ namespace Opds4Net.Test
             var obj = new DataEntry();
 
             var dataType = dynamicDetector.DetectType(obj);
-            Assert.AreEqual(OpdsDataType.Entity, dataType);
+            Assert.AreEqual(OpdsDataType.Detial, dataType);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Opds4Net.Test
             var obj = new DataEntry();
 
             var dataType = opdsDataDetector.DetectType(obj);
-            Assert.AreEqual(OpdsDataType.Entity, dataType);
+            Assert.AreEqual(OpdsDataType.Detial, dataType);
         }
     }
 }

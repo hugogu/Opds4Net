@@ -86,7 +86,7 @@ namespace Opds4Net.Test.Model
 
         public override OpdsDataType OpdsDataType
         {
-            get { return OpdsDataType.Entity; }
+            get { return OpdsDataType.Detial; }
         }
     }
 }

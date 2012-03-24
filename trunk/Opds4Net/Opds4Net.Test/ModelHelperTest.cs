@@ -77,7 +77,7 @@ namespace Opds4Net.Test
             Assert.IsTrue(timeRandomClass > timeDynamic);
 
             Assert.IsTrue(timeDynamic.TotalMilliseconds < timeStatic.TotalMilliseconds * 10);
-            Assert.IsTrue(timeRandomClass.TotalMilliseconds < timeStatic.TotalMilliseconds * 15);
+            Assert.IsTrue(timeRandomClass.TotalMilliseconds < timeStatic.TotalMilliseconds * 20);
         }
 
         [TestMethod]

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Opds4Net.Model;
 using Opds4Net.Server;
 using Opds4Net.Test.Common;
@@ -23,11 +22,6 @@ namespace Opds4Net.Test
         {
             mockSource = TestInitializer.Container.GetExportedValue<IOpdsItemConverter>();
             Assert.IsNotNull(mockSource);
-
-            var mockDetector = new Mock<IDataTypeDetector>();
-            mockDetector.Setup(i => i.DetectType(It.IsAny<DataModel>())).Returns(OpdsDataType.Category);
-            mockDetector.Setup(i => i.DetectType(It.IsAny<DataEntry>())).Returns(OpdsDataType.Detial);
-            mockSource.ComponentFactory.TypeDetector = mockDetector.Object;
 
             itemsDataSource = new NamingDataSource()
             {
@@ -78,7 +72,7 @@ namespace Opds4Net.Test
             var request = new MockupNamingDataSource();
             var result = mockSource.GetItems(itemsDataSource);
             var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(itemsDataSource).Items.Count() == 10));
-            var timesMT = timer.TimesInTimeParallel(duration, 3);
+            var timesMT = timer.TimesInTimeParallel(duration, 4);
             var times = timer.TimesInTime(duration);
 
             Assert.IsTrue(timesMT > times * 1.7);
