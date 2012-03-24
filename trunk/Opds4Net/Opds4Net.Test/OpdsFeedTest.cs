@@ -17,6 +17,15 @@ namespace Opds4Net.Test
             WebRequestHelper.SetAllowUnsafeHeaderParsing();
         }
 
+        /// <summary>
+        /// A test for GetXmlEnumName
+        /// </summary>
+        [TestMethod]
+        public void GetXmlEnumNameTest()
+        {
+            Assert.AreEqual("last", FeedLinkRelation.Last.GetXmlEnumName());
+        }
+
         [TestMethod]
         [DeploymentItem("Opds4Net.dll.config")]
         public void LoadingTest()

@@ -71,6 +71,7 @@ namespace Opds4Net.Test
         }
 
         [TestMethod]
+        [TestCategory("Performance")]
         public void ItemsGenerationPerformanceTest()
         {
             var duration = new TimeSpan(0, 0, 1);

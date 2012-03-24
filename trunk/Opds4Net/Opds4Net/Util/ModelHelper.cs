@@ -96,13 +96,24 @@ namespace Opds4Net.Util
             var cases = new List<SwitchCase>();
             foreach (var propertyInfo in type.GetProperties())
             {
-                var propertyHash = GetPropertyNamesHashes(propertyInfo).Select(i => Expression.Constant(i, typeof(int)));
-                if (propertyHash.Any())
+                var propertyPairs = GetPropertyNamesHashes(propertyInfo);
+                if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
+                    throw new InvalidProgramException("Duplicated OpdsName detected.");
+
+                foreach (var propertyPair in propertyPairs)
                 {
                     var property = Expression.Property(instance, propertyInfo.Name);
+                    if (!String.IsNullOrEmpty(propertyPair.Value))
+                    {
+                        var paths = propertyPair.Value.Split('.');
+                        foreach(var path in paths)
+                        {
+                            property = Expression.Property(property, path);
+                        }
+                    }
                     // case property.Name.GetHashCode():
                     //     return property as object;
-                    cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), propertyHash));
+                    cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), Expression.Constant(propertyPair.Key, typeof(int))));
                 }
             }
             var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
@@ -111,15 +122,15 @@ namespace Opds4Net.Util
             memberAccessor = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
         }
 
-        private static IEnumerable<int> GetPropertyNamesHashes(PropertyInfo propertyInfo)
+        private static IEnumerable<KeyValuePair<int, string>> GetPropertyNamesHashes(PropertyInfo propertyInfo)
         {
             var isIgnored = propertyInfo.GetCustomAttributes(typeof(OpdsIgnoreAttribute), true).Any();
             if (!isIgnored)
             {
-                yield return propertyInfo.Name.GetHashCode();
+                yield return new KeyValuePair<int, string>(propertyInfo.Name.GetHashCode(), null);
                 foreach (OpdsNameAttribute attribute in propertyInfo.GetCustomAttributes(typeof(OpdsNameAttribute), true))
                 {
-                    yield return attribute.Name.GetHashCode();
+                    yield return new KeyValuePair<int, string>(attribute.Name.GetHashCode(), attribute.PropertyPath);
                 }
             }
         }

@@ -7,15 +7,9 @@ using Opds4Net.Util.Extension;
 
 namespace Opds4Net.Test
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [TestClass]
     public class ModelHelperTest
     {
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
         public void GetPropertyTest()
         {
@@ -30,9 +24,6 @@ namespace Opds4Net.Test
             Assert.AreEqual(null, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
         public void GetPropertyByExtensionTest()
         {
@@ -43,10 +34,18 @@ namespace Opds4Net.Test
             Assert.AreEqual(name, model.GetProperty("Title"));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
+        public void GetComplexOpdsPropertyTest()
+        {
+            var model = new DataEntry();
+
+            Assert.AreEqual(model.AuthorInfo.Name, model.GetProperty("AuthorName"));
+            Assert.AreEqual(model.AuthorInfo.Email, model.GetProperty("AuthorEmail"));
+            Assert.AreEqual(model.AuthorInfo.Address.Country, model.GetProperty("AuthorAddress"));
+        }
+
+        [TestMethod]
+        [TestCategory("Performance")]
         public void GetPropertyPerformanceTest()
         {
             var time = 10000000;
@@ -81,6 +80,7 @@ namespace Opds4Net.Test
         }
 
         [TestMethod]
+        [TestCategory("Performance")]
         public void MultiThreadGetPropertyPerformanceTest()
         {
             var time = 20000000;
