@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Test", "Opds4Net.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opds4Net.Web", "Opds4Net.Web\Opds4Net.Web.csproj", "{D5C41E44-CF77-4BD2-A6F6-169F818F305A}"
 EndProject
+Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Opds4Net.Modeling", "Opds4Net.Modeling\Opds4Net.Modeling.modelproj", "{8BDB5394-385A-4594-81C9-EB4A96156319}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Opds4Net.vsmdi
@@ -27,6 +29,10 @@ Global
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C2BC77-F068-472E-A5BE-BF1DD47446A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BDB5394-385A-4594-81C9-EB4A96156319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BDB5394-385A-4594-81C9-EB4A96156319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BDB5394-385A-4594-81C9-EB4A96156319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BDB5394-385A-4594-81C9-EB4A96156319}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5C41E44-CF77-4BD2-A6F6-169F818F305A}.Release|Any CPU.ActiveCfg = Release|Any CPU
