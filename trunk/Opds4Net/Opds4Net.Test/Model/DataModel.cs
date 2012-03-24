@@ -1,4 +1,5 @@
 ﻿using System;
+using Opds4Net.Reflection;
 using Opds4Net.Server;
 
 namespace Opds4Net.Test.Model
@@ -8,7 +9,7 @@ namespace Opds4Net.Test.Model
     /// </summary>
     public class DataModel : IOpdsData
     {
-        [OpdsName("Title")]
+        [AdaptedName("Title")]
         public string Name { get; set; }
 
         public string Id { get; set; }
@@ -78,9 +79,9 @@ namespace Opds4Net.Test.Model
 
         public string MimeType { get; set; }
 
-        [OpdsName("AuthorAddress", PropertyPath = "Address.Country")]
-        [OpdsName("AuthorEmail", PropertyPath = "Email")]
-        [OpdsName("AuthorName", PropertyPath = "Name")]
+        [AdaptedName("AuthorAddress", PropertyPath = "Address.Country")]
+        [AdaptedName("AuthorEmail", PropertyPath = "Email")]
+        [AdaptedName("AuthorName", PropertyPath = "Name")]
         public AuthorInfo AuthorInfo { get; set; }
 
         public override OpdsDataType OpdsDataType

@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using Opds4Net.Server;
-using Opds4Net.Util.Extension;
 
 namespace Opds4Net.Util
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ModelHelper<T> : IPropertyAccessor
+    public class ModelHelper<T>
     {
         private static Dictionary<string, Func<T, object>> keySelectors = new Dictionary<string, Func<T, object>>();
-        private static Func<T, string, object> memberAccessor = null;
 
         static ModelHelper()
         {
             InitializeKeySelectors();
-            InitializeMemberAccessor();
         }
 
         /// <summary>
@@ -44,28 +38,6 @@ namespace Opds4Net.Util
             return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public static object GetProperty(T instance, string propertyName)
-        {
-            return memberAccessor(instance, propertyName);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public object GetProperty(object instance, string propertyName)
-        {
-            return GetProperty((T)instance, propertyName);
-        }
-
         private static void InitializeKeySelectors()
         {
             foreach (var propertyInfo in typeof(T).GetProperties())
@@ -79,58 +51,6 @@ namespace Opds4Net.Util
                 if (attributes.Length > 0)
                 {
                     keySelectors["__DefaultSelector"] = keySelector;
-                }
-            }
-        }
-
-        private static void InitializeMemberAccessor()
-        {
-            var type = typeof(T);
-            var instance = Expression.Parameter(typeof(T), "instance");
-            var memberName = Expression.Parameter(typeof(string), "memberName");
-            var nameHash = Expression.Variable(typeof(int), "nameHash");
-            // var nameHash = memberName.GetHashCode();
-            var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-
-            // switch (memberName.GetHashCode()) {
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties())
-            {
-                var propertyPairs = GetPropertyNamesHashes(propertyInfo);
-                if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
-                    throw new InvalidProgramException("Duplicated OpdsName detected.");
-
-                foreach (var propertyPair in propertyPairs)
-                {
-                    var property = Expression.Property(instance, propertyInfo.Name);
-                    if (!String.IsNullOrEmpty(propertyPair.Value))
-                    {
-                        var paths = propertyPair.Value.Split('.');
-                        foreach(var path in paths)
-                        {
-                            property = Expression.Property(property, path);
-                        }
-                    }
-                    // case property.Name.GetHashCode():
-                    //     return property as object;
-                    cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), Expression.Constant(propertyPair.Key, typeof(int))));
-                }
-            }
-            var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
-            var methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
-
-            memberAccessor = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
-        }
-
-        private static IEnumerable<KeyValuePair<int, string>> GetPropertyNamesHashes(PropertyInfo propertyInfo)
-        {
-            var isIgnored = propertyInfo.GetCustomAttributes(typeof(OpdsIgnoreAttribute), true).Any();
-            if (!isIgnored)
-            {
-                yield return new KeyValuePair<int, string>(propertyInfo.Name.GetHashCode(), null);
-                foreach (OpdsNameAttribute attribute in propertyInfo.GetCustomAttributes(typeof(OpdsNameAttribute), true))
-                {
-                    yield return new KeyValuePair<int, string>(attribute.Name.GetHashCode(), attribute.PropertyPath);
                 }
             }
         }

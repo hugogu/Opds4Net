@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Opds4Net.Reflection;
+using Opds4Net.Reflection.Extension;
 using Opds4Net.Test.Common;
 using Opds4Net.Test.Model;
 using Opds4Net.Util;
-using Opds4Net.Util.Extension;
 
 namespace Opds4Net.Test
 {
@@ -16,11 +17,11 @@ namespace Opds4Net.Test
             var name = "xailjg";
             var model = new DataModel() { Name = name };
 
-            var value = ModelHelper<DataModel>.GetProperty(model, "Name");
+            var value = NamingAdapter<DataModel>.GetProperty(model, "Name");
             Assert.AreEqual(name, value);
-            value = ModelHelper<DataModel>.GetProperty(model, "Title");
+            value = NamingAdapter<DataModel>.GetProperty(model, "Title");
             Assert.AreEqual(name, value);
-            value = ModelHelper<DataModel>.GetProperty(model, "CategoryNameNotExists");
+            value = NamingAdapter<DataModel>.GetProperty(model, "CategoryNameNotExists");
             Assert.AreEqual(null, value);
         }
 
@@ -51,12 +52,12 @@ namespace Opds4Net.Test
             var time = 10000000;
             var name = "Dummy";
             var model = new DataModel() { Name = name };
-            var classSpecifiedAccessor = model.GetPropertyAccessor();
+            var classSpecifiedAdapter = NamingAdapterFactory.Instance.GetAdapter(model);
             var globalTarget = String.Empty;
 
             var timeDynamic = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
             }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
@@ -86,18 +87,18 @@ namespace Opds4Net.Test
             var time = 20000000;
             var name = "Dummy";
             var model = new DataModel() { Name = name };
-            var classSpecifiedAccessor = model.GetPropertyAccessor();
+            var classSpecifiedAdapter = NamingAdapterFactory.Instance.GetAdapter(model);
             var globalTarget = String.Empty;
 
             var timeDynamic = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
             }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
             var timeDynamicMT = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAccessor.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
             }).TimeForTimesParallel(time, 4);
             Assert.AreEqual(name, globalTarget);
 

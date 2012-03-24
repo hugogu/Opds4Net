@@ -1,9 +1,9 @@
-﻿namespace Opds4Net.Util.Extension
+﻿namespace Opds4Net.Reflection
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IPropertyAccessor
+    public interface IPropertyAdapter
     {
         /// <summary>
         /// 

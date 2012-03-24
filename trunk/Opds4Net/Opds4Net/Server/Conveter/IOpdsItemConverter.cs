@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Opds4Net.Reflection;
 
 namespace Opds4Net.Server
 {
@@ -19,6 +16,11 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         IDataTypeDetector TypeDetector { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IAdapterFactory AdapterFactory { get; set; }
 
         /// <summary>
         /// Get opds entries according to a category id.

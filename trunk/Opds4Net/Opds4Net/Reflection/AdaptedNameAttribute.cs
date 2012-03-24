@@ -1,30 +1,30 @@
 ﻿using System;
 
-namespace Opds4Net.Server
+namespace Opds4Net.Reflection
 {
     /// <summary>
-    /// Mapping a Prorperty of existing Data Model to OPDS entry element name.
+    /// Give a Prorperty of existing Data Model another name.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class OpdsNameAttribute : Attribute
+    public class AdaptedNameAttribute : Attribute
     {
         /// <summary>
-        /// Default constructor fo OpdsNameAttribute
+        /// Default constructor fo AdaptedNameAttribute
         /// </summary>
-        /// <param name="name">Opds entry element name mapping to.</param>
-        public OpdsNameAttribute(string name)
+        /// <param name="name">Element name mapping to.</param>
+        public AdaptedNameAttribute(string name)
         {
             Name = name;
         }
 
         /// <summary>
-        /// Opds entry element name mapping to.
+        /// Element name mapping to.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
         /// The path to read the value in the current property.
-        /// Used to extract OPDS property from custom types.
+        /// Used to extract property value from custom types.
         /// </summary>
         public string PropertyPath { get; set; }
     }

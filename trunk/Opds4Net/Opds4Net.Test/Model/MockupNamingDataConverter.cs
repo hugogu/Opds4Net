@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Opds4Net.Reflection;
 using Opds4Net.Server;
 
 namespace Opds4Net.Test.Model
@@ -16,8 +17,9 @@ namespace Opds4Net.Test.Model
         [ImportingConstructor]
         public MockupNamingDataConverter(
             [Import]IOpdsLinkGenerator linkGenerator,
-            [Import("OpdsData")]IDataTypeDetector typeDetector)
-            : base(linkGenerator, typeDetector)
+            [Import("OpdsData")]IDataTypeDetector typeDetector,
+            [Import("Naming")]IAdapterFactory adapterFactory)
+            : base(linkGenerator, typeDetector, adapterFactory)
         {
         }
     }
