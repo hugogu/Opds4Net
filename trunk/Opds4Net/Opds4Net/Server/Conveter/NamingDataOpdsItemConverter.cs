@@ -137,11 +137,15 @@ namespace Opds4Net.Server
             var updateTime = adapter.GetProperty(item, "UpdateTime");
             if (updateTime != null && (DateTime)updateTime != DateTime.MinValue)
                 syndicationItem.LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(updateTime));
-            var author = adapter.GetProperty(item, "Author");
-            if (author != null)
+            var authorName = adapter.GetProperty(item, "AuthorName");
+            var authorEmail = adapter.GetProperty(item, "AuthorEmail");
+            var authorSite = adapter.GetProperty(item, "AuthorSite");
+            if (authorName != null || authorEmail != null || authorSite != null)
                 syndicationItem.Authors.Add(new SyndicationPerson()
                 {
-                    Name = Convert.ToString(author),
+                    Name = authorName.ToNullableString(),
+                    Email = authorEmail.ToNullableString(),
+                    Uri = authorSite.ToNullableString(),
                 });
 
             return syndicationItem;

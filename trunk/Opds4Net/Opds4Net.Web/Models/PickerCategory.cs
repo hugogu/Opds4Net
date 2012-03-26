@@ -44,5 +44,29 @@ namespace Opds4Net.Web.Models
         {
             return FullName;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is PickerCategory)
+            {
+                return (obj as PickerCategory).Id == Id;
+            }
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

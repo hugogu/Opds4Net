@@ -9,7 +9,9 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-@using (Html.BeginForm()) {
+<!-- enctype = "multipart/form-data" 用于 上传文件 -->
+@using (Html.BeginForm("Edit", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Book</legend>
@@ -49,22 +51,6 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.MimeType)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MimeType)
-            @Html.ValidationMessageFor(model => model.MimeType)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FileSize)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FileSize)
-            @Html.ValidationMessageFor(model => model.FileSize)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.OriginalPrice)
         </div>
         <div class="editor-field">
@@ -81,20 +67,13 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.DownloadAddress)
+            File:
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.DownloadAddress)
-            @Html.ValidationMessageFor(model => model.DownloadAddress)
+            <input name="file" type="file" />
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UpdateTime)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UpdateTime)
-            @Html.ValidationMessageFor(model => model.UpdateTime)
-        </div>
+        @Html.HiddenForWithValue(model => model.MimeType, "application", new Dictionary<string, object>() { { "data-val", false } })
 
         @Html.Partial("_CategorySelector", Model)
 

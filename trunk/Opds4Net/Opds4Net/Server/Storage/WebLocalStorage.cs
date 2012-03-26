@@ -25,6 +25,10 @@ namespace Opds4Net.Server.Storage
         {
             this.localFolder = localFolder;
             this.downloadPattern = downloadPattern;
+            if (!Directory.Exists(localFolder))
+            {
+                Directory.CreateDirectory(localFolder);
+            }
         }
 
         #region IContentStorage Members

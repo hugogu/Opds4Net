@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using Opds4Net.Model;
@@ -54,7 +55,7 @@ namespace Opds4Net.Web.Models
             }
             else
             {
-                var current = dbContext.Categories.Single(c => c.Id == new Guid(request.Id));
+                var current = dbContext.Categories.Include(c => c.SubCategories).Single(c => c.Id == new Guid(request.Id));
                 // 取子分类
                 if (current.SubCategories != null && current.SubCategories.Any())
                 {

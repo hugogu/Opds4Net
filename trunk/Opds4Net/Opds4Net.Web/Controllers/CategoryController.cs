@@ -41,9 +41,9 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Category/Create
 
-        public ActionResult Create()
+        public ActionResult Create(bool? leaf)
         {
-            ViewBag.Categories = new SelectList(db.PickCategories.OrderBy(c => c.FullName), "Id", "FullName");
+            InitializeCategoryViewBag(leaf, null);
 
             return View();
         }
@@ -52,7 +52,7 @@ namespace Opds4Net.Web.Controllers
         // POST: /Category/Create
 
         [HttpPost]
-        public ActionResult Create(Category category)
+        public ActionResult Create(Category category, bool? leaf)
         {
             if (ModelState.IsValid)
             {
@@ -61,8 +61,10 @@ namespace Opds4Net.Web.Controllers
                 // Otherwise EF will try to insert the parent and failed.
                 db.Entry(category.Parent).State = EntityState.Unchanged;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");  
             }
+            InitializeCategoryViewBag(leaf, null);
 
             return View(category);
         }
@@ -70,10 +72,11 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Category/Edit/5
  
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid id, bool? leaf)
         {
             Category category = db.Categories.Include(c => c.Parent).Single(c => c.Id == id);
-            ViewBag.Categories = new SelectList(db.PickCategories, "Id", "FullName", db.PickCategories.Find(category.Parent.Id));
+            InitializeCategoryViewBag(leaf, category.Parent);
+
             return View(category);
         }
 
@@ -81,17 +84,19 @@ namespace Opds4Net.Web.Controllers
         // POST: /Category/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(Category category, bool? leaf)
         {
+            var existing = db.Categories.Include(c => c.Parent).Single(c => c.Id == category.Id);
             if (ModelState.IsValid)
-            {
-                var existing = db.Categories.Include(c => c.Parent).Single(c => c.Id == category.Id);
+            { 
                 existing.Name = category.Name;
                 category.Parent = db.Categories.Find(category.Parent.Id);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
+            InitializeCategoryViewBag(leaf, existing.Parent);
+
             return View(category);
         }
 
@@ -120,6 +125,12 @@ namespace Opds4Net.Web.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        private void InitializeCategoryViewBag(bool? leaf, Category parent)
+        {
+            ViewBag.LeafNodeOnly = leaf ?? false;
+            ViewBag.Categories = new SelectList(db.PickCategoriesWithEmpty.OrderBy(c => c.FullName), "Id", "FullName", parent == null ? db.NoCategory : db.PickCategories.Find(parent.Id));
         }
     }
 }

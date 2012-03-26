@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Opds4Net.Util;
 using Opds4Net.Web.Models;
@@ -52,11 +53,7 @@ namespace Opds4Net.Web.Controllers
 
         public ActionResult Create(bool? leaf)
         {
-            ViewBag.LeafNodeOnly = leaf ?? false;
-            ViewBag.Categories = db.PickCategories
-                .Include(c => c.SubCategories)
-                .OrderBy(c => c.FullName)
-                .Where(c => !leaf.Value || c.SubCategories.Count == 0);
+            InitializeBookPageViewBag(leaf);
 
             return View();
         }
@@ -65,38 +62,28 @@ namespace Opds4Net.Web.Controllers
         // POST: /Book/Create
 
         [HttpPost]
-        public ActionResult Create(Book book, string[] selectedCategories)
+        public ActionResult Create(Book book, string[] selectedCategories, bool? leaf)
         {
             if (ModelState.IsValid)
             {
                 book.Id = Guid.NewGuid();
-                // Files count should be 1.
-                foreach (string file in Request.Files)
+                if (UploadFile(Request, book))
                 {
-                    if (Request.Files[file] == null || Request.Files[file].ContentLength == 0)
+
+                    book.UpdateTime = DateTime.Now;
+                    db.Books.Add(book);
+                    if (selectedCategories != null && selectedCategories.Any())
                     {
-                        continue;
+                        var guids = selectedCategories.Select(s => new Guid(s));
+                        book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
                     }
 
-                    book.DownloadAddress = MvcApplication.Current.ContentSaver.Store(book.Id + Path.GetExtension(Request.Files[file].FileName), Request.Files[file].InputStream);
-                    book.MimeType = OpdsHelper.DetectFileMimeType(Request.Files[file].FileName);
-                    book.FileSize = Request.Files[file].ContentLength;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
                 }
-
-                book.UpdateTime = DateTime.Now;
-                db.Books.Add(book);
-                if (selectedCategories != null && selectedCategories.Any())
-                {
-                    var guids = selectedCategories.Select(s => new Guid(s));
-                    book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
-                }
-
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
             }
-
-            ViewBag.Categories = db.PickCategories;
+            InitializeBookPageViewBag(leaf);
 
             return View(book);
         }
@@ -104,10 +91,11 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Book/Edit/5
 
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid id, bool? leaf)
         {
-            ViewBag.Categories = db.PickCategories;
+            InitializeBookPageViewBag(leaf);
             Book book = db.Books.Include(b => b.Categories).Single(b => b.Id == id);
+
             return View(book);
         }
 
@@ -115,16 +103,29 @@ namespace Opds4Net.Web.Controllers
         // POST: /Book/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Book book, string[] selectedCategories)
+        public ActionResult Edit(Book book, string[] selectedCategories, bool? leaf)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(book).State = EntityState.Modified;
-                var guids = selectedCategories.Select(s => new Guid(s));
-                book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (UploadFile(Request, book))
+                {
+                    book.UpdateTime = DateTime.Now;
+                    db.Entry(book).State = EntityState.Modified;
+                    var guids = selectedCategories.Select(s => new Guid(s));
+                    if (guids.Any())
+                    {
+                        book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                    ViewBag.ErrorInfo = "文件上传失败";
             }
+            InitializeBookPageViewBag(leaf);
+            book = db.Books.Include(b => b.Categories).Single(b => b.Id == book.Id);
+
             return View(book);
         }
 
@@ -153,6 +154,36 @@ namespace Opds4Net.Web.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        private void InitializeBookPageViewBag(bool? leaf)
+        {
+            ViewBag.LeafNodeOnly = leaf ?? false;
+            ViewBag.Categories = db.PickCategories
+                .Include(c => c.SubCategories)
+                .OrderBy(c => c.FullName)
+                .Where(c => !leaf.Value || c.SubCategories.Count == 0);
+        }
+
+        private bool UploadFile(HttpRequestBase request, Book book)
+        {
+            // Files count should be 1.
+            foreach (string file in Request.Files)
+            {
+                if (Request.Files[file] == null || Request.Files[file].ContentLength == 0)
+                {
+                    continue;
+                }
+
+                book.DownloadAddress = MvcApplication.Current.ContentSaver
+                    .Store(book.Id + Path.GetExtension(Request.Files[file].FileName), Request.Files[file].InputStream);
+                book.MimeType = OpdsHelper.DetectFileMimeType(Request.Files[file].FileName);
+                book.FileSize = Request.Files[file].ContentLength;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -51,11 +51,10 @@ namespace Opds4Net.Web
         {
             if (!initialized)
             {
-                Container.ComposeExportedValue("BuyLinkPattern", "/Buy?id={0}");
-                Container.ComposeExportedValue("DetailLinkPattern", "/Detail?id={0}");
-                Container.ComposeExportedValue("DownloadLinkPattern", "/Download?id={0}");
-                Container.ComposeExportedValue("NavigationLinkPattern", "/Category?id={0}");
-                Container.ComposeExportedValue("DownloadLinkPattern", "/Download/{0}");
+                Container.ComposeExportedValue("BuyLinkPattern", "/opds/Buy?id={0}");
+                Container.ComposeExportedValue("DetailLinkPattern", "/opds/Detail?id={0}");
+                Container.ComposeExportedValue("DownloadLinkPattern", "/opds/Download?id={0}");
+                Container.ComposeExportedValue("NavigationLinkPattern", "/opds/Category?id={0}");
                 Container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
                 Container.ComposeExportedValue("LocalStorageFolder", HostingEnvironment.MapPath("~/App_Data/Uploaded"));
                 initialized = true;
@@ -93,7 +92,7 @@ namespace Opds4Net.Web
 
             routes.MapRoute(
                 "Default",
-                "{action}/{id}",
+                "Opds/{action}/{id}",
                 new { controller = "DbOpds", action = "Category", id = UrlParameter.Optional }
             );
         }
