@@ -30,6 +30,11 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
+        public event EventHandler<ItemGeneratedEventArgs> ItemGenerated;
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public OpdsItemsResult GetItems(NamingDataSource request)
@@ -158,6 +163,11 @@ namespace Opds4Net.Server
         /// <param name="data"></param>
         protected virtual void OnSyndicationItemCreated(SyndicationItem item, object data)
         {
+            var temp = ItemGenerated;
+            if (temp != null)
+            {
+                temp(this, new ItemGeneratedEventArgs(item, data));
+            }
         }
     }
 }

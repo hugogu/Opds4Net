@@ -51,6 +51,7 @@ namespace Opds4Net.Web.Controllers
         //
         // GET: /Book/Create
 
+        [Authorize]
         public ActionResult Create(bool? leaf)
         {
             InitializeBookPageViewBag(leaf);

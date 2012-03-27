@@ -1,4 +1,5 @@
-﻿using Opds4Net.Reflection;
+﻿using System;
+using Opds4Net.Reflection;
 
 namespace Opds4Net.Server
 {
@@ -11,6 +12,11 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        event EventHandler<ItemGeneratedEventArgs> ItemGenerated;
 
         /// <summary>
         /// Get opds entries according to a category id.

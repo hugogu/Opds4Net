@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Web;
 using System.Web.Hosting;
@@ -61,6 +62,8 @@ namespace Opds4Net.Web
             }
 
             Container.ComposeParts(this);
+
+            AuthenticateRequest += OnAuthenticateRequest;
         }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -91,9 +94,21 @@ namespace Opds4Net.Web
             );
 
             routes.MapRoute(
-                "Default",
+                "Opds",
                 "Opds/{action}/{id}",
                 new { controller = "DbOpds", action = "Category", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "Account",
+                "account/{action}",
+                new { controller = "Account", action = "LogOn" }
+            );
+
+            routes.MapRoute(
+                "Default",
+                "{action}",
+                new { controller = "Default", action = "Index" }
             );
         }
 
@@ -103,6 +118,23 @@ namespace Opds4Net.Web
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+
+        private void OnAuthenticateRequest(object sender, EventArgs e)
+        {
+            if (Context.User != null)
+            {
+                var id = Context.User.Identity;
+                if (id.IsAuthenticated)
+                {
+                    //var roles = new UserRepository().GetRoles(id.Name);
+                    //Context.User = new GenericPrincipal(id, roles);
+                }
+            }
+            else
+            {
+                // TODO: 跳转登录？
+            }
         }
     }
 }
