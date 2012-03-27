@@ -1,0 +1,12 @@
+﻿@using Opds4Net.Web.Models;
+@using Opds4Net.Util;
+@model Category
+
+<div class="editor-label">
+    @Html.Label("Parent", "Parent")
+</div>
+<div class="editor-field">
+    @Html.HiddenForWithValue(model => model.Parent.Name, "mock", new Dictionary<string, object>() { { "data-val", false } })
+    @Html.DropDownListFor(model => model.Parent.Id, (IEnumerable<SelectListItem>)ViewBag.Categories)
+    @Html.ValidationMessageFor(model => model.Parent.Id)
+</div>

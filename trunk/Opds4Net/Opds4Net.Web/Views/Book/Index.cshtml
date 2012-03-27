@@ -1,0 +1,87 @@
+﻿@model PagedList.IPagedList<Opds4Net.Web.Models.Book>
+
+@{
+    ViewBag.Title = "Books";
+}
+
+<h2>Books</h2>
+
+<p>
+    @Html.ActionLink("Create New Book", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { orderBy = "Name", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Name" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("Author", "Index", new { orderBy = "Author", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Author" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("Publisher", "Index", new { orderBy = "Publisher", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "Publisher" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("IssueTime", "Index", new { orderBy = "IssueTime", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "IssueTime" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("MimeType", "Index", new { orderBy = "MimeType", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "MimeType" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("FileSize", "Index", new { orderBy = "FileSize", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "FileSize" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("OriginalPrice", "Index", new { orderBy = "OriginalPrice", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "OriginalPrice" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            @Html.ActionLink("SalePrice", "Index", new { orderBy = "SalePrice", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "SalePrice" ? !ViewBag.Direction : false })
+        </th>
+        <th>
+            DownloadAddress
+        </th>
+        <th>
+            @Html.ActionLink("UpdateTime", "Index", new { orderBy = "UpdateTime", pageSize = ViewBag.PageSize, direction = ViewBag.OrderBy == "UpdateTime" ? !ViewBag.Direction : false })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Name, "Details", new { id=item.Id })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Publisher)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IssueTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MimeType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OriginalPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalePrice)
+        </td>
+        <td>
+            @Html.ActionLink("Download", "Download", "DbOpds", new { id = item.Id }, new { })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateTime)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.PagedListPager(Model, p => String.Format("book?page={0}&pageSize={1}&orderBy={2}&direction={3}", p, ViewBag.PageSize, ViewBag.OrderBy, ViewBag.Direction))

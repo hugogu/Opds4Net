@@ -1,0 +1,68 @@
+﻿@model Opds4Net.Web.Models.Book
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Book</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Author</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Author)
+    </div>
+
+    <div class="display-label">Publisher</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Publisher)
+    </div>
+
+    <div class="display-label">IssueTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IssueTime)
+    </div>
+
+    <div class="display-label">MimeType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MimeType)
+    </div>
+
+    <div class="display-label">FileSize</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FileSize)
+    </div>
+
+    <div class="display-label">OriginalPrice</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OriginalPrice)
+    </div>
+
+    <div class="display-label">SalePrice</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SalePrice)
+    </div>
+
+    <div class="display-label">DownloadAddress</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DownloadAddress)
+    </div>
+
+    <div class="display-label">UpdateTime</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdateTime)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
