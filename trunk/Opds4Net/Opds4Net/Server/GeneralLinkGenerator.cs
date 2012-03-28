@@ -16,7 +16,13 @@ namespace Opds4Net.Server
         /// </summary>
         public string Host
         {
-            get { return HttpContext.Current.Request.Url.GetComponents(UriComponents.HostAndPort | UriComponents.SchemeAndServer, UriFormat.Unescaped); }
+            get
+            {
+                if(HttpContext.Current != null)
+                    return HttpContext.Current.Request.Url.GetComponents(UriComponents.HostAndPort | UriComponents.SchemeAndServer, UriFormat.Unescaped);
+
+                return String.Empty;
+            }
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace Opds4Net.Server
                 Title = title,
                 MediaType = OpdsMediaType.NavigationFeed,
                 RelationshipType = OpdsRelations.Alternate,
-                Uri = new Uri(String.Format(Host + NavigationLinkPattern, Uri.EscapeDataString(id)))
+                Uri = new Uri(String.Format(Host + NavigationLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
 
             return link;
@@ -97,7 +103,7 @@ namespace Opds4Net.Server
                 Title = title,
                 MediaType = OpdsMediaType.Entry,
                 RelationshipType = OpdsRelations.Alternate,
-                Uri = new Uri(String.Format(Host + DetailLinkPattern, Uri.EscapeDataString(id)))
+                Uri = new Uri(String.Format(Host + DetailLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
 
             return link;
@@ -118,7 +124,7 @@ namespace Opds4Net.Server
             {
                 Title = title,
                 RelationshipType = OpdsRelations.OpenAcquisition,
-                Uri = new Uri(String.Format(Host + DownloadLinkPattern, Uri.EscapeDataString(id)))
+                Uri = new Uri(String.Format(Host + DownloadLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
 
             return link;
@@ -140,7 +146,7 @@ namespace Opds4Net.Server
             {
                 Title = title,
                 RelationshipType = OpdsRelations.Buy,
-                Uri = new Uri(String.Format(Host + BuyLinkPattern, Uri.EscapeDataString(id))),
+                Uri = new Uri(String.Format(Host + BuyLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute),
             };
             link.Prices.Add(new OpdsPrice(price));
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Opds4Net.Model;
 
 namespace Opds4Net.Server
 {
@@ -22,7 +21,9 @@ namespace Opds4Net.Server
 
             var opdsData = data as IOpdsData;
             if (opdsData == null)
-                throw new NotSupportedException(String.Format("This detector work with object implements {0}", typeof(IOpdsData).Name));
+            {
+                return (OpdsDataType)(data as dynamic).OpdsDataType;
+            }
 
             return opdsData.OpdsDataType;
         }

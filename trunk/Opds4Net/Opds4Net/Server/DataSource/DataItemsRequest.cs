@@ -5,7 +5,7 @@ namespace Opds4Net.Server
     /// <summary>
     /// 
     /// </summary>
-    public class DataItemsRequest : IDataRequest
+    public class DataItemsRequest : IDataCollectionRequest
     {
         /// <summary>
         /// 

@@ -20,8 +20,13 @@ namespace Opds4Net.Web
         /// <summary>
         /// 
         /// </summary>
-        [Import("FileSystem")]
+        [Import("Naming")]
         public IOpdsDataSource FileSystemOpds { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FileSystemBookFolder { get { return HostingEnvironment.MapPath("~/App_Data"); } }
 
         /// <summary>
         /// 
@@ -56,7 +61,7 @@ namespace Opds4Net.Web
                 Container.ComposeExportedValue("DetailLinkPattern", "/opds/Detail?id={0}");
                 Container.ComposeExportedValue("DownloadLinkPattern", "/opds/Download?id={0}");
                 Container.ComposeExportedValue("NavigationLinkPattern", "/opds/Category?id={0}");
-                Container.ComposeExportedValue("BookFolder", HostingEnvironment.MapPath("~/App_Data"));
+                Container.ComposeExportedValue("BookFolder", FileSystemBookFolder);
                 Container.ComposeExportedValue("LocalStorageFolder", HostingEnvironment.MapPath("~/App_Data/Uploaded"));
                 initialized = true;
             }

@@ -10,6 +10,15 @@ namespace Opds4Net.Server.FileSystem
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="rootFolder"></param>
+        public FSSearchRequest(string rootFolder)
+            : base(rootFolder)
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public override DataResponse Process()
         {

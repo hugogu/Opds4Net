@@ -53,6 +53,14 @@
     <Compile Include="Reflection\NamingAdapterFactory.cs" />
     <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
     <Compile Include="Server\Conveter\ItemGeneratedEventArgs.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\DataSource\IDataCollectionRequest.cs" />
+    <Compile Include="Server\DataSource\ItemDetailRequest.cs" />
+    <Compile Include="Server\DataSource\NamingOpdsDataSource.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Server\IOpdsData.cs" />
     <Compile Include="Server\OpdsDataType.cs" />
     <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">
@@ -77,7 +85,6 @@
     <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSSearchRequest.cs" />
     <Compile Include="Server\GeneralLinkGenerator.cs" />
-    <Compile Include="Server\DataSource\FileSystem\FSOpdsDataSource.cs" />
     <Compile Include="Server\Storage\IContentStorage.cs" />
     <Compile Include="Server\Detection\IDataTypeDetector.cs" />
     <Compile Include="Server\DataSource\IOpdsDataSource.cs" />
@@ -97,6 +104,7 @@
     <Compile Include="Reflection\IPropertyAdapter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\FileSystemHelper.cs" />
     <Compile Include="Util\ModelHelper.cs" />
     <Compile Include="Reflection\Extension\ObjectExtension.cs" />
     <Compile Include="Reflection\NamingAdapter.cs" />

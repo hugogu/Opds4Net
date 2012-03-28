@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Opds4Net.Model;
-using Opds4Net.Server;
+using Opds4Net.Server.FileSystem;
 using Opds4Net.Util;
 
 namespace Opds4Net.Web.Controllers
@@ -18,14 +18,15 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Category(string id)
         {
-            var request = new DataItemsRequest()
+            var request = new FSCategoryRequest(MvcApplication.Current.FileSystemBookFolder)
             {
                 Id = id,
                 PageIndex = 1,
                 PageSize = 10,
+                OrderBy = "LastUpdatedTime",
+                OrderDirection = true,
             };
-            var items = MvcApplication.Current.FileSystemOpds.GetItems(request).Items.OrderByDescending(i => i.LastUpdatedTime);
-            var feed = new OpdsFeed(items);
+            var feed = new OpdsFeed(MvcApplication.Current.FileSystemOpds.GetItems(request).Items);
 
             return Content(feed.ToXml(), "text/xml");
         }
@@ -37,7 +38,8 @@ namespace Opds4Net.Web.Controllers
         /// <returns></returns>
         public ActionResult Detail(string id)
         {
-            var item = MvcApplication.Current.FileSystemOpds.GetDetail(id);
+            var request = new FSDetailRequest(MvcApplication.Current.FileSystemBookFolder) { Id = id };
+            var item = MvcApplication.Current.FileSystemOpds.GetItems(request).Items.Single();
 
             return Content(item.ToXml(), "text/xml");
         }

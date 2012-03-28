@@ -16,12 +16,5 @@ namespace Opds4Net.Server
         /// <param name="request">An instance of OpdsCategoryItemsRequest represents the data you want to fetch.</param>
         /// <returns>The opds entries. If the category Id is not given, returns all root categories.</returns>
         OpdsItemsResult GetItems(IDataRequest request);
-
-        /// <summary>
-        /// Get the detail information of a book
-        /// </summary>
-        /// <param name="id">The book id</param>
-        /// <returns>The opds entry item contains the detail information.</returns>
-        SyndicationItem GetDetail(string id);
     }
 }

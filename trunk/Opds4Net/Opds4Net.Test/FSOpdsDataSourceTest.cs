@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Opds4Net.Server;
+using Opds4Net.Server.FileSystem;
 using Opds4Net.Test.Common;
 
 namespace Opds4Net.Test
@@ -22,7 +23,7 @@ namespace Opds4Net.Test
         public void TestInitialize()
         {
             // Change the book folder in TestInitializer to your local directory if test failed.
-            mockSource = TestInitializer.Container.GetExportedValue<IOpdsDataSource>("FileSystem");
+            mockSource = TestInitializer.Container.GetExportedValue<IOpdsDataSource>("Naming");
             Assert.IsNotNull(mockSource);
         }
 
@@ -32,7 +33,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void FSRootCategoryTest()
         {
-            var result = mockSource.GetItems(new DataItemsRequest());
+            var result = mockSource.GetItems(new FSCategoryRequest(@"C:\"));
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Items);
             Assert.IsTrue(result.Items.Count() > 0);
@@ -45,13 +46,13 @@ namespace Opds4Net.Test
         public void FSFileDetailTest()
         {
             var itemFounded = false;
-            var result = mockSource.GetItems(new DataItemsRequest());
+            var result = mockSource.GetItems(new FSCategoryRequest(@"C:\"));
             foreach (var item in result.Items)
             {
-                if (File.Exists(item.Id))
+                if (File.Exists(Path.Combine(@"C:\", item.Id)))
                 {
                     itemFounded = true;
-                    var detail = mockSource.GetDetail(item.Id);
+                    var detail = mockSource.GetItems(new FSDetailRequest(@"C:\") { Id = item.Id }).Items.Single();
                     Assert.IsNotNull(detail);
                     Assert.IsNotNull(detail.Id);
                     Assert.IsNotNull(detail.Title);

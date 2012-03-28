@@ -3,8 +3,17 @@
     /// <summary>
     /// 
     /// </summary>
-    public class FSDataItemsRequest : DataItemsRequest
+    public abstract class FSDataItemsRequest : DataItemsRequest
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rootFolder"></param>
+        public FSDataItemsRequest(string rootFolder)
+        {
+            RootFolder = rootFolder;
+        }
+
         /// <summary>
         /// 
         /// </summary>
