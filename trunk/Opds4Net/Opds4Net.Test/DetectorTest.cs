@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Opds4Net.Model;
 using Opds4Net.Server;
 using Opds4Net.Test.Common;
 using Opds4Net.Test.Model;
@@ -15,9 +14,6 @@ namespace Opds4Net.Test
         private IDataTypeDetector dynamicDetector;
         private IDataTypeDetector opdsDataDetector;
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestInitialize]
         public void TestInitialize()
         {
@@ -27,9 +23,6 @@ namespace Opds4Net.Test
             Assert.IsNotNull(opdsDataDetector);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
         public void GetDataTypeFromValidDynamicObjectTest()
         {
@@ -39,16 +32,24 @@ namespace Opds4Net.Test
             Assert.AreEqual(OpdsDataType.Detial, dataType);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         [TestMethod]
-        public void GetDataTypeFromOpdsDatTest()
+        public void GetDataTypeFromOpdsDataTest()
         {
             var obj = new DataEntry();
 
             var dataType = opdsDataDetector.DetectType(obj);
             Assert.AreEqual(OpdsDataType.Detial, dataType);
+        }
+
+        [TestMethod]
+        public void AnonymousTypeTest()
+        {
+            var obj = new { OpdsDataType = OpdsDataType.Detial };
+
+            // AnonymousType is compiled to internal class.
+            // So requires the current Assembly Internal Visible to The Opds4Net assembly.
+            var detectedType = dynamicDetector.DetectType(obj);
+            Assert.AreEqual(OpdsDataType.Detial, detectedType);
         }
     }
 }
