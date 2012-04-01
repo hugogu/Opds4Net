@@ -83,6 +83,7 @@ namespace Opds4Net.Server
                 RelationshipType = OpdsRelations.Alternate,
                 Uri = new Uri(String.Format(Host + NavigationLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
+            OnNavigationLinkGenerated(link);
 
             return link;
         }
@@ -105,6 +106,7 @@ namespace Opds4Net.Server
                 RelationshipType = OpdsRelations.Alternate,
                 Uri = new Uri(String.Format(Host + DetailLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
+            OnDetailLinkGenerated(link);
 
             return link;
         }
@@ -126,6 +128,7 @@ namespace Opds4Net.Server
                 RelationshipType = OpdsRelations.OpenAcquisition,
                 Uri = new Uri(String.Format(Host + DownloadLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };
+            OnDownloadLinkGenerated(link);
 
             return link;
         }
@@ -149,8 +152,25 @@ namespace Opds4Net.Server
                 Uri = new Uri(String.Format(Host + BuyLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute),
             };
             link.Prices.Add(new OpdsPrice(price));
+            OnBuyLinkGenerated(link);
 
             return link;
+        }
+
+        protected virtual void OnNavigationLinkGenerated(OpdsLink link)
+        {
+        }
+
+        protected virtual void OnDetailLinkGenerated(OpdsLink link)
+        {
+        }
+
+        protected virtual void OnBuyLinkGenerated(OpdsLink link)
+        {
+        }
+
+        protected virtual void OnDownloadLinkGenerated(OpdsLink link)
+        {
         }
     }
 }

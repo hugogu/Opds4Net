@@ -45,6 +45,14 @@ namespace Opds4Net.Test
         }
 
         [TestMethod]
+        public void LoadDetailEntryWithoutFeedTest()
+        {
+            var entry = OpdsItem.Load(new XmlTextReader("http://www.feedbooks.com/item/220817.atom"));
+            Assert.IsNotNull(entry);
+            Assert.IsInstanceOfType(entry, typeof(OpdsItem));
+        }
+
+        [TestMethod]
         public void OpdsPriceGenerationTest()
         {
             var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/detail/1724.atom"));
