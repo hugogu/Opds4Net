@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{68C2BC77-F068-472E-A5BE-BF1DD47446A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Opds4Net</RootNamespace>
+    <AssemblyName>Opds4Net</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Opds4Net.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CurrencyCodes.cs" />
+    <Compile Include="FeedLinkRelation.cs" />
+    <Compile Include="Reflection\IAdapterFactory.cs" />
+    <Compile Include="Reflection\NamingAdapterFactory.cs" />
+    <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
+    <Compile Include="Server\Conveter\ItemGeneratedEventArgs.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\DataSource\IDataCollectionRequest.cs" />
+    <Compile Include="Server\DataSource\ItemDetailRequest.cs" />
+    <Compile Include="Server\DataSource\NamingOpdsDataSource.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\IOpdsData.cs" />
+    <Compile Include="Server\OpdsDataType.cs" />
+    <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\AdaptedNameAttribute.cs" />
+    <Compile Include="OpdsRelations.cs" />
+    <Compile Include="Model\OpdsIndirectAcquisition.cs" />
+    <Compile Include="OpdsMediaType.cs" />
+    <Compile Include="OpdsNamespaces.cs" />
+    <Compile Include="Model\OpdsFeed.cs" />
+    <Compile Include="Model\OpdsItem.cs" />
+    <Compile Include="Model\OpdsLink.cs" />
+    <Compile Include="Model\OpdsPrice.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Conveter\NamingDataOpdsItemConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\Conveter\NamingDataSource.cs" />
+    <Compile Include="Server\Detection\DynamicObjectDetector.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSCategoryRequest.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />
+    <Compile Include="Server\DataSource\FileSystem\FSSearchRequest.cs" />
+    <Compile Include="Server\GeneralLinkGenerator.cs" />
+    <Compile Include="Server\Storage\IContentStorage.cs" />
+    <Compile Include="Server\Detection\IDataTypeDetector.cs" />
+    <Compile Include="Server\DataSource\IOpdsDataSource.cs" />
+    <Compile Include="Server\Conveter\IOpdsItemConverter.cs" />
+    <Compile Include="Server\IOpdsLinkGenerator.cs" />
+    <Compile Include="Server\DataSource\IDataRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\DataSource\DataItemsRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Server\DataSource\DataResponse.cs" />
+    <Compile Include="Server\Detection\OpdsDataDetector.cs" />
+    <Compile Include="Server\Conveter\OpdsItemsResult.cs" />
+    <Compile Include="Server\Storage\WebLocalStorage.cs" />
+    <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
+    <Compile Include="Reflection\IPropertyAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\FileSystemHelper.cs" />
+    <Compile Include="Util\ModelHelper.cs" />
+    <Compile Include="Reflection\Extension\ObjectExtension.cs" />
+    <Compile Include="Reflection\NamingAdapter.cs" />
+    <Compile Include="Util\OpdsHelper.cs" />
+    <Compile Include="Util\RangeFileResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\WebRequestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

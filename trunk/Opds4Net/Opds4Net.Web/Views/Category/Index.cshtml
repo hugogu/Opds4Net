@@ -1,0 +1,39 @@
+﻿@model PagedList.IPagedList<Opds4Net.Web.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New Category", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Parent
+        </th>
+        <th>
+            Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Parent.Name)
+        </td>
+        <td>
+            @Html.ActionLink(item.Name,"Edit", new { id = item.Id})
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+</table>
+
+@Html.PagedListPager(Model, c => String.Format("Category?page={0}&pageSize={1}", c, ViewBag.PageSize))

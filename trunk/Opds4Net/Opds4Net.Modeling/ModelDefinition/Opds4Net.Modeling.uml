@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm9="http://schemas.microsoft.com/dsltools/UseCaseModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="0a7f9d37-3a72-4db3-b14d-13c588e18130"
+  name="Opds4Net.Modeling" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <ownedCommentsInternal>
+    <comment
+      Id="abc2cb1b-b0d5-49b1-adf2-cfd09c529c9f">
+      <body>Data Type could be category, book.</body>
+      <annotatedElements>
+        <useCaseMoniker
+          Id="7ba92f2b-3696-4282-ae35-d59de6fb834b"
+          LastKnownName="Detect Data Type"
+          LastKnownLocation="Opds4Net.Modeling.uml" />
+      </annotatedElements>
+    </comment>
+  </ownedCommentsInternal>
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <actor
+        Id="a32dca0c-7bc4-4d34-a898-0b10844e123d"
+        name="Opds Site Builder"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="96d84123-7bda-48ce-8f3c-8b4dca24d6a2"
+            isDerived="false"
+            sourceEndRoleName="Opds Site Builder"
+            targetEndRoleName="Build Opds From Filesystem"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="c577c8d9-d2b3-472b-afaa-f23e4791d8ae"
+              LastKnownName="Build Opds From Filesystem"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="7bfe7b9a-f293-4fd5-b0a3-71a69d5e7208"
+                  name="Opds Site Builder"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="2ce8eac8-60e9-405e-8dc3-4dd99cc34bcd"
+                  name="Build Opds From Filesystem"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="4e66d5a5-330e-4bdc-bce7-5714c69d8d0f"
+            isDerived="false"
+            sourceEndRoleName="Opds Site Builder"
+            targetEndRoleName="Build Opds From DB Data"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="4db9f896-9ea1-4b3d-9c1b-173de50872e0"
+              LastKnownName="Build Opds From DB Data"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="c8cf0d84-8f8e-4d83-b4e5-c42893e6a06c"
+                  name="Opds Site Builder"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="201be2e9-5789-4601-aa6f-a342e4a28444"
+                  name="Build Opds From DB Data"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="dce7725f-1c0b-4c76-9604-4de8627bba11"
+            isDerived="false"
+            sourceEndRoleName="Opds Site Builder"
+            targetEndRoleName="Build Opds From Domain Model"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="0179880f-5b95-4000-b8e1-e1bcd3d32b10"
+              LastKnownName="Build Opds From Domain Model"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="4c04dfa8-5795-4e84-a16f-292fb43e0d11"
+                  name="Opds Site Builder"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="49cba8b3-32c8-4859-8679-4d46e43fa045"
+                  name="Build Opds From Domain Model"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+        name="Opds4Net"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="ead7f374-f10d-4b48-bf47-5fde42dd5d26"
+        name="Opds"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="c67a0527-e3f1-440c-8495-6fc5244110d3"
+        name="OpdsManagement"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="7e8471f4-d34b-4de6-91c9-a4ef1b574401">
+            <useCaseMoniker
+              Id="88fc848c-d8f5-42c1-99ae-26f40a790df5"
+              LastKnownName="Generate OPDS"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+      </subsystem>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="e14c2041-fdc3-4b10-b52c-9e145e19976a"
+        name="Opds Reader"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="124d6a07-af63-4f63-aa1f-aad2a249364d"
+            isDerived="false"
+            sourceEndRoleName="Opds Reader"
+            targetEndRoleName="ListCategories"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="3db3f042-fd9e-4b00-bd47-9ecf8c8e0959"
+              LastKnownName="ListCategories"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="490efac5-6c79-45b2-8a39-ae5d32fc5c60"
+                  name="Opds Reader"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="dd912b0f-aa3b-43f2-8460-4ca598fdbed8"
+                  name="ListCategories"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="3351c868-69f2-4b23-be00-72534ee1c9f4"
+            isDerived="false"
+            sourceEndRoleName="Opds Reader"
+            targetEndRoleName="SearchBooks"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="5d119ae3-ee78-4f7b-960b-7a5b71a60240"
+              LastKnownName="SearchBooks"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a062eba8-c799-4c34-a903-71c7cca41a45"
+                  name="Opds Reader"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="90323b4f-e17d-441c-89a1-c41eb7412a83"
+                  name="SearchBooks"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="7807a3dd-f882-4204-8dfe-95b88925681c"
+            isDerived="false"
+            sourceEndRoleName="Opds Reader"
+            targetEndRoleName="BookDetail"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="60fd8c08-47b9-430d-a0d1-001c23568631"
+              LastKnownName="BookDetail"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="af9d138f-eae8-423a-8727-51f05e21fa28"
+                  name="Opds Reader"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="49556ca6-ef7a-4c3b-b4ab-c9a17457d88f"
+                  name="BookDetail"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="5c0160ce-c6c6-40e0-84a3-578cbb439d0f"
+            isDerived="false"
+            sourceEndRoleName="Opds Reader"
+            targetEndRoleName="DownloadBook"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="92049caa-2dcf-4384-beed-1d799d6d6578"
+              LastKnownName="DownloadBook"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="29b7bd75-e292-45f4-8e46-dbcb8be4168d"
+                  name="Opds Reader"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="f40b2386-72e7-49ba-a67e-55bba53be275"
+                  name="DownloadBook"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="3db3f042-fd9e-4b00-bd47-9ecf8c8e0959"
+        name="ListCategories"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="ead7f374-f10d-4b48-bf47-5fde42dd5d26"
+            LastKnownName="Opds"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="5d119ae3-ee78-4f7b-960b-7a5b71a60240"
+        name="SearchBooks"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="ead7f374-f10d-4b48-bf47-5fde42dd5d26"
+            LastKnownName="Opds"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="60fd8c08-47b9-430d-a0d1-001c23568631"
+        name="BookDetail"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="ead7f374-f10d-4b48-bf47-5fde42dd5d26"
+            LastKnownName="Opds"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="92049caa-2dcf-4384-beed-1d799d6d6578"
+        name="DownloadBook"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="ead7f374-f10d-4b48-bf47-5fde42dd5d26"
+            LastKnownName="Opds"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="366ed5d0-6c15-4319-8669-acb6b9bc6b6e"
+        name="Load Opds"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="19cad103-31c7-4879-95fb-0391ea54e700"
+            LastKnownName="Opds4Net For Client"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="88fc848c-d8f5-42c1-99ae-26f40a790df5"
+        name="Generate OPDS"
+        isAbstract="false"
+        isLeaf="false">
+        <additions>
+          <include
+            Id="cf9d4155-1371-47c6-8c08-b27aa85960f1">
+            <useCaseMoniker
+              Id="eb25fee6-a74d-4be7-b187-f486d4eaf4ec"
+              LastKnownName="Convert Data to Opds"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </include>
+          <include
+            Id="86d01867-f6f1-4dd8-8caa-14c202cc41ae">
+            <useCaseMoniker
+              Id="e19d1075-62e2-48e4-825b-18dc9e449b05"
+              LastKnownName="Process Request"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="19cad103-31c7-4879-95fb-0391ea54e700"
+        name="Opds4Net For Client"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="dc16e635-4806-4e41-9a48-97e7df6838bb"
+        name="Validate Opds"
+        visibility="Package"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="c577c8d9-d2b3-472b-afaa-f23e4791d8ae"
+        name="Build Opds From Filesystem"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="c67a0527-e3f1-440c-8495-6fc5244110d3"
+            LastKnownName="OpdsManagement"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="4db9f896-9ea1-4b3d-9c1b-173de50872e0"
+        name="Build Opds From DB Data"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="c67a0527-e3f1-440c-8495-6fc5244110d3"
+            LastKnownName="OpdsManagement"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="0179880f-5b95-4000-b8e1-e1bcd3d32b10"
+        name="Build Opds From Domain Model"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="c67a0527-e3f1-440c-8495-6fc5244110d3"
+            LastKnownName="OpdsManagement"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="e19d1075-62e2-48e4-825b-18dc9e449b05"
+        name="Process Request"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="eb25fee6-a74d-4be7-b187-f486d4eaf4ec"
+        name="Convert Data to Opds"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="f6ea0b71-531a-47c8-affa-ef6531d57772">
+            <useCaseMoniker
+              Id="c8f426d2-514b-497b-b732-71a8ae0d2f8f"
+              LastKnownName="Read Property of Any Object Dynamicly"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </dependency>
+          <dependency
+            Id="eae8a8da-729c-41af-8d2c-0153a593438c">
+            <useCaseMoniker
+              Id="7ba92f2b-3696-4282-ae35-d59de6fb834b"
+              LastKnownName="Detect Data Type"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="ede46508-95cf-4958-b70b-baf7037617c8"
+        name="UseCase1"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="676a4eff-d284-443b-9726-8a16cd8b2828"
+        name="Generate From Model Class"
+        isAbstract="false"
+        isLeaf="false">
+        <generalsInternal>
+          <generalization
+            Id="5032afb1-fcfc-420a-a1bb-3dcf122828b4"
+            isSubstitutable="false">
+            <useCaseMoniker
+              Id="88fc848c-d8f5-42c1-99ae-26f40a790df5"
+              LastKnownName="Generate OPDS"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="34869b4f-b790-4c57-8e20-3e8b29473665"
+        name="Generate From FileSystem"
+        isAbstract="false"
+        isLeaf="false">
+        <generalsInternal>
+          <generalization
+            Id="2c832c75-0c99-47da-bfbc-a4948ecaf13e"
+            isSubstitutable="false">
+            <useCaseMoniker
+              Id="88fc848c-d8f5-42c1-99ae-26f40a790df5"
+              LastKnownName="Generate OPDS"
+              LastKnownLocation="Opds4Net.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="c8f426d2-514b-497b-b732-71a8ae0d2f8f"
+        name="Read Property of Any Object Dynamicly"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="7ba92f2b-3696-4282-ae35-d59de6fb834b"
+        name="Detect Data Type"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="4eade7f0-b640-4ee6-a2ab-02560726c98c"
+            LastKnownName="Opds4Net"
+            LastKnownLocation="Opds4Net.Modeling.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="36faae33-deba-4b26-8ce2-e2ebcb52e79d"
+        name="IDataTypeDetector"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedOperations>
+          <operation
+            Id="639a06d5-ef70-47f4-9005-85032978c46b"
+            name="DetectType"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="4cfbaa49-a95b-4f1a-8357-2ad57841a974"
+                  direction="Return">
+                  <type_NamedElement>
+                    <enumerationMoniker
+                      Id="264bc02a-85fc-4447-a0f0-f0198a847fb7"
+                      LastKnownName="OpdsDataType"
+                      LastKnownLocation="Opds4Net.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="e2dbe0eb-28da-45b8-a654-147f86014292"
+                  name="data"
+                  direction="In" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <enumeration
+        Id="264bc02a-85fc-4447-a0f0-f0198a847fb7"
+        name="OpdsDataType"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedLiterals>
+          <enumerationLiteral
+            Id="e3152365-9f87-4f86-8b7b-596cf4ea045a"
+            name="Category" />
+          <enumerationLiteral
+            Id="71e4d9d7-07b5-4a3a-a354-0698cc0e362e"
+            name="Entry" />
+          <enumerationLiteral
+            Id="0363ea79-5d04-4563-9509-cc902eb5f3d7"
+            name="Detail" />
+        </ownedLiterals>
+      </enumeration>
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>
