@@ -40,7 +40,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public OpdsItemsResult GetItems(NamingDataSource request)
+        public OpdsItemsResult GetItems(OpdsDataSource request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
@@ -48,7 +48,7 @@ namespace Opds4Net.Server
             return new OpdsItemsResult() { Items = ConvertDataItems(request) };
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(NamingDataSource dataSource)
+        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsDataSource dataSource)
         {
             // Assuming every item is of different type.
             // PropertyAdapter should be retreived for every item.
@@ -59,7 +59,11 @@ namespace Opds4Net.Server
                 if (dataType == OpdsDataType.Category)
                 {
                     var syndicationItem = CreateBasicDataItems(adapter, item);
-                    syndicationItem.Links.Add(ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty));
+                    var navigationLink = ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
+                    if (navigationLink != null)
+                    {
+                        syndicationItem.Links.Add(navigationLink);
+                    }
                     OnSyndicationItemCreated(syndicationItem, item);
 
                     yield return syndicationItem;
@@ -83,15 +87,21 @@ namespace Opds4Net.Server
                 if (price != null)
                 {
                     var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
-                    buyLink.Prices.Single().CurrencyCode = adapter.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
-                    syndicationItem.Links.Add(buyLink);
+                    if (buyLink != null)
+                    {
+                        buyLink.Prices.Single().CurrencyCode = adapter.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
+                        syndicationItem.Links.Add(buyLink);
+                    }
                 }
 
                 // 下载链接
                 var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
-                downloadLink.MediaType = adapter.GetProperty(item, "MimeType").ToNullableString();
-                downloadLink.Length = Convert.ToInt64(adapter.GetProperty(item, "Length"));
-                syndicationItem.Links.Add(downloadLink);
+                if (downloadLink != null)
+                {
+                    downloadLink.MediaType = adapter.GetProperty(item, "MimeType").ToNullableString();
+                    downloadLink.Length = Convert.ToInt64(adapter.GetProperty(item, "Length"));
+                    syndicationItem.Links.Add(downloadLink);
+                }
 
                 // 其它详细信息
                 syndicationItem.Content = adapter.GetProperty(item, "Content").MakeSyndicationContent();
@@ -106,7 +116,13 @@ namespace Opds4Net.Server
             // 书籍列表项
             else
             {
-                syndicationItem.Links.Add(ComponentFactory.LinkGenerator.GetDetailLink(syndicationItem.Id, String.Empty));
+                // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
+                var detailLinkId = adapter.GetProperty(item, "DetailLinkId").ToNullableString() ?? syndicationItem.Id;
+                var detailLink = ComponentFactory.LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
+                if (detailLink != null)
+                    syndicationItem.Links.Add(detailLink);
+                else
+                    throw new InvalidProgramException("LinkGenerator don't provide detail link");
             }
 
             // 图片链接

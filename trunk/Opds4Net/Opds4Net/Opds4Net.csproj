@@ -79,7 +79,7 @@
     <Compile Include="Server\Conveter\NamingDataOpdsItemConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\Conveter\NamingDataSource.cs" />
+    <Compile Include="Server\Conveter\OpdsDataSource.cs" />
     <Compile Include="Server\Detection\DynamicObjectDetector.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSCategoryRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />

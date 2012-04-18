@@ -106,7 +106,7 @@ namespace Opds4Net.Server
         public OpdsLink GetDownloadLink(string id, string title)
         {
             if (String.IsNullOrEmpty(DownloadLinkPattern))
-                throw new InvalidOperationException("DownloadLinkPattern is not set.");
+                return null;
 
             var link = new OpdsLink()
             {
@@ -129,7 +129,7 @@ namespace Opds4Net.Server
         public OpdsLink GetBuyLink(string id, string title, decimal price)
         {
             if (String.IsNullOrEmpty(BuyLinkPattern))
-                throw new InvalidOperationException("BuyLinkPattern is not set.");
+                return null;
 
             var link = new OpdsLink()
             {

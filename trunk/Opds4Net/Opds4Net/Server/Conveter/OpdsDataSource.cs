@@ -5,12 +5,12 @@ namespace Opds4Net.Server
     /// <summary>
     /// 
     /// </summary>
-    public class NamingDataSource
+    public class OpdsDataSource
     {
         /// <summary>
         /// 
         /// </summary>
-        public NamingDataSource()
+        public OpdsDataSource()
         {
             Data = new object[] { };
         }
@@ -19,7 +19,7 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="data"></param>
-        public NamingDataSource(IEnumerable<object> data)
+        public OpdsDataSource(IEnumerable<object> data)
         {
             Data = data;
         }

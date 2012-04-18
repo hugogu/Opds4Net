@@ -30,7 +30,7 @@ namespace Opds4Net.Server
             var requestData = request.Process();
             if (requestData != null)
             {
-                var result = itemConverter.GetItems(new NamingDataSource(requestData.Data));
+                var result = itemConverter.GetItems(new OpdsDataSource(requestData.Data));
 
                 return new OpdsItemsResult(result.Items);
             }
