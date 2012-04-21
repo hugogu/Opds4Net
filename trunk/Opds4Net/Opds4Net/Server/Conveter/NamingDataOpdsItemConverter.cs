@@ -86,7 +86,8 @@ namespace Opds4Net.Server
                 var price = adapter.GetProperty(item, "Price");
                 if (price != null)
                 {
-                    var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(syndicationItem.Id, String.Empty, Convert.ToDecimal(price));
+                    var buyLinkId = adapter.GetProperty(item, "BuyLinkId").ToNullableString() ?? syndicationItem.Id;
+                    var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
                     if (buyLink != null)
                     {
                         buyLink.Prices.Single().CurrencyCode = adapter.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
@@ -95,7 +96,8 @@ namespace Opds4Net.Server
                 }
 
                 // 下载链接
-                var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(syndicationItem.Id, String.Empty);
+                var downloadLinkId = adapter.GetProperty(item, "DownloadLinkId").ToNullableString() ?? syndicationItem.Id;
+                var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
                 if (downloadLink != null)
                 {
                     downloadLink.MediaType = adapter.GetProperty(item, "MimeType").ToNullableString();

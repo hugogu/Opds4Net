@@ -68,9 +68,17 @@ namespace Opds4Net.Reflection
                             property = Expression.Property(property, path);
                         }
                     }
+
+                    var catchNullReference = Expression.Catch(typeof(NullReferenceException), Expression.Constant(null, typeof(object)));
+                    var tryRead = Expression.TryCatch(Expression.Convert(property, typeof(object)), catchNullReference);
                     // case property.Name.GetHashCode():
-                    //     return property as object;
-                    cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), Expression.Constant(propertyPair.Key, typeof(int))));
+                    //    try {
+                    //        return property[.Path][.Path] as object;
+                    //    // return null when any property in the path is null.
+                    //    } catch(NullReferenceException ex) {
+                    //        return null;
+                    //    }
+                    cases.Add(Expression.SwitchCase(tryRead, Expression.Constant(propertyPair.Key, typeof(int))));
                 }
             }
             var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());

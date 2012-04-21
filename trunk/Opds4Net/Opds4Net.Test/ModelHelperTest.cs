@@ -43,6 +43,12 @@ namespace Opds4Net.Test
             Assert.AreEqual(model.AuthorInfo.Name, model.GetProperty("AuthorName"));
             Assert.AreEqual(model.AuthorInfo.Email, model.GetProperty("AuthorEmail"));
             Assert.AreEqual(model.AuthorInfo.Address.Country, model.GetProperty("AuthorAddress"));
+
+            // When a property is null, the adapted properties in this property will be assumed null.
+            // No exception thrown.
+            model.AuthorInfo = null;
+            Assert.AreEqual(null, model.GetProperty("AuthorName"));
+            Assert.AreEqual(null, model.GetProperty("AuthorAddress"));
         }
 
         [TestMethod]
