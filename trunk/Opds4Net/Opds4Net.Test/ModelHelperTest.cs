@@ -17,11 +17,11 @@ namespace Opds4Net.Test
             var name = "xailjg";
             var model = new DataModel() { Name = name };
 
-            var value = NamingAdapter<DataModel>.GetProperty(model, "Name");
+            var value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "Name");
             Assert.AreEqual(name, value);
-            value = NamingAdapter<DataModel>.GetProperty(model, "Title");
+            value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "Title");
             Assert.AreEqual(name, value);
-            value = NamingAdapter<DataModel>.GetProperty(model, "CategoryNameNotExists");
+            value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "CategoryNameNotExists");
             Assert.AreEqual(null, value);
         }
 
@@ -58,7 +58,7 @@ namespace Opds4Net.Test
             var time = 10000000;
             var name = "Dummy";
             var model = new DataModel() { Name = name };
-            var classSpecifiedAdapter = NamingAdapterFactory.Instance.GetAdapter(model);
+            var classSpecifiedAdapter = AdaptedAccessorFactory.Instance.GetAccessor(model);
             var globalTarget = String.Empty;
 
             var timeDynamic = new TestTimer(() =>
@@ -93,7 +93,7 @@ namespace Opds4Net.Test
             var time = 20000000;
             var name = "Dummy";
             var model = new DataModel() { Name = name };
-            var classSpecifiedAdapter = NamingAdapterFactory.Instance.GetAdapter(model);
+            var classSpecifiedAdapter = AdaptedAccessorFactory.Instance.GetAccessor(model);
             var globalTarget = String.Empty;
 
             var timeDynamic = new TestTimer(() =>

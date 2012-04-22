@@ -143,18 +143,34 @@ namespace Opds4Net.Server
             return link;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="link"></param>
         protected virtual void OnNavigationLinkGenerated(OpdsLink link)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="link"></param>
         protected virtual void OnDetailLinkGenerated(OpdsLink link)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="link"></param>
         protected virtual void OnBuyLinkGenerated(OpdsLink link)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="link"></param>
         protected virtual void OnDownloadLinkGenerated(OpdsLink link)
         {
         }

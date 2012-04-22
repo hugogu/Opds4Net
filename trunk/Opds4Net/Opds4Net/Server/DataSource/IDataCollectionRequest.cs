@@ -11,7 +11,7 @@
         int PageIndex { get; set; }
 
         /// <summary>
-        /// Aamout of the entries want to get.
+        /// Amount of the entries want to get.
         /// </summary>
         int PageSize { get; set; }
 
@@ -21,7 +21,7 @@
         string OrderBy { get; set; }
 
         /// <summary>
-        /// Order direction
+        /// Order direction or the result data.
         /// </summary>
         bool OrderDirection { get; set; }
     }

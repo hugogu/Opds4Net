@@ -63,8 +63,6 @@ namespace Opds4Net.Util
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         public static string CurrentHostUri
         {
             get

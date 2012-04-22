@@ -4,17 +4,17 @@ using Opds4Net.Reflection;
 namespace Opds4Net.Server
 {
     /// <summary>
-    /// 
+    /// Converts data items to syndication items
     /// </summary>
     public interface IOpdsItemConverter
     {
         /// <summary>
-        /// 
+        /// Gets or sets the IOpdsItemConverterComponentFactory 
         /// </summary>
         IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
 
         /// <summary>
-        /// 
+        /// Raise on a syndication item is generated.
         /// </summary>
         event EventHandler<ItemGeneratedEventArgs> ItemGenerated;
 
