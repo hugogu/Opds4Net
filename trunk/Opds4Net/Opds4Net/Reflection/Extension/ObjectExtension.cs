@@ -13,7 +13,7 @@
         /// <returns></returns>
         public static object GetProperty(this object instance, string propertyName)
         {
-            return NamingAdapterFactory.Instance.GetAdapter(instance).GetProperty(instance, propertyName);
+            return AdaptedAccessorFactory.Instance.GetAccessor(instance).GetProperty(instance, propertyName);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@
         /// <returns></returns>
         public static object GetProperty<T>(this T instance, string propertyName)
         {
-            return NamingAdapterFactory.Instance.GetAdapter<T>().GetProperty(instance, propertyName);
+            return AdaptedAccessorFactory.Instance.GetAccessor<T>().GetProperty(instance, propertyName);
         }
     }
 }

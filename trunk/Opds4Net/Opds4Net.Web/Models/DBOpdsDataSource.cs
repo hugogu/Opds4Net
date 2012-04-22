@@ -83,7 +83,7 @@ namespace Opds4Net.Web.Models
 
             var book = dbContext.Books.Single(b => b.Id == new Guid(id));
             book.OpdsDataType = OpdsDataType.Detial;
-            var result = itemConverter.GetItems(new NamingDataSource(new[] { book })).Items.Single();
+            var result = itemConverter.GetItems(new OpdsDataSource(new[] { book })).Items.Single();
             book.OpdsDataType = OpdsDataType.Entity;
 
             return result;
@@ -93,7 +93,7 @@ namespace Opds4Net.Web.Models
         {
             if (categories != null)
             {
-                return itemConverter.GetItems(new NamingDataSource(categories)).Items;
+                return itemConverter.GetItems(new OpdsDataSource(categories)).Items;
             }
             else
                 return new SyndicationItem[] { };

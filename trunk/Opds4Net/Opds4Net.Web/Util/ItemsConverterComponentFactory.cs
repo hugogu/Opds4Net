@@ -17,7 +17,7 @@ namespace Opds4Net.Web.Util
         public ItemsConverterComponentFactory(
             [Import]IOpdsLinkGenerator linkGenerator,
             [Import("OpdsData")]IDataTypeDetector typeDetector,
-            [Import("Naming")]IAdapterFactory adapterFactory)
+            [Import("Naming")]IAccessorFactory adapterFactory)
         {
             LinkGenerator = linkGenerator;
             TypeDetector = typeDetector;
@@ -37,6 +37,6 @@ namespace Opds4Net.Web.Util
         /// <summary>
         /// 
         /// </summary>
-        public IAdapterFactory AdapterFactory { get; set; }
+        public IAccessorFactory AdapterFactory { get; set; }
     }
 }

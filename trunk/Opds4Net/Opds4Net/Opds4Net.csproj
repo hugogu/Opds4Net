@@ -49,8 +49,8 @@
   <ItemGroup>
     <Compile Include="CurrencyCodes.cs" />
     <Compile Include="FeedLinkRelation.cs" />
-    <Compile Include="Reflection\IAdapterFactory.cs" />
-    <Compile Include="Reflection\NamingAdapterFactory.cs" />
+    <Compile Include="Reflection\IAccessorFactory.cs" />
+    <Compile Include="Reflection\AdaptedAccessorFactory.cs" />
     <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
     <Compile Include="Server\Conveter\ItemGeneratedEventArgs.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">
@@ -79,8 +79,7 @@
     <Compile Include="Server\Conveter\NamingDataOpdsItemConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\Conveter\NamingDataSource.cs" />
-    <Compile Include="Server\Detection\DynamicObjectDetector.cs" />
+    <Compile Include="Server\Conveter\OpdsDataSource.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSCategoryRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSSearchRequest.cs" />
@@ -101,13 +100,13 @@
     <Compile Include="Server\Conveter\OpdsItemsResult.cs" />
     <Compile Include="Server\Storage\WebLocalStorage.cs" />
     <Compile Include="Util\DefaultKeySelectorAttribute.cs" />
-    <Compile Include="Reflection\IPropertyAdapter.cs">
+    <Compile Include="Reflection\IPropertyAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\FileSystemHelper.cs" />
     <Compile Include="Util\ModelHelper.cs" />
     <Compile Include="Reflection\Extension\ObjectExtension.cs" />
-    <Compile Include="Reflection\NamingAdapter.cs" />
+    <Compile Include="Reflection\AdaptedPropertyAccessor.cs" />
     <Compile Include="Util\OpdsHelper.cs" />
     <Compile Include="Util\RangeFileResult.cs">
       <SubType>Code</SubType>

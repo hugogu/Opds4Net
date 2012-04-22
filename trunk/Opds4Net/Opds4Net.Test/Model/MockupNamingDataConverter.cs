@@ -17,7 +17,7 @@ namespace Opds4Net.Test.Model
         public MockDataConverterComponentFactory(
             [Import]IOpdsLinkGenerator linkGenerator,
             [Import("OpdsData")]IDataTypeDetector typeDetector,
-            [Import("Naming")]IAdapterFactory adapterFactory)
+            [Import("Naming")]IAccessorFactory adapterFactory)
         {
             LinkGenerator = linkGenerator;
             TypeDetector = typeDetector;
@@ -28,7 +28,7 @@ namespace Opds4Net.Test.Model
 
         public IDataTypeDetector TypeDetector { get; set; }
 
-        public IAdapterFactory AdapterFactory { get; set; }
+        public IAccessorFactory AdapterFactory { get; set; }
     }
 
     /// <summary>

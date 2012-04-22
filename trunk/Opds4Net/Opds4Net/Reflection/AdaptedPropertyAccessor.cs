@@ -7,34 +7,34 @@ using System.Reflection;
 namespace Opds4Net.Reflection
 {
     /// <summary>
-    /// 
+    /// Provides the capability to get property value from an object by a given name.
     /// </summary>
-    public class NamingAdapter<T> : IPropertyAdapter
+    public class AdaptedPropertyAccessor<T> : IPropertyAccessor
     {
         private static Func<T, string, object> memberAdaptor = null;
 
-        static NamingAdapter()
+        static AdaptedPropertyAccessor()
         {
             InitializeMemberAdapter();
         }
 
         /// <summary>
-        /// 
+        /// Gets property value from an object by an given propertyName.
         /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <param name="instance">The object to get value from.</param>
+        /// <param name="propertyName">The property name by which to get value from.</param>
+        /// <returns>Property value fetched from the given instance.</returns>
         public static object GetProperty(T instance, string propertyName)
         {
             return memberAdaptor(instance, propertyName);
         }
 
         /// <summary>
-        /// 
+        /// Gets property value from an object by an given propertyName.
         /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <param name="instance">The object to get value from.</param>
+        /// <param name="propertyName">The property name by which to get value from.</param>
+        /// <returns>Property value fetched from the given instance.</returns>
         public object GetProperty(object instance, string propertyName)
         {
             return GetProperty((T)instance, propertyName);
@@ -59,6 +59,7 @@ namespace Opds4Net.Reflection
 
                 foreach (var propertyPair in propertyPairs)
                 {
+                    // Build the expression to fetch property value from complex type by a given property path.
                     var property = Expression.Property(instance, propertyInfo.Name);
                     if (!String.IsNullOrEmpty(propertyPair.Value))
                     {
@@ -69,7 +70,7 @@ namespace Opds4Net.Reflection
                         }
                     }
                     // case property.Name.GetHashCode():
-                    //     return property as object;
+                    //     return property.path.path as object;
                     cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), Expression.Constant(propertyPair.Key, typeof(int))));
                 }
             }

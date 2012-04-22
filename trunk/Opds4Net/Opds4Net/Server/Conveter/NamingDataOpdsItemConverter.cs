@@ -27,6 +27,9 @@ namespace Opds4Net.Server
         [ImportingConstructor]
         public NamingDataOpdsItemConverter([Import]IOpdsItemConverterComponentFactory componentFactory)
         {
+            if (componentFactory == null)
+                throw new ArgumentNullException("componentFactory");
+
             ComponentFactory = componentFactory;
         }
 
@@ -40,7 +43,7 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public OpdsItemsResult GetItems(NamingDataSource request)
+        public OpdsItemsResult GetItems(OpdsDataSource request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
@@ -48,13 +51,13 @@ namespace Opds4Net.Server
             return new OpdsItemsResult() { Items = ConvertDataItems(request) };
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(NamingDataSource dataSource)
+        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsDataSource dataSource)
         {
             // Assuming every item is of different type.
             // PropertyAdapter should be retreived for every item.
             foreach (var item in dataSource.Data ?? new IOpdsData[] { })
             {
-                var adapter = ComponentFactory.AdapterFactory.GetAdapter(item);
+                var adapter = ComponentFactory.AdapterFactory.GetAccessor(item);
                 var dataType = ComponentFactory.TypeDetector.DetectType(item);
                 if (dataType == OpdsDataType.Category)
                 {
@@ -71,7 +74,7 @@ namespace Opds4Net.Server
             }
         }
 
-        private SyndicationItem BuildEntity(IPropertyAdapter adapter, object item, bool withDetail)
+        private SyndicationItem BuildEntity(IPropertyAccessor adapter, object item, bool withDetail)
         {
             var syndicationItem = CreateBasicDataItems(adapter, item);
 
@@ -131,7 +134,7 @@ namespace Opds4Net.Server
             return syndicationItem;
         }
 
-        private OpdsItem CreateBasicDataItems(IPropertyAdapter adapter, object item)
+        private OpdsItem CreateBasicDataItems(IPropertyAccessor adapter, object item)
         {
             var syndicationItem = new OpdsItem()
             {
@@ -160,12 +163,17 @@ namespace Opds4Net.Server
         }
 
         /// <summary>
-        /// 
+        /// Raise the ItemGenerated event.
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="data"></param>
+        /// <param name="item">An instance of SyndicationItem generated.</param>
+        /// <param name="data">Data used to generate Syndication item.</param>
         protected virtual void OnSyndicationItemCreated(SyndicationItem item, object data)
         {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (data == null)
+                throw new ArgumentNullException("data");
+
             var temp = ItemGenerated;
             if (temp != null)
             {
