@@ -11,15 +11,12 @@ namespace Opds4Net.Test
     [TestClass]
     public class DetectorTest
     {
-        private IDataTypeDetector dynamicDetector;
         private IDataTypeDetector opdsDataDetector;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            dynamicDetector = TestInitializer.Container.GetExportedValue<IDataTypeDetector>("Dynamic");
             opdsDataDetector = TestInitializer.Container.GetExportedValue<IDataTypeDetector>("OpdsData");
-            Assert.IsNotNull(dynamicDetector);
             Assert.IsNotNull(opdsDataDetector);
         }
 
@@ -28,7 +25,7 @@ namespace Opds4Net.Test
         {
             var obj = new DataEntry();
 
-            var dataType = dynamicDetector.DetectType(obj);
+            var dataType = opdsDataDetector.DetectType(obj);
             Assert.AreEqual(OpdsDataType.Detial, dataType);
         }
 
@@ -48,7 +45,7 @@ namespace Opds4Net.Test
 
             // AnonymousType is compiled to internal class.
             // So requires the current Assembly Internal Visible to The Opds4Net assembly.
-            var detectedType = dynamicDetector.DetectType(obj);
+            var detectedType = opdsDataDetector.DetectType(obj);
             Assert.AreEqual(OpdsDataType.Detial, detectedType);
         }
     }

@@ -186,7 +186,7 @@ namespace Opds4Net.Model
                 }
                 else
                 {
-                    // TODO: Record Error.
+                    throw new XmlException(String.Format("indirectAcquisition element doesn't defined type attribute."));
                 }
             }
         }

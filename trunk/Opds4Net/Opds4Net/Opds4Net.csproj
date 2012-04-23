@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Commons.Xml.Relaxng, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Commons.Xml.Relaxng.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -49,6 +53,9 @@
   <ItemGroup>
     <Compile Include="CurrencyCodes.cs" />
     <Compile Include="FeedLinkRelation.cs" />
+    <Compile Include="Model\Validation\OpdsValidateReader.cs" />
+    <Compile Include="Model\Validation\OpdsValidationErrorLevel.cs" />
+    <Compile Include="Model\Validation\OpdsValidationEventArgs.cs" />
     <Compile Include="Reflection\IAccessorFactory.cs" />
     <Compile Include="Reflection\AdaptedAccessorFactory.cs" />
     <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
@@ -114,6 +121,18 @@
     <Compile Include="Util\WebRequestHelper.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Libs\Commons.Xml.Relaxng.dll" />
+    <Content Include="Schemas\atom.rng">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Schemas\opds_catalog.rng">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schemas\readme.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
