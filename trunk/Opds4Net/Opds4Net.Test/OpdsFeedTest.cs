@@ -107,5 +107,17 @@ namespace Opds4Net.Test
                 Assert.IsNotNull(ns.Key.Name);
             }
         }
+
+        [TestMethod]
+        public void LoadFeedWithBase64EncodedImage()
+        {
+            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/search.opds/?default_prefix=titles&sort_order=downloads&start_index=1"));
+            Assert.IsTrue(feed.Items.Count() > 0);
+            var entry = feed.Items.FirstOrDefault();
+            Assert.IsNotNull(entry);
+            Assert.IsTrue(entry.Links.Count > 0);
+            var link = entry.Links.Last();
+            Assert.AreEqual("data", link.Uri.Scheme);
+        }
     }
 }

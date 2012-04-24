@@ -31,6 +31,17 @@ namespace Opds4Net
         public static readonly KeyValuePair<string, string> Threading = new KeyValuePair<string, string>("thr", "http://purl.org/syndication/thread/1.0");
 
         /// <summary>
+        /// Refer to http://www.opensearch.org/Specifications/OpenSearch/1.1
+        /// </summary>
+        public static readonly KeyValuePair<string, string> OpenSearch = new KeyValuePair<string, string>("opensearch", "http://a9.com/-/spec/opensearch/1.1/");
+
+        /// <summary>
+        /// Introduced the relevance:score on for an entry.
+        /// Refer to http://www.opensearch.org/Specifications/OpenSearch/Extensions/Relevance/1.0/Draft_1
+        /// </summary>
+        public static readonly KeyValuePair<string, string> Relevance = new KeyValuePair<string, string>("relevance", "http://a9.com/-/opensearch/extensions/relevance/1.0/");
+
+        /// <summary>
         /// Get all the namespace definitions defined within this class.
         /// </summary>
         /// <returns></returns>

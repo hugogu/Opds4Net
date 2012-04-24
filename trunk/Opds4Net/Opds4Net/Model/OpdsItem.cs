@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Serialization;
@@ -34,8 +35,23 @@ namespace Opds4Net.Model
         /// The publisher.
         /// </summary>
         [XmlElement("publisher")]
-        public string Publisher { get; set; } 
+        public string Publisher { get; set; }
+
+        /// <summary>
+        /// The relevance score of the entry. Used in a search result. value range from 0 to 1.
+        /// Default to -1 means not defined;
+        /// </summary>
+        [XmlElement("score")]
+        public double Relevance { get; set; }
         #endregion
+
+        /// <summary>
+        /// Default constructor of OpdsItem
+        /// </summary>
+        public OpdsItem()
+        {
+            Relevance = -1.0;
+        }
 
         /// <summary>
         /// 
@@ -84,6 +100,11 @@ namespace Opds4Net.Model
                 Publisher = reader.ReadElementContentAsString();
                 return true;
             }
+            else if (reader.IsReadingElementOf(OpdsNamespaces.Relevance.Value, "score"))
+            {
+                Relevance = reader.ReadElementContentAsDouble();
+                return true;
+            }
             else
             {
                 return base.TryParseElement(reader, version);
@@ -105,6 +126,8 @@ namespace Opds4Net.Model
                 writer.WriteElementString("identifier", OpdsNamespaces.DublinCore.Value, ISBN);
             if (!String.IsNullOrEmpty(Publisher))
                 writer.WriteElementString("publisher", OpdsNamespaces.DublinCore.Value, Publisher);
+            if (Relevance >= 0)
+                writer.WriteElementString("score", OpdsNamespaces.Relevance.Value, Convert.ToString(Relevance, CultureInfo.InvariantCulture));
 
             base.WriteElementExtensions(writer, version);
         }
