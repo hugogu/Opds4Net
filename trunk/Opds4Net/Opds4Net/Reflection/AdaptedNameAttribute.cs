@@ -5,7 +5,7 @@ namespace Opds4Net.Reflection
     /// <summary>
     /// Give a Prorperty of existing Data Model another name.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Field, AllowMultiple = true)]
     public class AdaptedNameAttribute : Attribute
     {
         /// <summary>

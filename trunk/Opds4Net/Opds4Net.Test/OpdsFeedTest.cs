@@ -111,7 +111,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void LoadFeedWithBase64EncodedImage()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/search.opds/?default_prefix=titles&sort_order=downloads&start_index=1"));
+            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/search.opds/?sort_order=downloads&start_index=1"));
             Assert.IsTrue(feed.Items.Count() > 0);
             var entry = feed.Items.FirstOrDefault();
             Assert.IsNotNull(entry);

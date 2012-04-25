@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.ServiceModel.Syndication;
@@ -66,6 +68,11 @@ namespace Opds4Net.Server
                     var navigationLink = ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
                     if (navigationLink != null)
                     {
+                        var count = item.GetProperty("Count", adapter);
+                        if (count != null)
+                        {
+                            navigationLink.Count = Convert.ToInt32(count);
+                        }
                         syndicationItem.Links.Add(navigationLink);
                     }
                     OnSyndicationItemCreated(syndicationItem, item);
@@ -122,6 +129,40 @@ namespace Opds4Net.Server
                 var publishDate = item.GetProperty("PublishDate", adapter);
                 if (publishDate != null && (DateTime)publishDate != DateTime.MinValue)
                     syndicationItem.PublishDate = new DateTimeOffset(Convert.ToDateTime(publishDate));
+                var categories = item.GetProperty("CategoryInfo", adapter);
+                if (categories != null)
+                {
+                    if (categories is IEnumerable)
+                    {
+                        foreach (var category in categories as IEnumerable)
+                        {
+                            FillInCategoryInfo(syndicationItem, category);
+                        }
+                    }
+                    else if (categories is string)
+                    {
+                        syndicationItem.Categories.Add(new SyndicationCategory(categories as string));
+                    }
+                    else
+                    {
+                        FillInCategoryInfo(syndicationItem, categories);
+                    }
+                }
+                var contributors = item.GetProperty("ContributorInfo", adapter);
+                if (contributors != null)
+                {
+                    if (contributors is IEnumerable)
+                    {
+                        foreach (var contributor in contributors as IEnumerable)
+                        {
+                            FillInPersonInfo(syndicationItem.Contributors, contributor);
+                        }
+                    }
+                    else
+                    {
+                        FillInPersonInfo(syndicationItem.Contributors, item, adapter, "Contributor");
+                    }
+                }
             }
             // 书籍列表项
             else
@@ -157,6 +198,39 @@ namespace Opds4Net.Server
             return syndicationItem;
         }
 
+        private bool FillInCategoryInfo(SyndicationItem syndicationItem, object data, IPropertyAccessor accessor = null)
+        {
+            var name = data.GetProperty("Name", accessor).ToNullableString();
+            if (name == null)
+                return false;
+
+            var schema = data.GetProperty("Schema", accessor).ToNullableString();
+            var label = data.GetProperty("Label", accessor).ToNullableString();
+            syndicationItem.Categories.Add(new SyndicationCategory(name, schema, label));
+
+            return true;
+        }
+
+        private bool FillInPersonInfo(Collection<SyndicationPerson> persons, object data, IPropertyAccessor accessor = null, string propertyPrefix = null)
+        {
+            var authorName = data.GetProperty(propertyPrefix + "Name", accessor);
+            var authorEmail = data.GetProperty(propertyPrefix + "Email", accessor);
+            var authorSite = data.GetProperty(propertyPrefix + "Site", accessor);
+            if (authorName != null || authorEmail != null || authorSite != null)
+            {
+                persons.Add(new SyndicationPerson()
+                {
+                    Name = authorName.ToNullableString(),
+                    Email = authorEmail.ToNullableString(),
+                    Uri = authorSite.ToNullableString(),
+                });
+
+                return true;
+            }
+
+            return false;
+        }
+
         private OpdsItem CreateBasicDataItems(IPropertyAccessor adapter, object item)
         {
             var syndicationItem = new OpdsItem()
@@ -171,16 +245,7 @@ namespace Opds4Net.Server
             var updateTime = item.GetProperty("UpdateTime", adapter);
             if (updateTime != null && (DateTime)updateTime != DateTime.MinValue)
                 syndicationItem.LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(updateTime));
-            var authorName = item.GetProperty("AuthorName", adapter);
-            var authorEmail = item.GetProperty("AuthorEmail", adapter);
-            var authorSite = item.GetProperty("AuthorSite", adapter);
-            if (authorName != null || authorEmail != null || authorSite != null)
-                syndicationItem.Authors.Add(new SyndicationPerson()
-                {
-                    Name = authorName.ToNullableString(),
-                    Email = authorEmail.ToNullableString(),
-                    Uri = authorSite.ToNullableString(),
-                });
+            FillInPersonInfo(syndicationItem.Authors, item, adapter, "Author");
 
             return syndicationItem;
         }

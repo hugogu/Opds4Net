@@ -12,6 +12,12 @@ namespace Opds4Net.Test
     public class ModelHelperTest
     {
         [TestMethod]
+        public void StringNullOperationTest()
+        {
+            Assert.AreEqual(String.Empty, String.Empty + null);
+        }
+
+        [TestMethod]
         public void GetPropertyTest()
         {
             var name = "xailjg";
@@ -29,7 +35,7 @@ namespace Opds4Net.Test
         public void GetPropertyByExtensionTest()
         {
             var name = "xailjg";
-            var model = new DataModel() { Name = name };
+            object model = new DataModel() { Name = name };
 
             Assert.AreEqual(name, model.GetProperty("Name"));
             Assert.AreEqual(name, model.GetProperty("Title"));
@@ -49,6 +55,28 @@ namespace Opds4Net.Test
             model.AuthorInfo = null;
             Assert.AreEqual(null, model.GetProperty("AuthorName"));
             Assert.AreEqual(null, model.GetProperty("AuthorAddress"));
+        }
+
+        [TestMethod]
+        public void GetOPdsPropertyFromObjectsTest()
+        {
+            var name = "asdfaf";
+            var objs = new object[]
+            {
+                new DataModel()
+                {
+                    Name = name
+                },
+                new CategoryInfo()
+                {
+                    Name = name
+                }
+            };
+
+            Assert.AreEqual(name, objs.GetProperty("Name"));
+            Assert.AreEqual(name, objs.GetProperty("Title"));
+            Assert.IsNotNull(objs.GetProperty("CategoryInfo"));
+            Assert.AreEqual(name, objs.GetProperty("CategoryInfo").GetProperty("Name"));
         }
 
         [TestMethod]

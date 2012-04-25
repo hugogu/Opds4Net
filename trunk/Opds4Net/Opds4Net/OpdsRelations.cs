@@ -11,6 +11,21 @@
         public static readonly string Alternate = "alternate";
 
         /// <summary>
+        /// Defines the relate links for a publication.
+        /// </summary>
+        public static readonly string Related = "related";
+
+        /// <summary>
+        /// Defined the relation for a link contains user replies.
+        /// </summary>
+        public static readonly string Replies = "replies";
+
+        /// <summary>
+        /// Defines the relation for a link to Lincense Page.
+        /// </summary>
+        public static readonly string License = "license";
+
+        /// <summary>
         /// A generic relation that indicates that the complete representation of the content Resource may be retrieved.
         /// </summary>
         public static readonly string Acquisition = "http://opds-spec.org/acquisition";

@@ -58,6 +58,7 @@
     <Compile Include="DetectorTest.cs" />
     <Compile Include="FSOpdsDataSourceTest.cs" />
     <Compile Include="ModelHelperTest.cs" />
+    <Compile Include="Model\CategoryInfo.cs" />
     <Compile Include="Model\DataModel.cs" />
     <Compile Include="Model\MockupNamingDataConverter.cs" />
     <Compile Include="Model\MockupNamingDataSource.cs" />

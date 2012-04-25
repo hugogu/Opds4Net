@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -51,6 +52,10 @@ namespace Opds4Net.Reflection
 
             // switch (memberName.GetHashCode()) {
             var cases = new List<SwitchCase>();
+            // case: class.Name.GetHashCode():
+            //      return instance;
+            cases.Add(Expression.SwitchCase(Expression.Convert(instance, typeof(object)),
+                GetClassNamesHashes(typeof(T)).Select(h => Expression.Constant(h, typeof(int)))));
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var propertyPairs = GetPropertyNamesHashes(propertyInfo);
@@ -85,6 +90,8 @@ namespace Opds4Net.Reflection
             var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
             var methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
 
+            Debug.WriteLine(String.Format("Generate Accessor Method for class {0} defined {1} properties.", type.FullName, cases.Count));
+
             memberAdaptor = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
         }
 
@@ -98,6 +105,15 @@ namespace Opds4Net.Reflection
                 {
                     yield return new KeyValuePair<int, string>(attribute.Name.GetHashCode(), attribute.PropertyPath);
                 }
+            }
+        }
+
+        private static IEnumerable<int> GetClassNamesHashes(Type type)
+        {
+            yield return type.Name.GetHashCode();
+            foreach (AdaptedNameAttribute attribute in type.GetCustomAttributes(typeof(AdaptedNameAttribute), true))
+            {
+                yield return attribute.Name.GetHashCode();
             }
         }
     }
