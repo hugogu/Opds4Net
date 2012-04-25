@@ -98,7 +98,7 @@ namespace Opds4Net.Test
         public void GetAllOpdsNamespacesTest()
         {
             var namespaces = OpdsNamespaces.GetAll();
-            Assert.AreEqual(3, namespaces.Count());
+            Assert.AreEqual(5, namespaces.Count());
             foreach (var ns in namespaces)
             {
                 Assert.IsNotNull(ns);

@@ -43,6 +43,15 @@ namespace Opds4Net.Model
         /// </summary>
         [XmlElement("score")]
         public double Relevance { get; set; }
+
+        /// <summary>
+        /// Defined the size or duration information of the resource.
+        /// In Dublin Core it is recommended to be the Content-Length of the resource.
+        /// But in OPDS, the Content-Length is represents by the size attribute of acquisition Link.
+        /// So the extent here is recommended to be the word count information.
+        /// </summary>
+        [XmlElement("extent")]
+        public string Extent { get; set; }
         #endregion
 
         /// <summary>
@@ -105,6 +114,11 @@ namespace Opds4Net.Model
                 Relevance = reader.ReadElementContentAsDouble();
                 return true;
             }
+            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "extent"))
+            {
+                Extent = reader.ReadElementContentAsString();
+                return true;
+            }
             else
             {
                 return base.TryParseElement(reader, version);
@@ -118,16 +132,18 @@ namespace Opds4Net.Model
         /// <param name="version"></param>
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
-            if (!String.IsNullOrEmpty(Language))
+            if (!String.IsNullOrWhiteSpace(Language))
                 writer.WriteElementString("language", OpdsNamespaces.DublinCore.Value, Language);
-            if (!String.IsNullOrEmpty(Issued))
+            if (!String.IsNullOrWhiteSpace(Issued))
                 writer.WriteElementString("issued", OpdsNamespaces.DublinCore.Value, Issued);
-            if (!String.IsNullOrEmpty(ISBN))
+            if (!String.IsNullOrWhiteSpace(ISBN))
                 writer.WriteElementString("identifier", OpdsNamespaces.DublinCore.Value, ISBN);
-            if (!String.IsNullOrEmpty(Publisher))
+            if (!String.IsNullOrWhiteSpace(Publisher))
                 writer.WriteElementString("publisher", OpdsNamespaces.DublinCore.Value, Publisher);
             if (Relevance >= 0)
                 writer.WriteElementString("score", OpdsNamespaces.Relevance.Value, Convert.ToString(Relevance, CultureInfo.InvariantCulture));
+            if (!String.IsNullOrWhiteSpace(Extent))
+                writer.WriteElementString("extent", OpdsNamespaces.DublinCore.Value, Extent);
 
             base.WriteElementExtensions(writer, version);
         }

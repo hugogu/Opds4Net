@@ -20,7 +20,8 @@ namespace Opds4Net
 
         /// <summary>
         /// Introduced dc:publisher, dc:issued, dc:language, dc:identifier element on an entry.
-        /// Refer to http://dublincore.org/documents/dcmi-terms/
+        /// Refer to http://dublincore.org/documents/dcmi-terms/ 
+        /// and http://web.resource.org/rss/1.0/modules/dcterms
         /// </summary>
         public static readonly KeyValuePair<string, string> DublinCore = new KeyValuePair<string, string>("dc", "http://purl.org/dc/terms/");
 

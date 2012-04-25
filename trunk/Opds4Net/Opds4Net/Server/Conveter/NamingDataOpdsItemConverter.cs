@@ -5,6 +5,7 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using Opds4Net.Model;
 using Opds4Net.Reflection;
+using Opds4Net.Reflection.Extension;
 using Opds4Net.Util;
 
 namespace Opds4Net.Server
@@ -86,35 +87,39 @@ namespace Opds4Net.Server
             if (withDetail)
             {
                 // 购买链接
-                var price = adapter.GetProperty(item, "Price");
+                var price = item.GetProperty("Price", adapter);
                 if (price != null)
                 {
-                    var buyLinkId = adapter.GetProperty(item, "BuyLinkId").ToNullableString() ?? syndicationItem.Id;
+                    var buyLinkId = item.GetProperty("BuyLinkId", adapter).ToNullableString() ?? syndicationItem.Id;
                     var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
                     if (buyLink != null)
                     {
-                        buyLink.Prices.Single().CurrencyCode = adapter.GetProperty(item, "CurrencyCode").ToNullableString() ?? "CNY";
+                        buyLink.Prices.Single().CurrencyCode = item.GetProperty("CurrencyCode", adapter).ToNullableString() ?? "CNY";
                         syndicationItem.Links.Add(buyLink);
                     }
                 }
 
                 // 下载链接
-                var downloadLinkId = adapter.GetProperty(item, "DownloadLinkId").ToNullableString() ?? syndicationItem.Id;
+                var downloadLinkId = item.GetProperty("DownloadLinkId", adapter).ToNullableString() ?? syndicationItem.Id;
                 var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
                 if (downloadLink != null)
                 {
-                    downloadLink.MediaType = adapter.GetProperty(item, "MimeType").ToNullableString();
-                    downloadLink.Length = Convert.ToInt64(adapter.GetProperty(item, "Length"));
+                    downloadLink.MediaType = item.GetProperty("MimeType", adapter).ToNullableString();
+                    downloadLink.Length = Convert.ToInt64(item.GetProperty("Length", adapter));
                     syndicationItem.Links.Add(downloadLink);
                 }
 
                 // 其它详细信息
-                syndicationItem.Content = adapter.GetProperty(item, "Content").MakeSyndicationContent();
-                syndicationItem.Copyright = adapter.GetProperty(item, "Copyright").MakeSyndicationContent();
-                syndicationItem.ISBN = adapter.GetProperty(item, "ISBN").ToNullableString();
-                syndicationItem.Language = adapter.GetProperty(item, "Language").ToNullableString();
-                syndicationItem.Issued = adapter.GetProperty(item, "IssueTime").ToNullableString();
-                var publishDate = adapter.GetProperty(item, "PublishDate");
+                syndicationItem.Content = item.GetProperty("Content", adapter).MakeSyndicationContent();
+                syndicationItem.Copyright = item.GetProperty("Copyright", adapter).MakeSyndicationContent();
+                syndicationItem.ISBN = item.GetProperty("ISBN", adapter).ToNullableString();
+                syndicationItem.Language = item.GetProperty("Language", adapter).ToNullableString();
+                syndicationItem.Issued = item.GetProperty("IssueTime", adapter).ToNullableString();
+                syndicationItem.Extent = item.GetProperty("Extent", adapter).ToNullableString();
+                var relevance = item.GetProperty("Relevance", adapter);
+                if (relevance != null)
+                    syndicationItem.Relevance = Convert.ToDouble(relevance);
+                var publishDate = item.GetProperty("PublishDate", adapter);
                 if (publishDate != null && (DateTime)publishDate != DateTime.MinValue)
                     syndicationItem.PublishDate = new DateTimeOffset(Convert.ToDateTime(publishDate));
             }
@@ -122,7 +127,7 @@ namespace Opds4Net.Server
             else
             {
                 // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
-                var detailLinkId = adapter.GetProperty(item, "DetailLinkId").ToNullableString() ?? syndicationItem.Id;
+                var detailLinkId = item.GetProperty("DetailLinkId", adapter).ToNullableString() ?? syndicationItem.Id;
                 var detailLink = ComponentFactory.LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
                 if (detailLink != null)
                     syndicationItem.Links.Add(detailLink);
@@ -131,14 +136,14 @@ namespace Opds4Net.Server
             }
 
             // 图片链接
-            var thumbnail = adapter.GetProperty(item, "Thumbnail").ToNullableString();
+            var thumbnail = item.GetProperty("Thumbnail", adapter).ToNullableString();
             if (thumbnail != null)
                 syndicationItem.Links.Add(new SyndicationLink()
                 {
                     Uri = new Uri(thumbnail),
                     RelationshipType = OpdsRelations.Thumbnail,
                 });
-            var cover = adapter.GetProperty(item, "Cover").ToNullableString();
+            var cover = item.GetProperty("Cover", adapter).ToNullableString();
             if (cover != null)
                 syndicationItem.Links.Add(new SyndicationLink()
                 {
@@ -146,7 +151,7 @@ namespace Opds4Net.Server
                     RelationshipType = OpdsRelations.Cover,
                 });
 
-            syndicationItem.Publisher = adapter.GetProperty(item, "Publisher").ToNullableString();
+            syndicationItem.Publisher = item.GetProperty("Publisher", adapter).ToNullableString();
             OnSyndicationItemCreated(syndicationItem, item);
 
             return syndicationItem;
@@ -156,19 +161,19 @@ namespace Opds4Net.Server
         {
             var syndicationItem = new OpdsItem()
             {
-                Title = adapter.GetProperty(item, "Title").MakeSyndicationContent(),
-                Id = adapter.GetProperty(item, "Id").ToNullableString(),
-                Summary = adapter.GetProperty(item, "Summary").MakeSyndicationContent(),
+                Title = item.GetProperty("Title", adapter).MakeSyndicationContent(),
+                Id = item.GetProperty("Id", adapter).ToNullableString(),
+                Summary = item.GetProperty("Summary", adapter).MakeSyndicationContent(),
             };
             if (syndicationItem.Id == null)
                 throw new InvalidProgramException(String.Format("Id is missing in the given data of type {0}.", item.GetType().FullName));
 
-            var updateTime = adapter.GetProperty(item, "UpdateTime");
+            var updateTime = item.GetProperty("UpdateTime", adapter);
             if (updateTime != null && (DateTime)updateTime != DateTime.MinValue)
                 syndicationItem.LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(updateTime));
-            var authorName = adapter.GetProperty(item, "AuthorName");
-            var authorEmail = adapter.GetProperty(item, "AuthorEmail");
-            var authorSite = adapter.GetProperty(item, "AuthorSite");
+            var authorName = item.GetProperty("AuthorName", adapter);
+            var authorEmail = item.GetProperty("AuthorEmail", adapter);
+            var authorSite = item.GetProperty("AuthorSite", adapter);
             if (authorName != null || authorEmail != null || authorSite != null)
                 syndicationItem.Authors.Add(new SyndicationPerson()
                 {
