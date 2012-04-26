@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CurrencyCodes.cs" />
-    <Compile Include="FeedLinkRelation.cs" />
     <Compile Include="Model\Validation\OpdsValidateReader.cs" />
     <Compile Include="Model\Validation\OpdsValidationErrorLevel.cs" />
     <Compile Include="Model\Validation\OpdsValidationEventArgs.cs" />

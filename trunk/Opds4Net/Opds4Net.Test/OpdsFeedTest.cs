@@ -17,15 +17,6 @@ namespace Opds4Net.Test
             WebRequestHelper.SetAllowUnsafeHeaderParsing();
         }
 
-        /// <summary>
-        /// A test for GetXmlEnumName
-        /// </summary>
-        [TestMethod]
-        public void GetXmlEnumNameTest()
-        {
-            Assert.AreEqual("last", FeedLinkRelation.Last.GetXmlEnumName());
-        }
-
         [TestMethod]
         [DeploymentItem("Opds4Net.dll.config")]
         public void LoadingTest()
@@ -87,11 +78,11 @@ namespace Opds4Net.Test
         public void FindLinkTest()
         {
             var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/category.atom"));
-            Assert.AreEqual("http://opds.9yue.com/category.atom?site=", feed.FindLink(FeedLinkRelation.Self).Uri.ToString());
-            Assert.AreEqual("http://opds.9yue.com/search.atom?key={searchTerms}&site=", feed.FindLink(FeedLinkRelation.Search).Uri.ToString());
+            Assert.AreEqual("http://opds.9yue.com/category.atom?site=", feed.FindLink("self").Uri.ToString());
+            Assert.AreEqual("http://opds.9yue.com/search.atom?key={searchTerms}&site=", feed.FindLink("search").Uri.ToString());
             feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/popular.atom"));
-            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=2", feed.FindLink(FeedLinkRelation.Next).Uri.ToString());
-            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=5", feed.FindLink(FeedLinkRelation.Last).Uri.ToString());
+            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=2", feed.FindLink("next").Uri.ToString());
+            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=5", feed.FindLink("last").Uri.ToString());
         }
 
         [TestMethod]

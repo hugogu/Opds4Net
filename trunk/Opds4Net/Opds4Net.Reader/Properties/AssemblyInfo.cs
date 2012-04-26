@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows;
 
-[assembly: AssemblyTitle("Opds4Net")]
+[assembly: AssemblyTitle("Opds4Net.Reader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Opds4Net")]
-[assembly: AssemblyCopyright("Copyright ©  2012 Fadefy")]
+[assembly: AssemblyProduct("Opds4Net.Reader")]
+[assembly: AssemblyCopyright("Copyright © 2012 Fadefy")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("f7e32630-fb51-4024-bdee-86acb1723d7d")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None,
+    ResourceDictionaryLocation.SourceAssembly)]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

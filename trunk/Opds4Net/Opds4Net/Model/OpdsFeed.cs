@@ -131,9 +131,9 @@ namespace Opds4Net.Model
         /// </summary>
         /// <param name="relation"></param>
         /// <returns></returns>
-        public SyndicationLink FindLink(FeedLinkRelation relation)
+        public SyndicationLink FindLink(string relation)
         {
-            return Links.SingleOrDefault(l => l.RelationshipType == relation.GetXmlEnumName());
+            return Links.SingleOrDefault(l => l.RelationshipType == relation);
         }
 
         /// <summary>
