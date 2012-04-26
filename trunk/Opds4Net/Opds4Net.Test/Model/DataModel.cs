@@ -70,14 +70,28 @@ namespace Opds4Net.Test.Model
     /// </summary>
     public class DataEntry : DataModel
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public DataEntry()
         {
             AuthorInfo = new AuthorInfo();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Decimal Price { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string MimeType { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ISBN { get { return "urn:isbn:123412345797"; } }
 
         [AdaptedName("AuthorAddress", PropertyPath = "Address.Country")]
         [AdaptedName("AuthorEmail", PropertyPath = "Email")]

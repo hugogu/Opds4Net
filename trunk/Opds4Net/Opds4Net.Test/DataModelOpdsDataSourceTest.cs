@@ -5,6 +5,7 @@ using Opds4Net.Model;
 using Opds4Net.Server;
 using Opds4Net.Test.Common;
 using Opds4Net.Test.Model;
+using Opds4Net.Util;
 
 namespace Opds4Net.Test
 {
@@ -62,6 +63,10 @@ namespace Opds4Net.Test
             }
             Assert.AreEqual("CNY", (item.Links.First() as OpdsLink).Prices.Single().CurrencyCode);
             Assert.AreEqual(5M, (item.Links.First() as OpdsLink).Prices.Single().Price);
+            Assert.AreEqual(new DataEntry().ISBN, (item as OpdsItem).ISBN);
+            // type of ISBN
+            var xml = item.ToXml();
+            Assert.IsTrue(xml.Contains(":type=\"URI\""));
         }
 
         [TestMethod]

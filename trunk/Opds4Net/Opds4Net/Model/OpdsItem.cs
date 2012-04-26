@@ -137,7 +137,15 @@ namespace Opds4Net.Model
             if (!String.IsNullOrWhiteSpace(Issued))
                 writer.WriteElementString("issued", OpdsNamespaces.DublinCore.Value, Issued);
             if (!String.IsNullOrWhiteSpace(ISBN))
-                writer.WriteElementString("identifier", OpdsNamespaces.DublinCore.Value, ISBN);
+            {
+                writer.WriteStartElement("identifier", OpdsNamespaces.DublinCore.Value);
+                if (ISBN.StartsWith("urn:"))
+                {
+                    writer.WriteAttributeString("type", OpdsNamespaces.Xsi.Value, "URI");
+                }
+                writer.WriteValue(ISBN);
+                writer.WriteEndElement();
+            }
             if (!String.IsNullOrWhiteSpace(Publisher))
                 writer.WriteElementString("publisher", OpdsNamespaces.DublinCore.Value, Publisher);
             if (Relevance >= 0)

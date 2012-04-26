@@ -43,6 +43,11 @@ namespace Opds4Net
         public static readonly KeyValuePair<string, string> Relevance = new KeyValuePair<string, string>("relevance", "http://a9.com/-/opensearch/extensions/relevance/1.0/");
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static readonly KeyValuePair<string, string> Xsi = new KeyValuePair<string, string>("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+        /// <summary>
         /// Get all the namespace definitions defined within this class.
         /// </summary>
         /// <returns></returns>

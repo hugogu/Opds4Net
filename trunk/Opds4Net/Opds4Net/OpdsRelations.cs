@@ -89,5 +89,11 @@
         /// A Resource that includes a user's set of subscriptions, which MAY be represented as an OPDS Catalog.
         /// </summary>
         public static readonly string Subscriptions = "http://opds-spec.org/subscriptions";
+
+        /// <summary>
+        /// An Acquisition Feed with a subset or an alternate order of the Publications listed.
+        /// Links using this relation MUST only appear in Acquisition Feeds.
+        /// </summary>
+        public static readonly string Facet = "http://opds-spec.org/facet";
     }
 }

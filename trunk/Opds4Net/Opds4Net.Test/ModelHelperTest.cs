@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Opds4Net.Reflection;
 using Opds4Net.Reflection.Extension;
@@ -73,10 +76,44 @@ namespace Opds4Net.Test
                 }
             };
 
-            Assert.AreEqual(name, objs.GetProperty("Name"));
+            var result = objs.GetProperty("Name");
+            Assert.IsInstanceOfType(result, typeof(string));
+            Assert.AreEqual(name, result);
             Assert.AreEqual(name, objs.GetProperty("Title"));
-            Assert.IsNotNull(objs.GetProperty("CategoryInfo"));
+            var category = objs.GetProperty("CategoryInfo");
+            Assert.IsNotNull(category);
+            Assert.IsInstanceOfType(category, typeof(CategoryInfo));
             Assert.AreEqual(name, objs.GetProperty("CategoryInfo").GetProperty("Name"));
+        }
+
+        [TestMethod]
+        public void GetOpdsArrayPropertyFromObjectsTest()
+        {
+            var name = "asdfaf";
+            var objs = new object[]
+            {
+                new DataModel()
+                {
+                    Name = name
+                },
+                new [] {
+                    new CategoryInfo()
+                    {
+                        Name = name
+                    },
+                    new CategoryInfo()
+                    {
+                        Name = name
+                    }
+                }
+            };
+
+            var categores = objs.GetProperty("CategoryInfo");
+            Assert.IsNotNull(categores);
+            Assert.IsInstanceOfType(categores, typeof(IEnumerable));
+            Assert.AreEqual(2, (categores as IEnumerable<object>).Count());
+            var category = (categores as IEnumerable<object>).First();
+            Assert.AreEqual(name, category.GetProperty("Name"));
         }
 
         [TestMethod]

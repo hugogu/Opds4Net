@@ -65,7 +65,9 @@ namespace Opds4Net.Server
             var link = new OpdsLink()
             {
                 Title = title,
-                MediaType = OpdsMediaType.NavigationFeed,
+                // We don't know the media type of Uri point to.
+                // It could either be a acquisition link or a navigation link.
+                MediaType = OpdsMediaType.Feed,
                 RelationshipType = OpdsRelations.Alternate,
                 Uri = new Uri(String.Format(WebRequestHelper.CurrentHostUri + NavigationLinkPattern, Uri.EscapeDataString(id)), UriKind.RelativeOrAbsolute)
             };

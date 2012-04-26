@@ -129,7 +129,16 @@ namespace Opds4Net.Util
             if (value == null)
                 return null;
             else
-                return new TextSyndicationContent(Convert.ToString(value));
+            {
+                var content = Convert.ToString(value);
+                var kind = TextSyndicationContentKind.Plaintext;
+                if (content.Contains('<') && content.Contains('>'))
+                {
+                    kind = TextSyndicationContentKind.Html;
+                }
+
+                return new TextSyndicationContent(content, kind);
+            }
         }
 
         /// <summary>

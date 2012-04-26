@@ -21,6 +21,20 @@ namespace Opds4Net.Model
         public int? Count { get; set; }
 
         /// <summary>
+        /// A Facet is considered active, if the attribute associated to the Facet is already being used to filter Publications in the current Acquisition Feed.
+        /// The OPDS Catalog provider SHOULD indicate that a Facet is active using the "opds:activeFacet" attribute set to "true".
+        /// If the Facet is not active, the "opds:activeFacet" attribute SHOULD NOT appear in the link.
+        /// In a group of Facets, an OPDS Catalog provider MUST NOT mark more than one Facet as active.
+        /// </summary>
+        public bool? ActiveFacet { get; set; }
+
+        /// <summary>
+        /// Facets CAN be grouped together by the OPDS Catalog provider using an "opds:facetGroup" attribute. The value of this attribute is the name of the group.
+        /// A Facet MUST NOT appear in more than a single group.
+        /// </summary>
+        public string FacetGroup { get; set; }
+
+        /// <summary>
         /// The price information if the link an aquisition link requires purchase.
         /// </summary>
         public Collection<OpdsPrice> Prices { get { return prices; } }
@@ -69,6 +83,28 @@ namespace Opds4Net.Model
                     Count = count;
 
                 return true;
+            }
+            else if (name == "activeFacet" && ns == OpdsNamespaces.Opds.Value)
+            {
+                var active = true;
+                if (Boolean.TryParse(value, out active))
+                {
+                    if (!active)
+                    {
+                        throw new XmlException("opds:activeFacet SOULD not has a value of 'false', just don't provide opds:activeFacet.");
+                    }
+
+                    ActiveFacet = active;
+                }
+
+                return true;
+            }
+            else if (name == "facetGroup" && ns == OpdsNamespaces.Opds.Value)
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new XmlException("opds:facetGroup SHOULD not be empty");
+
+                FacetGroup = value;
             }
 
             return false;
@@ -128,6 +164,16 @@ namespace Opds4Net.Model
             if (Count.HasValue)
             {
                 writer.WriteAttributeString("count", OpdsNamespaces.Threading.Value, Count.Value.ToString());
+            }
+
+            if (ActiveFacet.HasValue)
+            {
+                writer.WriteAttributeString("activeFacet", OpdsNamespaces.Opds.Value, ActiveFacet.Value.ToString());
+            }
+
+            if (FacetGroup != null)
+            {
+                writer.WriteAttributeString("facetGroup", OpdsNamespaces.Opds.Value, FacetGroup);
             }
         }
 

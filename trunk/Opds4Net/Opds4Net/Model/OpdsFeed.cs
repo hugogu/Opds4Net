@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -58,7 +59,7 @@ namespace Opds4Net.Model
         public string SearchUri
         {
             get { return GetLinkValue("search"); }
-            set { SetLinkValue("search", value, "搜索", OpdsMediaType.NavigationFeed); }
+            set { SetLinkValue("search", value, "搜索", OpdsMediaType.AcquisitionFeed); }
         }
 
         /// <summary>
@@ -80,12 +81,14 @@ namespace Opds4Net.Model
         }
 
         /// <summary>
-        /// 
+        /// Total count of result set. Usually used in search result feed.
         /// </summary>
-        public new IEnumerable<OpdsItem> Items
-        {
-            get { return base.Items.Cast<OpdsItem>(); }
-        }
+        public int TotalResults { get; set; }
+
+        /// <summary>
+        /// Page size of search result.
+        /// </summary>
+        public int ItemsPerPage { get; set; }
 
         /// <summary>
         /// 
@@ -117,6 +120,15 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        protected override SyndicationLink CreateLink()
+        {
+            return new OpdsLink();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="relation"></param>
         /// <returns></returns>
         public SyndicationLink FindLink(FeedLinkRelation relation)
@@ -127,35 +139,25 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="ns"></param>
-        /// <param name="value"></param>
-        /// <param name="version"></param>
-        /// <returns></returns>
-        protected override bool TryParseAttribute(string name, string ns, string value, string version)
-        {
-            return base.TryParseAttribute(name, ns, value, version);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="reader"></param>
         /// <param name="version"></param>
         /// <returns></returns>
         protected override bool TryParseElement(XmlReader reader, string version)
         {
-            return base.TryParseElement(reader, version);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="version"></param>
-        protected override void WriteAttributeExtensions(XmlWriter writer, string version)
-        {
-            base.WriteAttributeExtensions(writer, version);
+            if (reader.IsReadingElementOf(OpdsNamespaces.OpenSearch.Value, "totalResults"))
+            {
+                TotalResults = reader.ReadElementContentAsInt();
+                return true;
+            }
+            else if (reader.IsReadingElementOf(OpdsNamespaces.OpenSearch.Value, "itemsPerPage"))
+            {
+                ItemsPerPage = reader.ReadElementContentAsInt();
+                return true;
+            }
+            else
+            {
+                return base.TryParseElement(reader, version);
+            }
         }
 
         /// <summary>
@@ -165,6 +167,11 @@ namespace Opds4Net.Model
         /// <param name="version"></param>
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
+            if (TotalResults > 0)
+                writer.WriteElementString("totalResults", OpdsNamespaces.OpenSearch.Value, TotalResults.ToString());
+            if (ItemsPerPage > 0)
+                writer.WriteElementString("itemsPerPage", OpdsNamespaces.OpenSearch.Value, ItemsPerPage.ToString());
+
             base.WriteElementExtensions(writer, version);
         }
 
