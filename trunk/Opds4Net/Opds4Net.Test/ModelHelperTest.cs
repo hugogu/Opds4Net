@@ -148,7 +148,7 @@ namespace Opds4Net.Test
             Assert.IsTrue(timeRandomClass > timeDynamic);
 
             Assert.IsTrue(timeDynamic.TotalMilliseconds < timeStatic.TotalMilliseconds * 10);
-            Assert.IsTrue(timeRandomClass.TotalMilliseconds < timeStatic.TotalMilliseconds * 20);
+            Assert.IsTrue(timeRandomClass.TotalMilliseconds < timeStatic.TotalMilliseconds * 25);
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace Opds4Net.Test
             Assert.AreEqual(name, globalTarget);
 
             // The performance is not improved too much by using multi-thread.
-            Assert.IsTrue(timeDynamic.TotalMilliseconds > timeDynamicMT.TotalMilliseconds * 1.4);
+            Assert.IsTrue(timeDynamic.TotalMilliseconds > timeDynamicMT.TotalMilliseconds * 1.5);
         }
     }
 }

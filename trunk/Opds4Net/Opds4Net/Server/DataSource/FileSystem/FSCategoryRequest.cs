@@ -23,12 +23,12 @@ namespace Opds4Net.Server.FileSystem
         /// 
         /// </summary>
         /// <returns></returns>
-        public override DataResponse Process()
+        public override OpdsData Process()
         {
             var id = Id ?? String.Empty;
             var root = Path.Combine(RootFolder, id);
             var items = new List<object>();
-            var result = new DataResponse() { Data = items };
+            var result = new OpdsData() { Data = items };
 
             if (!Directory.Exists(root))
                 throw new ArgumentException("id");

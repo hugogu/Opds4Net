@@ -6,12 +6,12 @@ namespace Opds4Net.Server
     /// <summary>
     /// Represents the result that IOpdsItemConverter instance produced.
     /// </summary>
-    public class OpdsItemsResult
+    public class OpdsItems
     {
         /// <summary>
-        /// Default constructor of OpdsItemsResult to make sure the Result Items is empty instead of null by default.
+        /// Default constructor of OpdsItems to make sure the Result Items is empty instead of null by default.
         /// </summary>
-        public OpdsItemsResult()
+        public OpdsItems()
         {
             Items = new SyndicationItem[] { };
         }
@@ -20,7 +20,7 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <param name="items"></param>
-        public OpdsItemsResult(IEnumerable<SyndicationItem> items)
+        public OpdsItems(IEnumerable<SyndicationItem> items)
         {
             Items = items;
         }
@@ -28,6 +28,6 @@ namespace Opds4Net.Server
         /// <summary>
         /// Gets or sets the generated Syndication Items.
         /// </summary>
-        public IEnumerable<SyndicationItem> Items { get; set; }
+        public virtual IEnumerable<SyndicationItem> Items { get; set; }
     }
 }

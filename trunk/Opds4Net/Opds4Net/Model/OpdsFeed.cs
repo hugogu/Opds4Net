@@ -147,17 +147,17 @@ namespace Opds4Net.Model
             if (reader.IsReadingElementOf(OpdsNamespaces.OpenSearch.Value, "totalResults"))
             {
                 TotalResults = reader.ReadElementContentAsInt();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.OpenSearch.Value, "itemsPerPage"))
             {
                 ItemsPerPage = reader.ReadElementContentAsInt();
-                return true;
             }
             else
             {
                 return base.TryParseElement(reader, version);
             }
+
+            return true;
         }
 
         /// <summary>

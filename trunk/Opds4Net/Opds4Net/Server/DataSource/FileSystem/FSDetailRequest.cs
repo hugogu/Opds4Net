@@ -29,7 +29,7 @@ namespace Opds4Net.Server.FileSystem
         /// 
         /// </summary>
         /// <returns></returns>
-        public DataResponse Process()
+        public OpdsData Process()
         {
             var id = Id ?? String.Empty;
             var path = Path.Combine(rootFolder, id);
@@ -37,7 +37,7 @@ namespace Opds4Net.Server.FileSystem
             if (!File.Exists(path))
                 throw new ArgumentException("id");
 
-            return new DataResponse()
+            return new OpdsData()
             {
                 Data = new []
                 {

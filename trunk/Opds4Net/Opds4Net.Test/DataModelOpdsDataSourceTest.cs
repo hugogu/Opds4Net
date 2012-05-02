@@ -16,7 +16,7 @@ namespace Opds4Net.Test
     public class DataModelOpdsDataSourceTest
     {
         private IOpdsItemConverter mockSource;
-        private OpdsDataSource itemsDataSource;
+        private OpdsData itemsDataSource;
 
         [TestInitialize]
         public void TestStartup()
@@ -24,7 +24,7 @@ namespace Opds4Net.Test
             mockSource = TestInitializer.Container.GetExportedValue<IOpdsItemConverter>();
             Assert.IsNotNull(mockSource);
 
-            itemsDataSource = new OpdsDataSource()
+            itemsDataSource = new OpdsData()
             {
                 Data = MockupNamingDataSource.GetItems()
             };
@@ -44,7 +44,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void GetItemsTest()
         {
-            var dataSource = new OpdsDataSource()
+            var dataSource = new OpdsData()
             {
                 Data = new [] { MockupNamingDataSource.GetDetailedItems() }
             };

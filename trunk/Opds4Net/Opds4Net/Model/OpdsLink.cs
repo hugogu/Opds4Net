@@ -76,15 +76,15 @@ namespace Opds4Net.Model
         /// <returns></returns>
         protected override bool TryParseAttribute(string name, string ns, string value, string version)
         {
-            if (name == "count" && ns == OpdsNamespaces.Threading.Value)
+            if ("count".Equals(name, StringComparison.Ordinal) &&
+                ns.Equals(OpdsNamespaces.Threading.Value, StringComparison.Ordinal))
             {
                 var count = 0;
                 if (Int32.TryParse(value, out count))
                     Count = count;
-
-                return true;
             }
-            else if (name == "activeFacet" && ns == OpdsNamespaces.Opds.Value)
+            else if ("activeFacet".Equals(name, StringComparison.Ordinal) &&
+                ns.Equals(OpdsNamespaces.Opds.Value, StringComparison.Ordinal))
             {
                 var active = true;
                 if (Boolean.TryParse(value, out active))
@@ -96,18 +96,21 @@ namespace Opds4Net.Model
 
                     ActiveFacet = active;
                 }
-
-                return true;
             }
-            else if (name == "facetGroup" && ns == OpdsNamespaces.Opds.Value)
+            else if ("facetGroup".Equals(name, StringComparison.Ordinal) &&
+                ns.Equals(OpdsNamespaces.Opds.Value, StringComparison.Ordinal))
             {
                 if (String.IsNullOrEmpty(value))
                     throw new XmlException("opds:facetGroup SHOULD not be empty");
 
                 FacetGroup = value;
             }
+            else
+            {
+                return false;
+            }
 
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -140,18 +143,17 @@ namespace Opds4Net.Model
 
                 price.Price = reader.ReadElementContentAsDecimal();
                 prices.Add(price);
-
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.Opds.Value, "indirectAcquisition"))
             {
                 ReadIndirectAcquisitions(reader, IndirectAcquisitions);
-                return true;
             }
             else
             {
                 return base.TryParseElement(reader, version);
             }
+
+            return true;
         }
 
         /// <summary>

@@ -10,15 +10,15 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public DataResponse Process()
+        public OpdsData Process()
         {
-            throw new NotImplementedException();
+            return new OpdsData();
         }
     }
 }

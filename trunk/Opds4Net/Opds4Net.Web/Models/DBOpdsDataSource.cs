@@ -11,8 +11,7 @@ namespace Opds4Net.Web.Models
     /// <summary>
     /// 
     /// </summary>
-    [Export("DB", typeof(IOpdsDataSource))]
-    public class DBOpdsDataSource : IOpdsDataSource
+    public class DBOpdsDataSource
     {
         private AbstractBookDBContext dbContext;
         private IOpdsItemConverter itemConverter;
@@ -44,9 +43,9 @@ namespace Opds4Net.Web.Models
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public OpdsItemsResult GetItems(IDataRequest request)
+        public OpdsItems GetItems(IDataRequest request)
         {
-            var result = new OpdsItemsResult();
+            var result = new OpdsItems();
             // 取主分类
             if (request.Id == null)
             {
@@ -83,7 +82,7 @@ namespace Opds4Net.Web.Models
 
             var book = dbContext.Books.Single(b => b.Id == new Guid(id));
             book.OpdsDataType = OpdsDataType.Detial;
-            var result = itemConverter.GetItems(new OpdsDataSource(new[] { book })).Items.Single();
+            var result = itemConverter.GetItems(new OpdsData(new[] { book })).Items.Single();
             book.OpdsDataType = OpdsDataType.Entity;
 
             return result;
@@ -93,7 +92,7 @@ namespace Opds4Net.Web.Models
         {
             if (categories != null)
             {
-                return itemConverter.GetItems(new OpdsDataSource(categories)).Items;
+                return itemConverter.GetItems(new OpdsData(categories)).Items;
             }
             else
                 return new SyndicationItem[] { };

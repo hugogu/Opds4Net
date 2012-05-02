@@ -20,8 +20,8 @@ namespace Opds4Net.Web
         /// <summary>
         /// 
         /// </summary>
-        [Import("Naming")]
-        public IOpdsDataSource FileSystemOpds { get; set; }
+        [Import("DataModel")]
+        public IOpdsItemConverter OpdsDataConverter { get; set; }
 
         /// <summary>
         /// 

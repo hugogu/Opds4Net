@@ -28,12 +28,12 @@ namespace Opds4Net.Server.FileSystem
         /// 处理文件搜索请求
         /// </summary>
         /// <returns></returns>
-        public override DataResponse Process()
+        public override OpdsData Process()
         {
             var id = Id ?? String.Empty;
             var root = Path.Combine(RootFolder, id);
             var items = new List<object>();
-            var result = new DataResponse() { Data = items };
+            var result = new OpdsData() { Data = items };
 
             foreach(var file in Directory.GetFiles(root, KeyWord, SearchOption.AllDirectories))
             {

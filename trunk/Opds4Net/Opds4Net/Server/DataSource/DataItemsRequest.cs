@@ -45,9 +45,9 @@ namespace Opds4Net.Server
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual DataResponse Process()
+        public virtual OpdsData Process()
         {
-            return new DataResponse();
+            return new OpdsData();
         }
     }
 }

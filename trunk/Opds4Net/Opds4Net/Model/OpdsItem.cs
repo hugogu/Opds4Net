@@ -92,37 +92,33 @@ namespace Opds4Net.Model
             if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "language"))
             {
                 Language = reader.ReadElementContentAsString();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "issued"))
             {
                 Issued = reader.ReadElementContentAsString();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "identifier"))
             {
                 ISBN = reader.ReadElementContentAsString();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "publisher"))
             {
                 Publisher = reader.ReadElementContentAsString();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.Relevance.Value, "score"))
             {
                 Relevance = reader.ReadElementContentAsDouble();
-                return true;
             }
             else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "extent"))
             {
                 Extent = reader.ReadElementContentAsString();
-                return true;
             }
             else
             {
                 return base.TryParseElement(reader, version);
             }
+
+            return true;
         }
 
         /// <summary>

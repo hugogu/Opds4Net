@@ -15,6 +15,6 @@
         /// Processes the request to produce the data used to generate syndication item later.
         /// </summary>
         /// <returns></returns>
-        DataResponse Process();
+        OpdsData Process();
     }
 }

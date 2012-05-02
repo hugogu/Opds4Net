@@ -18,6 +18,7 @@ namespace Opds4Net.Model.Validation
         /// 
         /// </summary>
         /// <param name="xmlFile"></param>
+        /// <param name="rngFile"></param>
         public void Validate(string xmlFile, string rngFile = @".\Schemas\opds_catalog.rng")
         {
             RelaxngPattern relaxPattern = null;
@@ -47,12 +48,18 @@ namespace Opds4Net.Model.Validation
             }
         }
 
-        protected virtual void RaiseValidationError(Exception e, OpdsValidationErrorLevel level, string file)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="level"></param>
+        /// <param name="file"></param>
+        protected virtual void RaiseValidationError(Exception ex, OpdsValidationErrorLevel level, string file)
         {
             var temp = ValidationError;
             if (temp != null)
             {
-                temp(this, new OpdsValidationEventArgs(level, e.Message, file));
+                temp(this, new OpdsValidationEventArgs(level, ex.Message, file));
             }
         }
     }

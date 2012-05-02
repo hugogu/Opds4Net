@@ -64,9 +64,6 @@
     </Compile>
     <Compile Include="Server\DataSource\IDataCollectionRequest.cs" />
     <Compile Include="Server\DataSource\ItemDetailRequest.cs" />
-    <Compile Include="Server\DataSource\NamingOpdsDataSource.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Server\IOpdsData.cs" />
     <Compile Include="Server\OpdsDataType.cs" />
     <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">
@@ -85,14 +82,13 @@
     <Compile Include="Server\Conveter\NamingDataOpdsItemConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\Conveter\OpdsDataSource.cs" />
+    <Compile Include="Server\Conveter\OpdsData.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSCategoryRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDataItemsRequest.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSSearchRequest.cs" />
     <Compile Include="Server\GeneralLinkGenerator.cs" />
     <Compile Include="Server\Storage\IContentStorage.cs" />
     <Compile Include="Server\Detection\IDataTypeDetector.cs" />
-    <Compile Include="Server\DataSource\IOpdsDataSource.cs" />
     <Compile Include="Server\Conveter\IOpdsItemConverter.cs" />
     <Compile Include="Server\IOpdsLinkGenerator.cs" />
     <Compile Include="Server\DataSource\IDataRequest.cs">
@@ -101,9 +97,8 @@
     <Compile Include="Server\DataSource\DataItemsRequest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server\DataSource\DataResponse.cs" />
     <Compile Include="Server\Detection\OpdsDataDetector.cs" />
-    <Compile Include="Server\Conveter\OpdsItemsResult.cs" />
+    <Compile Include="Server\Conveter\OpdsItems.cs" />
     <Compile Include="Server\Storage\WebLocalStorage.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

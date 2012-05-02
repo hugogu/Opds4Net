@@ -45,12 +45,12 @@ namespace Opds4Net.Server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public OpdsItemsResult GetItems(OpdsDataSource request)
+        public OpdsItems GetItems(OpdsData request)
         {
             if (request == null)
                 throw new ArgumentNullException("request");
 
-            return new OpdsItemsResult() { Items = ConvertDataItems(request) };
+            return new OpdsItems() { Items = ConvertDataItems(request) };
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Opds4Net.Server
             }
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsDataSource dataSource)
+        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsData dataSource)
         {
             // Assuming every item is of different type.
             // PropertyAdapter should be retreived for every item.

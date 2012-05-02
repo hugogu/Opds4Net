@@ -13,9 +13,9 @@ namespace Opds4Net.Test.Model
         /// 
         /// </summary>
         /// <returns></returns>
-        public override DataResponse Process()
+        public override OpdsData Process()
         {
-            return new DataResponse()
+            return new OpdsData()
             {
                 Data = GetItems(),
                 TotalCount = 10

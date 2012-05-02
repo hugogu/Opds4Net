@@ -38,7 +38,8 @@ namespace Opds4Net.Util
         {
             var @namespace = reader.LookupNamespace(reader.Prefix);
 
-            return @namespace.Equals(ns) && reader.LocalName.Equals(name);
+            return @namespace.Equals(ns, StringComparison.Ordinal) &&
+                   reader.LocalName.Equals(name, StringComparison.Ordinal);
         }
 
         /// <summary>
