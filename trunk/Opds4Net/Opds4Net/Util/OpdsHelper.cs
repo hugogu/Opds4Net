@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
-using System.Xml.Serialization;
+using Opds4Net.Properties;
 
 namespace Opds4Net.Util
 {
@@ -13,25 +13,19 @@ namespace Opds4Net.Util
     /// </summary>
     public static class OpdsHelper
     {
-        private static Dictionary<string, string> extensionMimeMap = new Dictionary<string, string>()
+        private static Dictionary<string, string> extensionMimeMap = new Dictionary<string,string>();
+
+        static OpdsHelper()
         {
-            { ".7z", "application/x-7z-compressed" },
-            { ".cebx", "application/cebx" },
-            { ".chm", "application/x-chm" },
-            { ".doc", "application/msword" },
-            { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-            { ".epub", "application/epub+zip" },
-            { ".htm", "text/html" },
-            { ".html", "text/html" },
-            { ".mobi", "application/x-mobipocket-ebook" },
-            { ".pdf", "application/pdf" },
-            { ".rar", "application/x-rar-compressed" },
-            { ".rtf", "application/rtf" },
-            { ".snb", "application/snb" },
-            { ".txt", "text/plain" },
-            { ".zip", "application/zip" },
-            { ".xps", "application/vnd.ms-xpsdocument" },
-        };
+            foreach (var extension in Settings.Default.MimeTypes)
+            {
+                var values = extension.Split(',');
+                if (values.Length == 2)
+                {
+                    extensionMimeMap.Add(values[0].Trim(), values[1].Trim());
+                }
+            }
+        }
 
         /// <summary>
         /// 
@@ -149,18 +143,6 @@ namespace Opds4Net.Util
         public static string ToNullableString(this object value)
         {
             return value == null ? null : Convert.ToString(value);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string GetXmlEnumName(this Enum value)
-        {
-            var type = value.GetType();
-
-            return (type.GetField(value.ToString()).GetCustomAttributes(true).Where(a => a is XmlEnumAttribute).Single() as XmlEnumAttribute).Name;
         }
     }
 }

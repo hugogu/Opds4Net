@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Opds4Net.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MimeTypes" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;.7z,application/x-7z-compressed&lt;/string&gt;
+  &lt;string&gt;.cebx,application/cebx&lt;/string&gt;
+  &lt;string&gt;.chm,application/x-chm&lt;/string&gt;
+  &lt;string&gt;.doc,application/msword&lt;/string&gt;
+  &lt;string&gt;.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document&lt;/string&gt;
+  &lt;string&gt;.epub,application/epub+zip&lt;/string&gt;
+  &lt;string&gt;.htm,text/html&lt;/string&gt;
+  &lt;string&gt;.html,text/html&lt;/string&gt;
+  &lt;string&gt;.mobi,application/x-mobipocket-ebook&lt;/string&gt;
+  &lt;string&gt;.pdf,application/pdf&lt;/string&gt;
+  &lt;string&gt;.rar,application/x-rar-compressed&lt;/string&gt;
+  &lt;string&gt;.rtf,application/rtf&lt;/string&gt;
+  &lt;string&gt;.snb,application/snb&lt;/string&gt;
+  &lt;string&gt;.txt,text/plain&lt;/string&gt;
+  &lt;string&gt;.zip,application/zip&lt;/string&gt;
+  &lt;string&gt;.xps,application/vnd.ms-xpsdocument&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
