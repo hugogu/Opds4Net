@@ -20,7 +20,7 @@ namespace Opds4Net.Server
             if (data == null)
                 throw new ArgumentNullException("data");
 
-            var opdsData = data as IOpdsData;
+            var opdsData = data as IOpdsDataTypeHost;
             if (opdsData == null)
             {
                 if (data is IEnumerable)

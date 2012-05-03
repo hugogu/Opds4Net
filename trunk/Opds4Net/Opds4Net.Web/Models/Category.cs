@@ -9,7 +9,7 @@ namespace Opds4Net.Web.Models
     /// <summary>
     /// 
     /// </summary>
-    public class Category : IOpdsData
+    public class Category : IOpdsDataTypeHost
     {
         /// <summary>
         /// 

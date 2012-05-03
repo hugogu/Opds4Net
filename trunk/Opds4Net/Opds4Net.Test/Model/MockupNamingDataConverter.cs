@@ -22,6 +22,7 @@ namespace Opds4Net.Test.Model
             LinkGenerator = linkGenerator;
             TypeDetector = typeDetector;
             AdapterFactory = adapterFactory;
+            Names = new OpdsNames();
         }
 
         public IOpdsLinkGenerator LinkGenerator { get; set; }
@@ -29,6 +30,8 @@ namespace Opds4Net.Test.Model
         public IDataTypeDetector TypeDetector { get; set; }
 
         public IAccessorFactory AdapterFactory { get; set; }
+
+        public OpdsNames Names { get; set; }
     }
 
     /// <summary>

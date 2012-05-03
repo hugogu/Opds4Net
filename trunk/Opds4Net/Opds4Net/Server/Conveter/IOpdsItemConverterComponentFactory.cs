@@ -21,5 +21,10 @@ namespace Opds4Net.Server
         /// A factory used to create property accessor according to a given object.
         /// </summary>
         IAccessorFactory AdapterFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the names of object that map to sydication item property.
+        /// </summary>
+        OpdsNames Names { get; set; }
     }
 }

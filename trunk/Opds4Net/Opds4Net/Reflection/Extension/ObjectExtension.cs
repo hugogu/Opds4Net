@@ -19,6 +19,9 @@ namespace Opds4Net.Reflection.Extension
         /// <returns></returns>
         public static object GetProperty(this object instance, string propertyName, IPropertyAccessor accessor = null)
         {
+            if (String.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException("propertyName");
+
             return HandleNullValue((accessor ?? AdaptedAccessorFactory.Instance.GetAccessor(instance)).GetProperty(instance, propertyName), instance, propertyName);
         }
 
@@ -32,6 +35,9 @@ namespace Opds4Net.Reflection.Extension
         /// <returns></returns>
         public static object GetProperty<T>(this T instance, string propertyName, IPropertyAccessor accessor = null)
         {
+            if (String.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException("propertyName");
+
             return HandleNullValue((accessor ?? AdaptedAccessorFactory.Instance.GetAccessor<T>()).GetProperty(instance, propertyName), instance, propertyName);
         }
 

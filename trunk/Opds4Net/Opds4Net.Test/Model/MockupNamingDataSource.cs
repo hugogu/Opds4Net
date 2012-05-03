@@ -26,7 +26,7 @@ namespace Opds4Net.Test.Model
         /// 
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<IOpdsData> GetItems()
+        public static IEnumerable<IOpdsDataTypeHost> GetItems()
         {
             for (int i = 1; i <= 10; i++)
             {
@@ -44,7 +44,7 @@ namespace Opds4Net.Test.Model
         /// 
         /// </summary>
         /// <returns></returns>
-        public static IOpdsData GetDetailedItems()
+        public static IOpdsDataTypeHost GetDetailedItems()
         {
             return new DataEntry()
             {

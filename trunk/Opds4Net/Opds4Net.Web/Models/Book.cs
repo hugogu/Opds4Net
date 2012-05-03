@@ -10,7 +10,7 @@ namespace Opds4Net.Web.Models
     /// <summary>
     /// 
     /// </summary>
-    public class Book : IOpdsData
+    public class Book : IOpdsDataTypeHost
     {
         public Book() { OpdsDataType = OpdsDataType.Entity; }
 

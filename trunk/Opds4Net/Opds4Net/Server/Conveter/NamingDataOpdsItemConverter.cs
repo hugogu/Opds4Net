@@ -25,6 +25,11 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
+        protected OpdsNames Names { get { return ComponentFactory.Names; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="componentFactory"></param>
         [ImportingConstructor]
         public NamingDataOpdsItemConverter([Import]IOpdsItemConverterComponentFactory componentFactory)
@@ -43,14 +48,14 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public OpdsItems GetItems(OpdsData request)
+        public OpdsItems GetItems(OpdsData data)
         {
-            if (request == null)
-                throw new ArgumentNullException("request");
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-            return new OpdsItems() { Items = ConvertDataItems(request) };
+            return new OpdsItems() { Items = ConvertDataItems(data) };
         }
 
         /// <summary>
@@ -72,11 +77,11 @@ namespace Opds4Net.Server
             }
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsData dataSource)
+        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsData data)
         {
             // Assuming every item is of different type.
             // PropertyAdapter should be retreived for every item.
-            foreach (var item in dataSource.Data ?? new IOpdsData[] { })
+            foreach (var item in data.Data ?? new IOpdsDataTypeHost[] { })
             {
                 var accessor = ComponentFactory.AdapterFactory.GetAccessor(item);
                 var dataType = ComponentFactory.TypeDetector.DetectType(item);
@@ -86,7 +91,7 @@ namespace Opds4Net.Server
                     var navigationLink = ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
                     if (navigationLink != null)
                     {
-                        var count = item.GetProperty("Count", accessor);
+                        var count = item.GetProperty(Names.Count, accessor);
                         if (count != null)
                         {
                             navigationLink.Count = Convert.ToInt32(count);
@@ -112,42 +117,42 @@ namespace Opds4Net.Server
             if (withDetail)
             {
                 // 购买链接
-                var price = item.GetProperty("Price", accessor);
+                var price = item.GetProperty(Names.Price, accessor);
                 if (price != null)
                 {
-                    var buyLinkId = item.GetProperty("BuyLinkId", accessor).ToNullableString() ?? syndicationItem.Id;
+                    var buyLinkId = item.GetProperty(Names.BuyLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
                     var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
                     if (buyLink != null)
                     {
-                        buyLink.Prices.Single().CurrencyCode = item.GetProperty("CurrencyCode", accessor).ToNullableString() ?? "CNY";
+                        buyLink.Prices.Single().CurrencyCode = item.GetProperty(Names.CurrencyCode, accessor).ToNullableString() ?? "CNY";
                         syndicationItem.Links.Add(buyLink);
                     }
                 }
 
                 // 下载链接
-                var downloadLinkId = item.GetProperty("DownloadLinkId", accessor).ToNullableString() ?? syndicationItem.Id;
+                var downloadLinkId = item.GetProperty(Names.DownloadLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
                 var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
                 if (downloadLink != null)
                 {
-                    downloadLink.MediaType = item.GetProperty("MimeType", accessor).ToNullableString();
-                    downloadLink.Length = Convert.ToInt64(item.GetProperty("Length", accessor));
+                    downloadLink.MediaType = item.GetProperty(Names.MimeType, accessor).ToNullableString();
+                    downloadLink.Length = Convert.ToInt64(item.GetProperty(Names.Size, accessor));
                     syndicationItem.Links.Add(downloadLink);
                 }
 
                 // 其它详细信息
-                syndicationItem.Content = item.GetProperty("Content", accessor).MakeSyndicationContent();
-                syndicationItem.Copyright = item.GetProperty("Copyright", accessor).MakeSyndicationContent();
-                syndicationItem.ISBN = item.GetProperty("ISBN", accessor).ToNullableString();
-                syndicationItem.Language = item.GetProperty("Language", accessor).ToNullableString();
-                syndicationItem.Issued = item.GetProperty("IssueTime", accessor).ToNullableString();
-                syndicationItem.Extent = item.GetProperty("Extent", accessor).ToNullableString();
-                var relevance = item.GetProperty("Relevance", accessor);
+                syndicationItem.Content = item.GetProperty(Names.Content, accessor).MakeSyndicationContent();
+                syndicationItem.Copyright = item.GetProperty(Names.Copyright, accessor).MakeSyndicationContent();
+                syndicationItem.ISBN = item.GetProperty(Names.Isbn, accessor).ToNullableString();
+                syndicationItem.Language = item.GetProperty(Names.Language, accessor).ToNullableString();
+                syndicationItem.Issued = item.GetProperty(Names.IssueTime, accessor).ToNullableString();
+                syndicationItem.Extent = item.GetProperty(Names.Extent, accessor).ToNullableString();
+                var relevance = item.GetProperty(Names.Relevance, accessor);
                 if (relevance != null)
                     syndicationItem.Relevance = Convert.ToDouble(relevance);
-                var publishDate = item.GetProperty("PublishDate", accessor);
+                var publishDate = item.GetProperty(Names.PublishDate, accessor);
                 if (publishDate != null && (DateTime)publishDate != DateTime.MinValue)
                     syndicationItem.PublishDate = new DateTimeOffset(Convert.ToDateTime(publishDate));
-                var categories = item.GetProperty("CategoryInfo", accessor);
+                var categories = item.GetProperty(Names.CategoryInfo, accessor);
                 if (categories != null)
                 {
                     if (categories is IEnumerable)
@@ -166,13 +171,13 @@ namespace Opds4Net.Server
                         FillInCategoryInfo(syndicationItem, categories);
                     }
                 }
-                ExtracPersonInfo(item, syndicationItem.Contributors, "Contributor", accessor);
+                ExtracPersonInfo(item, syndicationItem.Contributors, Names.ContributorPrefix, accessor);
             }
             // 书籍列表项
             else
             {
                 // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
-                var detailLinkId = item.GetProperty("DetailLinkId", accessor).ToNullableString() ?? syndicationItem.Id;
+                var detailLinkId = item.GetProperty(Names.DetailLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
                 var detailLink = ComponentFactory.LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
                 if (detailLink != null)
                     syndicationItem.Links.Add(detailLink);
@@ -181,14 +186,14 @@ namespace Opds4Net.Server
             }
 
             // 图片链接
-            var thumbnail = item.GetProperty("Thumbnail", accessor).ToNullableString();
+            var thumbnail = item.GetProperty(Names.Thumbnail, accessor).ToNullableString();
             if (thumbnail != null)
                 syndicationItem.Links.Add(new SyndicationLink()
                 {
                     Uri = new Uri(thumbnail),
                     RelationshipType = OpdsRelations.Thumbnail,
                 });
-            var cover = item.GetProperty("Cover", accessor).ToNullableString();
+            var cover = item.GetProperty(Names.Cover, accessor).ToNullableString();
             if (cover != null)
                 syndicationItem.Links.Add(new SyndicationLink()
                 {
@@ -196,7 +201,7 @@ namespace Opds4Net.Server
                     RelationshipType = OpdsRelations.Cover,
                 });
 
-            syndicationItem.Publisher = item.GetProperty("Publisher", accessor).ToNullableString();
+            syndicationItem.Publisher = item.GetProperty(Names.Publisher, accessor).ToNullableString();
             OnSyndicationItemCreated(syndicationItem, item);
 
             return syndicationItem;
@@ -206,39 +211,39 @@ namespace Opds4Net.Server
         {
             var syndicationItem = new OpdsItem()
             {
-                Title = item.GetProperty("Title", accessor).MakeSyndicationContent(),
-                Id = item.GetProperty("Id", accessor).ToNullableString(),
-                Summary = item.GetProperty("Summary", accessor).MakeSyndicationContent(),
+                Title = item.GetProperty(Names.Title, accessor).MakeSyndicationContent(),
+                Id = item.GetProperty(Names.Id, accessor).ToNullableString(),
+                Summary = item.GetProperty(Names.Summary, accessor).MakeSyndicationContent(),
             };
             if (syndicationItem.Id == null)
                 throw new InvalidProgramException(String.Format("Id is missing in the given data of type {0}.", item.GetType().FullName));
 
-            var updateTime = item.GetProperty("UpdateTime", accessor);
+            var updateTime = item.GetProperty(Names.UpdateTime, accessor);
             if (updateTime != null && (DateTime)updateTime != DateTime.MinValue)
                 syndicationItem.LastUpdatedTime = new DateTimeOffset(Convert.ToDateTime(updateTime));
-            ExtracPersonInfo(item, syndicationItem.Authors, "Author", accessor);
+            ExtracPersonInfo(item, syndicationItem.Authors, Names.AuthorPrefix, accessor);
 
             return syndicationItem;
         }
 
-        private static bool FillInCategoryInfo(SyndicationItem syndicationItem, object data, IPropertyAccessor accessor = null)
+        private bool FillInCategoryInfo(SyndicationItem syndicationItem, object data, IPropertyAccessor accessor = null)
         {
-            var name = data.GetProperty("Name", accessor).ToNullableString();
+            var name = data.GetProperty(Names.CategoryName, accessor).ToNullableString();
             if (name == null)
                 return false;
 
-            var schema = data.GetProperty("Schema", accessor).ToNullableString();
-            var label = data.GetProperty("Label", accessor).ToNullableString();
+            var schema = data.GetProperty(Names.CategorySchema, accessor).ToNullableString();
+            var label = data.GetProperty(Names.CategoryLabel, accessor).ToNullableString();
             syndicationItem.Categories.Add(new SyndicationCategory(name, schema, label));
 
             return true;
         }
 
-        private static bool FillInPersonInfo(ICollection<SyndicationPerson> persons, object data, IPropertyAccessor accessor = null, string propertyPrefix = null)
+        private bool FillInPersonInfo(ICollection<SyndicationPerson> persons, object data, IPropertyAccessor accessor = null, string propertyPrefix = null)
         {
-            var authorName = data.GetProperty(propertyPrefix + "Name", accessor).ToNullableString();
-            var authorEmail = data.GetProperty(propertyPrefix + "Email", accessor).ToNullableString();
-            var authorSite = data.GetProperty(propertyPrefix + "Site", accessor).ToNullableString();
+            var authorName = data.GetProperty(propertyPrefix + Names.PersonName, accessor).ToNullableString();
+            var authorEmail = data.GetProperty(propertyPrefix + Names.PersonEmail, accessor).ToNullableString();
+            var authorSite = data.GetProperty(propertyPrefix + Names.PersonUrl, accessor).ToNullableString();
             if (authorName != null || authorEmail != null || authorSite != null)
             {
                 persons.Add(new SyndicationPerson()
@@ -254,11 +259,11 @@ namespace Opds4Net.Server
             return false;
         }
 
-        private static void ExtracPersonInfo(object item, ICollection<SyndicationPerson> people, string prefix, IPropertyAccessor accessor)
+        private void ExtracPersonInfo(object item, ICollection<SyndicationPerson> people, string prefix, IPropertyAccessor accessor)
         {
             if (!FillInPersonInfo(people, item, accessor, prefix))
             {
-                var contributors = item.GetProperty(prefix + "Info", accessor);
+                var contributors = item.GetProperty(prefix + Names.PersonPostfix, accessor);
                 if (contributors != null)
                 {
                     // 集合

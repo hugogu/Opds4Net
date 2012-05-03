@@ -22,6 +22,7 @@ namespace Opds4Net.Web.Util
             LinkGenerator = linkGenerator;
             TypeDetector = typeDetector;
             AdapterFactory = adapterFactory;
+            Names = new OpdsNames();
         }
 
         /// <summary>
@@ -38,5 +39,10 @@ namespace Opds4Net.Web.Util
         /// 
         /// </summary>
         public IAccessorFactory AdapterFactory { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public OpdsNames Names { get; set; }
     }
 }

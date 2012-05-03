@@ -59,12 +59,13 @@
     <Compile Include="Reflection\AdaptedAccessorFactory.cs" />
     <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
     <Compile Include="Server\Conveter\ItemGeneratedEventArgs.cs" />
+    <Compile Include="Server\Conveter\OpdsNames.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Server\DataSource\IDataCollectionRequest.cs" />
     <Compile Include="Server\DataSource\ItemDetailRequest.cs" />
-    <Compile Include="Server\IOpdsData.cs" />
+    <Compile Include="Server\IOpdsDataTypeHost.cs" />
     <Compile Include="Server\OpdsDataType.cs" />
     <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">
       <SubType>Code</SubType>

@@ -7,7 +7,7 @@ namespace Opds4Net.Test.Model
     /// <summary>
     /// 
     /// </summary>
-    public class DataModel : IOpdsData
+    public class DataModel : IOpdsDataTypeHost
     {
         [AdaptedName("Title")]
         public string Name { get; set; }
