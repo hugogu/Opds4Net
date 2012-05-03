@@ -41,6 +41,39 @@ namespace Opds4Net.Reflection.Extension
             return HandleNullValue((accessor ?? AdaptedAccessorFactory.Instance.GetAccessor<T>()).GetProperty(instance, propertyName), instance, propertyName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="accessor"></param>
+        /// <returns></returns>
+        public static bool SetProperty<T>(this T instance, string propertyName, object value, IPropertyAccessor accessor = null)
+        {
+            if (String.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException("propertyName");
+
+            return (accessor ?? AdaptedAccessorFactory.Instance.GetAccessor<T>()).SetProperty(instance, propertyName, value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="accessor"></param>
+        /// <returns></returns>
+        public static bool SetProperty(this object instance, string propertyName, object value, IPropertyAccessor accessor = null)
+        {
+            if (String.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException("propertyName");
+
+            return (accessor ?? AdaptedAccessorFactory.Instance.GetAccessor(instance.GetType())).SetProperty(instance, propertyName, value);
+        }
+
         private static object HandleNullValue(object result, object instance, string propertyName)
         {
             // 对象自身的属性具有更高的优先级。比如List的Count。

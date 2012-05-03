@@ -18,6 +18,7 @@ namespace Opds4Net.Test.Model
 
         public string Summary { get; set; }
 
+        [AdaptedNameIgnore]
         public virtual OpdsDataType OpdsDataType
         {
             get { return OpdsDataType.Category; }
@@ -91,13 +92,18 @@ namespace Opds4Net.Test.Model
         /// <summary>
         /// 
         /// </summary>
-        public string ISBN { get { return "urn:isbn:123412345797"; } }
+        public string ISBN
+        {
+            get { return "urn:isbn:123412345797"; }
+            set { throw new NotImplementedException(); }
+        }
 
         [AdaptedName("AuthorAddress", PropertyPath = "Address.Country")]
         [AdaptedName("AuthorEmail", PropertyPath = "Email")]
         [AdaptedName("AuthorName", PropertyPath = "Name")]
         public AuthorInfo AuthorInfo { get; set; }
 
+        [AdaptedNameIgnore]
         public override OpdsDataType OpdsDataType
         {
             get { return OpdsDataType.Detial; }

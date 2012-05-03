@@ -35,6 +35,17 @@ namespace Opds4Net.Test
         }
 
         [TestMethod]
+        public void SetPropertyTest()
+        {
+            var name = "asfawe";
+            var model = new DataModel();
+            Assert.AreEqual(true, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Name", name));
+            Assert.AreEqual(name, model.Name);
+            Assert.AreEqual(true, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Title", null));
+            Assert.AreEqual(null, model.Name);
+        }
+
+        [TestMethod]
         public void GetPropertyByExtensionTest()
         {
             var name = "xailjg";
@@ -58,6 +69,16 @@ namespace Opds4Net.Test
             model.AuthorInfo = null;
             Assert.AreEqual(null, model.GetProperty("AuthorName"));
             Assert.AreEqual(null, model.GetProperty("AuthorAddress"));
+        }
+
+        [TestMethod]
+        public void SetComplexOpdsPropertyTest()
+        {
+            var author = "author";
+            var model = new DataEntry();
+
+            Assert.AreEqual(true, model.SetProperty("AuthorName", author));
+            Assert.AreEqual(author, model.AuthorInfo.Name);
         }
 
         [TestMethod]

@@ -12,11 +12,13 @@ namespace Opds4Net.Reflection
     /// </summary>
     public class AdaptedPropertyAccessor<T> : IPropertyAccessor
     {
-        private static Func<T, string, object> memberAdaptor = null;
+        private static Func<T, string, object> memberGetter = null;
+        private static Func<T, string, object, bool> memberSetter = null;
 
         static AdaptedPropertyAccessor()
         {
-            InitializeMemberAdapter();
+            InitializeMemberGetter();
+            InitializeMemberSetter();
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace Opds4Net.Reflection
         /// <returns>Property value fetched from the given instance.</returns>
         public static object GetProperty(T instance, string propertyName)
         {
-            return memberAdaptor(instance, propertyName);
+            return memberGetter(instance, propertyName);
         }
 
         /// <summary>
@@ -41,7 +43,81 @@ namespace Opds4Net.Reflection
             return GetProperty((T)instance, propertyName);
         }
 
-        private static void InitializeMemberAdapter()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool SetProperty(T instance, string propertyName, object value)
+        {
+            return memberSetter(instance, propertyName, value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SetProperty(object instance, string propertyName, object value)
+        {
+            return SetProperty((T)instance, propertyName, value);
+        }
+
+        private static void InitializeMemberSetter()
+        {
+            var type = typeof(T);
+            var instance = Expression.Parameter(typeof(T), "instance");
+            var memberName = Expression.Parameter(typeof(string), "memberName");
+            var value = Expression.Parameter(typeof(object), "value");
+            var nameHash = Expression.Variable(typeof(int), "nameHash");
+            var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
+
+            var cases = new List<SwitchCase>();
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var propertyPairs = GetPropertyNamesHashes(propertyInfo);
+                if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
+                    throw new InvalidProgramException("Duplicated OpdsName detected.");
+
+                foreach (var propertyPair in propertyPairs)
+                {
+                    var property = Expression.Property(instance, propertyInfo.Name);
+                    if (!String.IsNullOrEmpty(propertyPair.Value))
+                    {
+                        var paths = propertyPair.Value.Split('.');
+                        foreach (var path in paths)
+                        {
+                            property = Expression.Property(property, path);
+                        }
+                    }
+
+                    var catchNullReference = Expression.Catch(typeof(NullReferenceException), Expression.Constant(false, typeof(bool)));
+                    var tryRead = Expression.TryCatch(Expression.Block(typeof(bool), Expression.Assign(property, Expression.Convert(value, property.Type)), Expression.Constant(true, typeof(bool))), catchNullReference);
+                    // case property.Name.GetHashCode():
+                    //    try {
+                    //        property[.Path][.Path] = (P)value;
+                    //        return true;
+                    //    // return null when any property in the path is null.
+                    //    } catch(NullReferenceException ex) {
+                    //        return false;
+                    //    }
+                    cases.Add(Expression.SwitchCase(tryRead, Expression.Constant(propertyPair.Key, typeof(int))));
+                }
+            }
+
+            var switchEx = Expression.Switch(nameHash, Expression.Constant(false, typeof(bool)), cases.ToArray());
+            var methodBody = Expression.Block(typeof(bool), new[] { nameHash }, calHash, switchEx);
+
+            Debug.WriteLine(String.Format("Generate Accessor Method for class {0} defined {1} properties.", type.FullName, cases.Count));
+
+            memberSetter = Expression.Lambda<Func<T, string, object, bool>>(methodBody, instance, memberName, value).Compile();
+        }
+
+        private static void InitializeMemberGetter()
         {
             var type = typeof(T);
             var instance = Expression.Parameter(typeof(T), "instance");
@@ -92,7 +168,7 @@ namespace Opds4Net.Reflection
 
             Debug.WriteLine(String.Format("Generate Accessor Method for class {0} defined {1} properties.", type.FullName, cases.Count));
 
-            memberAdaptor = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
+            memberGetter = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
         }
 
         private static IEnumerable<KeyValuePair<int, string>> GetPropertyNamesHashes(PropertyInfo propertyInfo)
