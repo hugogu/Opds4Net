@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Opds4Net.Util;
 
 namespace Opds4Net.Reader
 {
@@ -7,5 +8,9 @@ namespace Opds4Net.Reader
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            WebRequestHelper.SetAllowUnsafeHeaderParsing();
+        }
     }
 }

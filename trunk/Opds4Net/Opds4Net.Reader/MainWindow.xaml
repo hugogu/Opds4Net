@@ -1,8 +1,33 @@
 ﻿<Window x:Class="Opds4Net.Reader.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        xmlns:f="clr-namespace:Opds4Net.Model;assembly=Opds4Net"
         Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type f:OpdsItem}">
+            <DockPanel LastChildFill="True">
+                <Image Source="{Binding Thumbnail}"
+                       Stretch="Uniform"  Height="50" />
+                <TextBlock DockPanel.Dock="Right"
+                           Text="{Binding Authors[0].Name}"
+                           VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Title.Text}"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center" />
+            </DockPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="opdsSourceBox" SelectionChanged="OnSourceBoxSelectionChanged">
+            <s:String>http://www.feedbooks.com/books/catalog.atom</s:String>
+            <s:String>http://m.gutenberg.org/ebooks/?format=opds</s:String>
+            <s:String>http://opds.9yue.com/category.atom</s:String>
+        </ComboBox>
+        <ListBox x:Name="itemBox" Grid.Row="1" MouseDoubleClick="OnItemDoubleClick" />
     </Grid>
 </Window>

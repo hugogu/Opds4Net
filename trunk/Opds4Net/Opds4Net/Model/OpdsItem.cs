@@ -52,6 +52,25 @@ namespace Opds4Net.Model
         /// </summary>
         [XmlElement("extent")]
         public string Extent { get; set; }
+
+        /// <summary>
+        /// Gets the cover image url of the syndication item.
+        /// </summary>
+        [XmlIgnore]
+        public string Cover
+        {
+            get { return Links.GetLinkValue(OpdsRelations.Cover); }
+        }
+
+        /// <summary>
+        /// Gets the thumbnail of the syndication item.
+        /// </summary>
+        [XmlIgnore]
+        public string Thumbnail
+        {
+            get { return Links.GetLinkValue(OpdsRelations.Thumbnail); }
+        }
+
         #endregion
 
         /// <summary>

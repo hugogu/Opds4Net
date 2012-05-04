@@ -85,16 +85,7 @@ namespace Opds4Net.Reflection
 
                 foreach (var propertyPair in propertyPairs)
                 {
-                    var property = Expression.Property(instance, propertyInfo.Name);
-                    if (!String.IsNullOrEmpty(propertyPair.Value))
-                    {
-                        var paths = propertyPair.Value.Split('.');
-                        foreach (var path in paths)
-                        {
-                            property = Expression.Property(property, path);
-                        }
-                    }
-
+                    var property = BuildPropertyExpression(instance, propertyInfo, propertyPair);
                     var catchNullReference = Expression.Catch(typeof(NullReferenceException), Expression.Constant(false, typeof(bool)));
                     var tryRead = Expression.TryCatch(Expression.Block(typeof(bool), Expression.Assign(property, Expression.Convert(value, property.Type)), Expression.Constant(true, typeof(bool))), catchNullReference);
                     // case property.Name.GetHashCode():
@@ -141,16 +132,7 @@ namespace Opds4Net.Reflection
                 foreach (var propertyPair in propertyPairs)
                 {
                     // Build the expression to fetch property value from complex type by a given property path.
-                    var property = Expression.Property(instance, propertyInfo.Name);
-                    if (!String.IsNullOrEmpty(propertyPair.Value))
-                    {
-                        var paths = propertyPair.Value.Split('.');
-                        foreach (var path in paths)
-                        {
-                            property = Expression.Property(property, path);
-                        }
-                    }
-
+                    var property = BuildPropertyExpression(instance, propertyInfo, propertyPair);
                     var catchNullReference = Expression.Catch(typeof(NullReferenceException), Expression.Constant(null, typeof(object)));
                     var tryRead = Expression.TryCatch(Expression.Convert(property, typeof(object)), catchNullReference);
                     // case property.Name.GetHashCode():
@@ -169,6 +151,21 @@ namespace Opds4Net.Reflection
             Debug.WriteLine(String.Format("Generate Accessor Method for class {0} defined {1} properties.", type.FullName, cases.Count));
 
             memberGetter = Expression.Lambda<Func<T, string, object>>(methodBody, instance, memberName).Compile();
+        }
+
+        private static MemberExpression BuildPropertyExpression(Expression instance, MemberInfo propertyInfo, KeyValuePair<int, string> propertyPair)
+        {
+            var property = Expression.Property(instance, propertyInfo.Name);
+            if (!String.IsNullOrEmpty(propertyPair.Value))
+            {
+                var paths = propertyPair.Value.Split('.');
+                foreach (var path in paths)
+                {
+                    property = Expression.Property(property, path);
+                }
+            }
+
+            return property;
         }
 
         private static IEnumerable<KeyValuePair<int, string>> GetPropertyNamesHashes(PropertyInfo propertyInfo)

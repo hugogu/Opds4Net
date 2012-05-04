@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
@@ -144,6 +145,43 @@ namespace Opds4Net.Util
         public static string ToNullableString(this object value)
         {
             return value == null ? null : Convert.ToString(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="links"></param>
+        /// <param name="relation"></param>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
+        public static string GetLinkValue(this Collection<SyndicationLink> links, string relation, string mediaType = null)
+        {
+            var searchLink = links.SingleOrDefault(l =>
+                relation.Equals(l.RelationshipType, StringComparison.OrdinalIgnoreCase) && 
+                (mediaType == null || l.MediaType == null || l.MediaType.StartsWith(mediaType, StringComparison.OrdinalIgnoreCase)));
+            if (searchLink == null || searchLink.Uri == null)
+                return null;
+
+            return searchLink.Uri.ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="links"></param>
+        /// <param name="relation"></param>
+        /// <param name="url"></param>
+        /// <param name="title"></param>
+        /// <param name="mediaType"></param>
+        public static void SetLinkValue(this Collection<SyndicationLink> links, string relation, string url, string title, string mediaType)
+        {
+            var searchLink = links.SingleOrDefault(l =>
+                relation.Equals(l.RelationshipType, StringComparison.OrdinalIgnoreCase) &&
+                (mediaType == null || l.MediaType == null || l.MediaType.StartsWith(mediaType, StringComparison.OrdinalIgnoreCase)));
+            if (searchLink != null)
+                searchLink.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            else
+                links.Add(new SyndicationLink(new Uri(url, UriKind.RelativeOrAbsolute), relation, title, mediaType, 0));
         }
     }
 }

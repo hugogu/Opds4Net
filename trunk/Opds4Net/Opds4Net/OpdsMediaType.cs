@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// The predefined "type" parameter values to help clients distinguish between relations to OPDS Catalog Entries and OPDS Catalog Feeds.
+    /// For more information about media type, refer to http://tools.ietf.org/html/rfc2046. and http://tools.ietf.org/html/rfc3023 and http://tools.ietf.org/html/rfc5023
     /// </summary>
     public static class OpdsMediaType
     {
