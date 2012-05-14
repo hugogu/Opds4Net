@@ -79,6 +79,10 @@ namespace Opds4Net.Reflection
             var cases = new List<SwitchCase>();
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
+                // Property must be writeable.
+                if (!propertyInfo.CanWrite)
+                    continue;
+
                 var propertyPairs = GetPropertyNamesHashes(propertyInfo);
                 if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
                     throw new InvalidProgramException("Duplicated OpdsName detected.");
@@ -173,10 +177,28 @@ namespace Opds4Net.Reflection
             var isIgnored = propertyInfo.GetCustomAttributes(typeof(AdaptedNameIgnoreAttribute), true).Any();
             if (!isIgnored)
             {
-                yield return new KeyValuePair<int, string>(propertyInfo.Name.GetHashCode(), null);
-                foreach (AdaptedNameAttribute attribute in propertyInfo.GetCustomAttributes(typeof(AdaptedNameAttribute), true))
+                var attributes = propertyInfo.GetCustomAttributes(typeof(AdaptedNameAttribute), true);
+                // If an AdaptedNameAttribute is defined for a property. Then only the adaptedname could be used.
+                // Otherwise, the adapted name may conflict with another existing property. For example
+                // public class Dummy
+                // {
+                //     [AdaptedName("Value")]
+                //     public Name { get; set }
+                //     [AdaptedName("Name")]
+                //     public Value { get; set }
+                // }
+                // The correct behavior is just switch the value of Name and Value property when reading them.
+                // So, the original property name must be ignored when the AdaptedName attribute applied.
+                if (attributes.Any())
                 {
-                    yield return new KeyValuePair<int, string>(attribute.Name.GetHashCode(), attribute.PropertyPath);
+                    foreach (AdaptedNameAttribute attribute in attributes)
+                    {
+                        yield return new KeyValuePair<int, string>(attribute.Name.GetHashCode(), attribute.PropertyPath);
+                    }
+                }
+                else
+                {
+                    yield return new KeyValuePair<int, string>(propertyInfo.Name.GetHashCode(), null);
                 }
             }
         }

@@ -168,7 +168,8 @@ namespace Opds4Net.Model
                 writer.WriteAttributeString("count", OpdsNamespaces.Threading.Value, Count.Value.ToString());
             }
 
-            if (ActiveFacet.HasValue)
+            // ActiveFacet值为true时才生成。
+            if (ActiveFacet.HasValue && ActiveFacet.Value)
             {
                 writer.WriteAttributeString("activeFacet", OpdsNamespaces.Opds.Value, ActiveFacet.Value.ToString());
             }

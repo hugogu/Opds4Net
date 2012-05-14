@@ -28,12 +28,14 @@
         public string Relevance = "Relevance";
         public string PublishDate = "PublishDate";
         public string CategoryInfo = "CategoryInfo";
+        public string CategoryPrefix = "Category";
         public string CategoryName = "Name";
         public string CategorySchema = "Schema";
         public string CategoryLabel = "Label";
         public string Thumbnail = "Thumbnail";
         public string Cover = "Cover";
         public string Publisher = "Publisher";
+        public string DownloadAddress = "DownloadAddress";
         public string DownloadLinkId = "DownloadLinkId";
         public string DetailLinkId = "DetailLinkId";
         public string BuyLinkId = "BuyLinkId";

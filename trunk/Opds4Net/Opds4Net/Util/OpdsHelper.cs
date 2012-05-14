@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using Opds4Net.Model;
 using Opds4Net.Properties;
 
 namespace Opds4Net.Util
@@ -119,22 +120,56 @@ namespace Opds4Net.Util
         /// 
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="contentKind"></param>
         /// <returns></returns>
-        public static TextSyndicationContent MakeSyndicationContent(this object value)
+        public static TextSyndicationContent MakeSyndicationContent(this object value, TextSyndicationContentKind? contentKind = null)
         {
             if (value == null)
+            {
                 return null;
+            }
             else
             {
                 var content = Convert.ToString(value);
-                var kind = TextSyndicationContentKind.Plaintext;
-                if (content.Contains('<') && content.Contains('>'))
+                if (contentKind == null)
                 {
-                    kind = TextSyndicationContentKind.Html;
+                    contentKind = TextSyndicationContentKind.Plaintext;
+                    if (content.Contains('<') && content.Contains('>'))
+                    {
+                        contentKind = TextSyndicationContentKind.Html;
+                    }
                 }
 
-                return new TextSyndicationContent(content, kind);
+                return new TextSyndicationContent(content, contentKind.Value);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="title"></param>
+        /// <param name="facetGroup"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        public static OpdsLink MakeOpdsLinkWithFacet(this string url, string title, string facetGroup, bool isActive = false)
+        {
+            if (String.IsNullOrWhiteSpace(url))
+                throw new ArgumentNullException("url");
+            if (String.IsNullOrWhiteSpace(title))
+                throw new ArgumentNullException("title");
+            if (String.IsNullOrWhiteSpace(facetGroup))
+                throw new ArgumentNullException("facetGroup");
+
+            return new OpdsLink()
+            {
+                ActiveFacet = isActive,
+                FacetGroup = facetGroup,
+                MediaType = OpdsMediaType.AcquisitionFeed,
+                RelationshipType = OpdsRelations.Facet,
+                Title = title,
+                Uri = new Uri(url)
+            };
         }
 
         /// <summary>

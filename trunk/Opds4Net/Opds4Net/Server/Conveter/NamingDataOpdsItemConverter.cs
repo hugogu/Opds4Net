@@ -136,6 +136,7 @@ namespace Opds4Net.Server
                 {
                     downloadLink.MediaType = item.GetProperty(Names.MimeType, accessor).ToNullableString();
                     downloadLink.Length = Convert.ToInt64(item.GetProperty(Names.Size, accessor));
+                    downloadLink.Uri = new Uri(item.GetProperty(Names.DownloadAddress, accessor).ToNullableString() ?? downloadLink.Uri.ToString(), UriKind.RelativeOrAbsolute);
                     syndicationItem.Links.Add(downloadLink);
                 }
 
@@ -170,6 +171,10 @@ namespace Opds4Net.Server
                     {
                         FillInCategoryInfo(syndicationItem, categories);
                     }
+                }
+                else
+                {
+                    FillInCategoryInfo(syndicationItem, item, accessor, Names.CategoryPrefix);
                 }
                 ExtracPersonInfo(item, syndicationItem.Contributors, Names.ContributorPrefix, accessor);
             }
@@ -226,14 +231,17 @@ namespace Opds4Net.Server
             return syndicationItem;
         }
 
-        private bool FillInCategoryInfo(SyndicationItem syndicationItem, object data, IPropertyAccessor accessor = null)
+        private bool FillInCategoryInfo(SyndicationItem syndicationItem, object data, IPropertyAccessor accessor = null, string propertyPrefix = null)
         {
-            var name = data.GetProperty(Names.CategoryName, accessor).ToNullableString();
+            // name refer to id that must exists.
+            var name = data.GetProperty(propertyPrefix + Names.CategoryName, accessor).ToNullableString();
             if (name == null)
                 return false;
 
-            var schema = data.GetProperty(Names.CategorySchema, accessor).ToNullableString();
-            var label = data.GetProperty(Names.CategoryLabel, accessor).ToNullableString();
+            // Represents what kind of information the category name defined.
+            var schema = data.GetProperty(propertyPrefix + Names.CategorySchema, accessor).ToNullableString();
+            // Label shows to the user.
+            var label = data.GetProperty(propertyPrefix + Names.CategoryLabel, accessor).ToNullableString();
             syndicationItem.Categories.Add(new SyndicationCategory(name, schema, label));
 
             return true;
