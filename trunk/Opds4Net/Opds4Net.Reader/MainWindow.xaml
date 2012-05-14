@@ -21,6 +21,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ComboBox x:Name="opdsSourceBox" SelectionChanged="OnSourceBoxSelectionChanged">
@@ -28,6 +29,27 @@
             <s:String>http://m.gutenberg.org/ebooks/?format=opds</s:String>
             <s:String>http://opds.9yue.com/category.atom</s:String>
         </ComboBox>
-        <ListBox x:Name="itemBox" Grid.Row="1" MouseDoubleClick="OnItemDoubleClick" />
+        <ListBox x:Name="facetGroupsBox" Grid.Row="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock Text="{Binding Key}"/>
+                        <ComboBox ItemsSource="{Binding}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <ListBox x:Name="itemBox" Grid.Row="2" MouseDoubleClick="OnItemDoubleClick" />
     </Grid>
 </Window>

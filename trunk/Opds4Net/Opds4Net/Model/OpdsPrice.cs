@@ -7,7 +7,7 @@ namespace Opds4Net.Model
     /// </summary>
     public class OpdsPrice
     {
-        private string currencyCode = CurrencyCodes.CurrentCurrencyCode;
+        private static string currencyCode = CurrencyCodes.CurrentCurrencyCode;
 
         /// <summary>
         /// 

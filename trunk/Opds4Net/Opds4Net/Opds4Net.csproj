@@ -12,6 +12,10 @@
     <AssemblyName>Opds4Net</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -114,6 +118,7 @@
     <Compile Include="Util\ModelHelper.cs" />
     <Compile Include="Reflection\Extension\ObjectExtension.cs" />
     <Compile Include="Reflection\AdaptedPropertyAccessor.cs" />
+    <Compile Include="Util\OpdsFeedFormatter.cs" />
     <Compile Include="Util\OpdsHelper.cs" />
     <Compile Include="Util\RangeFileResult.cs">
       <SubType>Code</SubType>

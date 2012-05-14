@@ -67,7 +67,8 @@ namespace Opds4Net.Model
             : base(uri, relationship, title, mediaType, length) { }
 
         /// <summary>
-        /// 
+        /// There is a know issue, this method is never called by the SyndicationFeed in .NET Framework.
+        /// So I have to found another way to read attribute of Syndication Link.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="ns"></param>
@@ -76,41 +77,57 @@ namespace Opds4Net.Model
         /// <returns></returns>
         protected override bool TryParseAttribute(string name, string ns, string value, string version)
         {
-            if ("count".Equals(name, StringComparison.Ordinal) &&
-                ns.Equals(OpdsNamespaces.Threading.Value, StringComparison.Ordinal))
+            return false;
+        }
+
+        protected internal virtual void LinkDataReaded()
+        {
+            var knowKeys = new List<XmlQualifiedName>();
+
+            foreach (var extAttribute in AttributeExtensions)
             {
-                var count = 0;
-                if (Int32.TryParse(value, out count))
-                    Count = count;
-            }
-            else if ("activeFacet".Equals(name, StringComparison.Ordinal) &&
-                ns.Equals(OpdsNamespaces.Opds.Value, StringComparison.Ordinal))
-            {
-                var active = true;
-                if (Boolean.TryParse(value, out active))
+                if ("count".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
+                    OpdsNamespaces.Threading.Value.Equals(extAttribute.Key.Namespace, StringComparison.Ordinal))
                 {
-                    if (!active)
-                    {
-                        throw new XmlException("opds:activeFacet SOULD not has a value of 'false', just don't provide opds:activeFacet.");
-                    }
-
-                    ActiveFacet = active;
+                    var count = 0;
+                    if (Int32.TryParse(extAttribute.Value, out count))
+                        Count = count;
                 }
-            }
-            else if ("facetGroup".Equals(name, StringComparison.Ordinal) &&
-                ns.Equals(OpdsNamespaces.Opds.Value, StringComparison.Ordinal))
-            {
-                if (String.IsNullOrEmpty(value))
-                    throw new XmlException("opds:facetGroup SHOULD not be empty");
+                else if ("activeFacet".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
+                    OpdsNamespaces.Opds.Value.Equals(extAttribute.Key.Namespace, StringComparison.Ordinal))
+                {
+                    var active = true;
+                    if (Boolean.TryParse(extAttribute.Value, out active))
+                    {
+                        if (!active)
+                        {
+                            throw new XmlException("opds:activeFacet SOULD not has a value of 'false', just don't provide opds:activeFacet.");
+                        }
 
-                FacetGroup = value;
-            }
-            else
-            {
-                return false;
+                        ActiveFacet = active;
+                    }
+                }
+                else if ("facetGroup".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
+                    OpdsNamespaces.Opds.Value.Equals(extAttribute.Key.Namespace, StringComparison.Ordinal))
+                {
+                    if (String.IsNullOrEmpty(extAttribute.Value))
+                        throw new XmlException("opds:facetGroup SHOULD not be empty");
+
+                    FacetGroup = extAttribute.Value;
+                }
+                else
+                {
+                    continue;
+                }
+
+                knowKeys.Add(extAttribute.Key);
             }
 
-            return true;
+            // Remove parsed attributes.
+            foreach (var key in knowKeys)
+            {
+                AttributeExtensions.Remove(key);
+            }
         }
 
         /// <summary>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -20,7 +18,10 @@ namespace Opds4Net.Model
         /// <returns> An Opds4Net.Model.OpdsFeed-derived instance that contains the feed.</returns>
         public new static OpdsFeed Load(XmlReader xmlReader)
         {
-            return SyndicationFeed.Load<OpdsFeed>(xmlReader);
+            var formatter = new OpdsFeedFormatter();
+            formatter.ReadFrom(xmlReader);
+
+            return formatter.Feed as OpdsFeed;
         }
 
         /// <summary>
@@ -48,6 +49,19 @@ namespace Opds4Net.Model
         {
             get { return Links.GetLinkValue("previous"); }
             set { Links.SetLinkValue("previous", value, "上一页", OpdsMediaType.NavigationFeed); }
+        }
+
+        /// <summary>
+        /// Gets the facet groups in current feed.
+        /// </summary>
+        public IEnumerable<IGrouping<string, OpdsLink>> FacetGroups
+        {
+            get
+            {
+                return from OpdsLink link in Links
+                       where link != null && link.RelationshipType == OpdsRelations.Facet
+                       group link by link.FacetGroup;
+            }
         }
 
         /// <summary>

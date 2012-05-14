@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -44,7 +43,12 @@ namespace Opds4Net.Reader
         {
             if (e.Error == null)
             {
-                itemBox.ItemsSource = e.Result as IEnumerable;
+                var feed = e.Result as OpdsFeed;
+                if (feed != null)
+                {
+                    itemBox.ItemsSource = feed.Items;
+                    facetGroupsBox.ItemsSource = feed.FacetGroups;
+                }
             }
         }
 
@@ -52,11 +56,11 @@ namespace Opds4Net.Reader
         {
             try
             {
-                e.Result = OpdsFeed.Load(new XmlTextReader(e.Argument as string)).Items;
+                e.Result = OpdsFeed.Load(new XmlTextReader(e.Argument as string));
             }
             catch (XmlException)
             {
-                e.Result = new[] { OpdsItem.Load(new XmlTextReader(e.Argument as string)) };
+                e.Result = new OpdsFeed(new[] { OpdsItem.Load(new XmlTextReader(e.Argument as string)) });
             }
         }
     }

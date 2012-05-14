@@ -109,5 +109,19 @@ namespace Opds4Net.Test
             var link = entry.Links.Last();
             Assert.AreEqual("data", link.Uri.Scheme);
         }
+
+        [TestMethod]
+        public void FacetGroupTest()
+        {
+            var feed = OpdsFeed.Load(new XmlTextReader("http://www.feedbooks.com/books/catalog.atom"));
+            var facetGroups = feed.FacetGroups.ToList();
+
+            Assert.IsTrue(facetGroups.Count > 1);
+            foreach (var group in facetGroups)
+            {
+                Assert.IsNotNull(group.Key);
+                Assert.IsTrue(group.Count() > 0);
+            }
+        }
     }
 }
