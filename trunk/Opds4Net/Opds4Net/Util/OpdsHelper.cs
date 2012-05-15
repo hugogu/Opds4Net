@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Text;
+using System.Web;
 using System.Xml;
 using Opds4Net.Model;
 using Opds4Net.Properties;
@@ -217,6 +219,24 @@ namespace Opds4Net.Util
                 searchLink.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
             else
                 links.Add(new SyndicationLink(new Uri(url, UriKind.RelativeOrAbsolute), relation, title, mediaType, 0));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="feed"></param>
+        /// <param name="response"></param>
+        /// <param name="mediaType"></param>
+        public static void WriteTo(this SyndicationFeed feed, HttpResponse response, string mediaType = OpdsMediaType.AcquisitionFeed)
+        {
+            response.Clear();
+            response.ContentType = mediaType;
+            response.ContentEncoding = Encoding.UTF8;
+            var xmlWriter = new XmlTextWriter(response.Output);
+            xmlWriter.Indentation = 4;
+            xmlWriter.Formatting = Formatting.Indented;
+
+            feed.SaveAsAtom10(xmlWriter);
         }
     }
 }

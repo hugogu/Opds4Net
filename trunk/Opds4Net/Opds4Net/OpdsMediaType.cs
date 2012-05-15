@@ -9,21 +9,21 @@
         /// <summary>
         /// The complete media type for a relation to an OPDS Catalog Feed Document Resource
         /// </summary>
-        public static readonly string Feed = "application/atom+xml;profile=opds-catalog";
+        public const string Feed = "application/atom+xml;profile=opds-catalog";
 
         /// <summary>
         /// The complete media type for a relation to a Navigation Feed
         /// </summary>
-        public static readonly string NavigationFeed = "application/atom+xml;profile=opds-catalog;kind=navigation";
+        public const string NavigationFeed = "application/atom+xml;profile=opds-catalog;kind=navigation";
 
         /// <summary>
         /// The complete media type for a relation to an Acquisition Feed
         /// </summary>
-        public static readonly string AcquisitionFeed = "application/atom+xml;profile=opds-catalog;kind=acquisition";
+        public const string AcquisitionFeed = "application/atom+xml;profile=opds-catalog;kind=acquisition";
 
         /// <summary>
         /// The complete media type for a relation to an OPDS Catalog Entry Document Resource
         /// </summary>
-        public static readonly string Entry = "application/atom+xml;type=entry;profile=opds-catalog";
+        public const string Entry = "application/atom+xml;type=entry;profile=opds-catalog";
     }
 }

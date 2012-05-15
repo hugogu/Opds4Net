@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using Opds4Net.Resources;
 using Opds4Net.Util;
 
 namespace Opds4Net.Model
@@ -30,7 +31,7 @@ namespace Opds4Net.Model
         public string SearchUri
         {
             get { return Links.GetLinkValue("search"); }
-            set { Links.SetLinkValue("search", value, "搜索", OpdsMediaType.AcquisitionFeed); }
+            set { Links.SetLinkValue("search", value, Resource.SearchLinkTitle, OpdsMediaType.AcquisitionFeed); }
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Opds4Net.Model
         public string NextUri
         {
             get { return Links.GetLinkValue("next"); }
-            set { Links.SetLinkValue("next", value, "下一页", OpdsMediaType.NavigationFeed); }
+            set { Links.SetLinkValue("next", value, Resource.NextLinkTitle, OpdsMediaType.NavigationFeed); }
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Opds4Net.Model
         public string PreviousUri
         {
             get { return Links.GetLinkValue("previous"); }
-            set { Links.SetLinkValue("previous", value, "上一页", OpdsMediaType.NavigationFeed); }
+            set { Links.SetLinkValue("previous", value, Resource.PreviousLinkTitle, OpdsMediaType.NavigationFeed); }
         }
 
         /// <summary>
