@@ -27,7 +27,7 @@ namespace Opds4Net.Test
             var model = new DataModel() { Name = name };
 
             var value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "Name");
-            Assert.AreEqual(name, value);
+            Assert.AreEqual(null, value);
             value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "Title");
             Assert.AreEqual(name, value);
             value = AdaptedPropertyAccessor<DataModel>.GetProperty(model, "CategoryNameNotExists");
@@ -39,10 +39,11 @@ namespace Opds4Net.Test
         {
             var name = "asfawe";
             var model = new DataModel();
-            Assert.AreEqual(true, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Name", name));
+            Assert.AreEqual(true, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Title", name));
             Assert.AreEqual(name, model.Name);
-            Assert.AreEqual(true, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Title", null));
-            Assert.AreEqual(null, model.Name);
+            // Set on orignal name not work
+            Assert.AreEqual(false, AdaptedPropertyAccessor<DataModel>.SetProperty(model, "Name", null));
+            Assert.AreEqual(name, model.Name);
         }
 
         [TestMethod]
@@ -51,7 +52,7 @@ namespace Opds4Net.Test
             var name = "xailjg";
             object model = new DataModel() { Name = name };
 
-            Assert.AreEqual(name, model.GetProperty("Name"));
+            Assert.AreEqual(null, model.GetProperty("Name"));
             Assert.AreEqual(name, model.GetProperty("Title"));
         }
 

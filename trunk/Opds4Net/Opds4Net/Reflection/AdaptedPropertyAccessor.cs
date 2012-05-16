@@ -75,9 +75,13 @@ namespace Opds4Net.Reflection
             var value = Expression.Parameter(typeof(object), "value");
             var nameHash = Expression.Variable(typeof(int), "nameHash");
             var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            var cases = new List<SwitchCase>()
+            {
+                // Add a default case that do nothing.
+                // In case of the class contains no writable properties.
+                Expression.SwitchCase(Expression.Constant(false, typeof(bool)), Expression.Constant(-1, typeof(Int32))),
+            };
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(p => GetPropertyOrder(p)))
             {
                 // Property must be writeable.
                 if (!propertyInfo.CanWrite)
@@ -127,7 +131,7 @@ namespace Opds4Net.Reflection
             //      return instance;
             cases.Add(Expression.SwitchCase(Expression.Convert(instance, typeof(object)),
                 GetClassNamesHashes(typeof(T)).Select(h => Expression.Constant(h, typeof(int)))));
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(p => GetPropertyOrder(p)))
             {
                 var propertyPairs = GetPropertyNamesHashes(propertyInfo);
                 if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
@@ -201,6 +205,18 @@ namespace Opds4Net.Reflection
                     yield return new KeyValuePair<int, string>(propertyInfo.Name.GetHashCode(), null);
                 }
             }
+        }
+
+        private static int GetPropertyOrder(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(typeof(AdaptedNameAttribute), true).Cast<AdaptedNameAttribute>();
+
+            if (attributes.Any())
+            {
+                return attributes.Min(a => a.Order);
+            }
+
+            return Int32.MaxValue;
         }
 
         private static IEnumerable<int> GetClassNamesHashes(Type type)

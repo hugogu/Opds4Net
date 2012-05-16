@@ -27,5 +27,11 @@ namespace Opds4Net.Reflection
         /// Used to extract property value from custom types.
         /// </summary>
         public string PropertyPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the order value used in AdaptedPropertyAccessor to arrange the name in specified order.
+        /// The order value larger, the later the property will be process.
+        /// </summary>
+        public int Order { get; set; }
     }
 }
