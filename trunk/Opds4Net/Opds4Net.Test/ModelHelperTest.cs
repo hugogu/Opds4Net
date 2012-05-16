@@ -150,7 +150,7 @@ namespace Opds4Net.Test
 
             var timeDynamic = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Title").ToNullableString();
             }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
@@ -162,7 +162,7 @@ namespace Opds4Net.Test
 
             var timeRandomClass = new TestTimer(() =>
             {
-                globalTarget = model.GetProperty("Name").ToNullableString();
+                globalTarget = model.GetProperty("Title").ToNullableString();
             }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
@@ -185,13 +185,13 @@ namespace Opds4Net.Test
 
             var timeDynamic = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Title").ToNullableString();
             }).TimeForTimes(time);
             Assert.AreEqual(name, globalTarget);
 
             var timeDynamicMT = new TestTimer(() =>
             {
-                globalTarget = classSpecifiedAdapter.GetProperty(model, "Name").ToNullableString();
+                globalTarget = classSpecifiedAdapter.GetProperty(model, "Title").ToNullableString();
             }).TimeForTimesParallel(time, 4);
             Assert.AreEqual(name, globalTarget);
 

@@ -80,6 +80,9 @@ namespace Opds4Net.Model
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected internal virtual void LinkDataReaded()
         {
             var knowKeys = new List<XmlQualifiedName>();

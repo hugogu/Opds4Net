@@ -27,7 +27,8 @@ namespace Opds4Net.Model.Validation
         /// </summary>
         /// <param name="level"></param>
         /// <param name="message"></param>
-        public OpdsValidationEventArgs(OpdsValidationErrorLevel level, string message, string source)
+        /// <param name="source"></param>
+        public OpdsValidationEventArgs(OpdsValidationErrorLevel level, string message, string source = null)
         {
             ErrorLevel = level;
             Message = message;

@@ -10,25 +10,40 @@ namespace Opds4Net.Model.Validation
     public class OpdsValidateReader
     {
         /// <summary>
+        /// Don't expose this pattern, otherwise the user have to reference to the Commons.Xml.Relaxng.dll
+        /// </summary>
+        private RelaxngPattern relaxPattern = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rngFile"></param>
+        public OpdsValidateReader(string rngFile = @".\Schemas\opds_catalog.rng")
+        {
+            LoadSchemaFile(rngFile);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public event EventHandler<OpdsValidationEventArgs> ValidationError;
 
         /// <summary>
+        /// Changet the schema file to validate Opds.
+        /// </summary>
+        /// <param name="rngFile"></param>
+        public void SetSchemaFile(string rngFile)
+        {
+            LoadSchemaFile(rngFile);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
-        /// <param name="xmlFile"></param>
-        /// <param name="rngFile"></param>
-        public void Validate(string xmlFile, string rngFile = @".\Schemas\opds_catalog.rng")
+        /// <param name="xmlReader"></param>
+        public void Validate(XmlReader xmlReader)
         {
-            RelaxngPattern relaxPattern = null;
-            using (var rngReader = new XmlTextReader(rngFile))
-            {
-                relaxPattern = RelaxngPattern.Read(rngReader);
-                relaxPattern.Compile();
-            }
-
-            using (var reader = new RelaxngValidatingReader(new XmlTextReader(xmlFile), relaxPattern))
+            using (var reader = new RelaxngValidatingReader(xmlReader, relaxPattern))
             {
                 try
                 {
@@ -39,11 +54,11 @@ namespace Opds4Net.Model.Validation
                 }
                 catch (RelaxngException ex)
                 {
-                    RaiseValidationError(ex, OpdsValidationErrorLevel.OpdsInvalid, xmlFile);
+                    RaiseValidationError(ex, OpdsValidationErrorLevel.OpdsInvalid);
                 }
                 catch (XmlException ex)
                 {
-                    RaiseValidationError(ex, OpdsValidationErrorLevel.XmlInvalid, xmlFile);
+                    RaiseValidationError(ex, OpdsValidationErrorLevel.XmlInvalid);
                 }
             }
         }
@@ -53,13 +68,21 @@ namespace Opds4Net.Model.Validation
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="level"></param>
-        /// <param name="file"></param>
-        protected virtual void RaiseValidationError(Exception ex, OpdsValidationErrorLevel level, string file)
+        protected virtual void RaiseValidationError(Exception ex, OpdsValidationErrorLevel level)
         {
             var temp = ValidationError;
             if (temp != null)
             {
-                temp(this, new OpdsValidationEventArgs(level, ex.Message, file));
+                temp(this, new OpdsValidationEventArgs(level, ex.Message));
+            }
+        }
+
+        private void LoadSchemaFile(string rngFile)
+        {
+            using (var rngReader = new XmlTextReader(rngFile))
+            {
+                relaxPattern = RelaxngPattern.Read(rngReader);
+                relaxPattern.Compile();
             }
         }
     }

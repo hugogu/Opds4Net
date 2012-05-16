@@ -238,5 +238,22 @@ namespace Opds4Net.Util
 
             feed.SaveAsAtom10(xmlWriter);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="response"></param>
+        public static void WriteTo(this OpdsItem item, HttpResponse response)
+        {
+            response.Clear();
+            response.ContentType = OpdsMediaType.Entry;
+            response.ContentEncoding = Encoding.UTF8;
+            var xmlWriter = new XmlTextWriter(response.Output);
+            xmlWriter.Indentation = 4;
+            xmlWriter.Formatting = Formatting.Indented;
+
+            item.SaveAsAtom10(xmlWriter);
+        }
     }
 }
