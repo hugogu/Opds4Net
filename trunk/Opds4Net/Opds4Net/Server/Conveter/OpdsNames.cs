@@ -128,6 +128,10 @@
         /// <summary>
         /// 
         /// </summary>
+        public string Source = "Source";
+        /// <summary>
+        /// 
+        /// </summary>
         public string DownloadAddress = "DownloadAddress";
         /// <summary>
         /// 

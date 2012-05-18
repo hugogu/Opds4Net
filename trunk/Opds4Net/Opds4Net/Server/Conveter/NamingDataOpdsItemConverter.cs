@@ -207,6 +207,7 @@ namespace Opds4Net.Server
                 });
 
             syndicationItem.Publisher = item.GetProperty(Names.Publisher, accessor).ToNullableString();
+            syndicationItem.Source = item.GetProperty(Names.Source, accessor).ToNullableString();
             OnSyndicationItemCreated(syndicationItem, item);
 
             return syndicationItem;

@@ -68,7 +68,10 @@ namespace Opds4Net.Util
             get
             {
                 if (HttpContext.Current != null)
-                    return HttpContext.Current.Request.Url.GetComponents(UriComponents.HostAndPort | UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                {
+                    return HttpContext.Current.Request.Url.GetComponents(UriComponents.HostAndPort | UriComponents.SchemeAndServer, UriFormat.Unescaped) +
+                           HttpContext.Current.Request.ApplicationPath.TrimEnd('/');
+                }
 
                 return String.Empty;
             }

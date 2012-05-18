@@ -38,6 +38,12 @@ namespace Opds4Net.Model
         public string Publisher { get; set; }
 
         /// <summary>
+        /// Gets and sets Source property defined by Dublin Core
+        /// </summary>
+        [XmlElement("source")]
+        public string Source { get; set; }
+
+        /// <summary>
         /// The relevance score of the entry. Used in a search result. value range from 0 to 1.
         /// Default to -1 means not defined;
         /// </summary>
@@ -132,6 +138,10 @@ namespace Opds4Net.Model
             {
                 Extent = reader.ReadElementContentAsString();
             }
+            else if (reader.IsReadingElementOf(OpdsNamespaces.DublinCore.Value, "source"))
+            {
+                Source = reader.ReadElementContentAsString();
+            }
             else
             {
                 return base.TryParseElement(reader, version);
@@ -167,6 +177,8 @@ namespace Opds4Net.Model
                 writer.WriteElementString("score", OpdsNamespaces.Relevance.Value, Convert.ToString(Relevance, CultureInfo.InvariantCulture));
             if (!String.IsNullOrWhiteSpace(Extent))
                 writer.WriteElementString("extent", OpdsNamespaces.DublinCore.Value, Extent);
+            if (!String.IsNullOrWhiteSpace(Source))
+                writer.WriteElementString("source", OpdsNamespaces.DublinCore.Value, Source);
 
             base.WriteElementExtensions(writer, version);
         }
