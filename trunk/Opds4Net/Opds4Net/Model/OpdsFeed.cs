@@ -167,7 +167,7 @@ namespace Opds4Net.Model
         {
             foreach (var namespaceDefinition in OpdsNamespaces.GetAll())
             {
-                AttributeExtensions.Add(namespaceDefinition.Key, namespaceDefinition.Value);
+                AttributeExtensions[namespaceDefinition.Key] = namespaceDefinition.Value;
             }
         }
     }

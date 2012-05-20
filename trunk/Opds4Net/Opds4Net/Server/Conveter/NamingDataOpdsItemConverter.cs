@@ -17,20 +17,54 @@ namespace Opds4Net.Server
     [Export("DataModel", typeof(IOpdsItemConverter))]
     public class NamingDataOpdsItemConverter : IOpdsItemConverter
     {
+        private IOpdsLinkGenerator linkGenerator = null;
+        private IDataTypeDetector dataTypeDetector = null;
+        private IAccessorFactory accessorFactory = null;
+
         /// <summary>
         /// A syndication link generator, provides information of the OPDS Site.
         /// </summary>
-        public IOpdsLinkGenerator LinkGenerator { get; set; }
+        public IOpdsLinkGenerator LinkGenerator
+        {
+            get
+            {
+                if (linkGenerator == null)
+                    linkGenerator = CreateLinkGenerator();
+
+                return linkGenerator;
+            }
+            set { linkGenerator = value; }
+        }
 
         /// <summary>
         /// A detector used to detect the data type of a given object.
         /// </summary>
-        public IDataTypeDetector TypeDetector { get; set; }
+        public IDataTypeDetector TypeDetector
+        {
+            get
+            {
+                if (dataTypeDetector == null)
+                    dataTypeDetector = CreateDataTypeDetector() ?? new OpdsDataDetector();
+
+                return dataTypeDetector;
+            }
+            set { dataTypeDetector = value; }
+        }
 
         /// <summary>
         /// A factory used to create property accessor according to a given object.
         /// </summary>
-        public IAccessorFactory AccessorFactory { get; set; }
+        public IAccessorFactory AccessorFactory
+        {
+            get
+            {
+                if (accessorFactory == null)
+                    accessorFactory = CreateAccessorFactory() ?? AdaptedAccessorFactory.Instance;
+
+                return accessorFactory;
+            }
+            set { accessorFactory = value; }
+        }
 
         /// <summary>
         /// Gets or sets the names of object that map to sydication item property.
@@ -42,10 +76,7 @@ namespace Opds4Net.Server
         /// </summary>
         public NamingDataOpdsItemConverter()
         {
-            Names = CreateOpdsNamesMapping();
-            AccessorFactory = CreateAccessorFactory();
-            TypeDetector = CreateDataTypeDetector();
-            LinkGenerator = CreateLinkGenerator();
+            Names = new OpdsNames();
         }
 
         /// <summary>
@@ -62,19 +93,14 @@ namespace Opds4Net.Server
             LinkGenerator = linkGenerator;
         }
 
-        protected virtual OpdsNames CreateOpdsNamesMapping()
-        {
-            return new OpdsNames();
-        }
-
         protected virtual IAccessorFactory CreateAccessorFactory()
         {
-            return AdaptedAccessorFactory.Instance;
+            return null;
         }
 
         protected virtual IDataTypeDetector CreateDataTypeDetector()
         {
-            return new OpdsDataDetector();
+            return null;
         }
 
         protected virtual IOpdsLinkGenerator CreateLinkGenerator()
