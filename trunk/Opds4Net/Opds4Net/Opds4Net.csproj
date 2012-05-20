@@ -62,7 +62,6 @@
     <Compile Include="Model\Validation\OpdsValidationEventArgs.cs" />
     <Compile Include="Reflection\IAccessorFactory.cs" />
     <Compile Include="Reflection\AdaptedAccessorFactory.cs" />
-    <Compile Include="Server\Conveter\IOpdsItemConverterComponentFactory.cs" />
     <Compile Include="Server\Conveter\ItemGeneratedEventArgs.cs" />
     <Compile Include="Server\Conveter\OpdsNames.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">

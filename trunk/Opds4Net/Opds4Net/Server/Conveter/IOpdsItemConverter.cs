@@ -1,5 +1,4 @@
 ﻿using System;
-using Opds4Net.Reflection;
 
 namespace Opds4Net.Server
 {
@@ -8,11 +7,6 @@ namespace Opds4Net.Server
     /// </summary>
     public interface IOpdsItemConverter
     {
-        /// <summary>
-        /// Gets or sets the IOpdsItemConverterComponentFactory 
-        /// </summary>
-        IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
-
         /// <summary>
         /// Raise on a syndication item is generated.
         /// </summary>

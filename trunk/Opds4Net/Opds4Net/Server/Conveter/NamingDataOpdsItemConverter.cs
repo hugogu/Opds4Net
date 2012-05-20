@@ -18,26 +18,68 @@ namespace Opds4Net.Server
     public class NamingDataOpdsItemConverter : IOpdsItemConverter
     {
         /// <summary>
-        /// Generate links of OPDS item. The link value is Site-relative.
+        /// A syndication link generator, provides information of the OPDS Site.
         /// </summary>
-        public IOpdsItemConverterComponentFactory ComponentFactory { get; set; }
+        public IOpdsLinkGenerator LinkGenerator { get; set; }
+
+        /// <summary>
+        /// A detector used to detect the data type of a given object.
+        /// </summary>
+        public IDataTypeDetector TypeDetector { get; set; }
+
+        /// <summary>
+        /// A factory used to create property accessor according to a given object.
+        /// </summary>
+        public IAccessorFactory AccessorFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the names of object that map to sydication item property.
+        /// </summary>
+        public OpdsNames Names { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        protected OpdsNames Names { get { return ComponentFactory.Names; } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="componentFactory"></param>
-        [ImportingConstructor]
-        public NamingDataOpdsItemConverter([Import]IOpdsItemConverterComponentFactory componentFactory)
+        public NamingDataOpdsItemConverter()
         {
-            if (componentFactory == null)
-                throw new ArgumentNullException("componentFactory");
+            Names = CreateOpdsNamesMapping();
+            AccessorFactory = CreateAccessorFactory();
+            TypeDetector = CreateDataTypeDetector();
+            LinkGenerator = CreateLinkGenerator();
+        }
 
-            ComponentFactory = componentFactory;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="linkGenerator"></param>
+        [ImportingConstructor]
+        public NamingDataOpdsItemConverter([Import]IOpdsLinkGenerator linkGenerator)
+            : this()
+        {
+            if (linkGenerator == null)
+                throw new ArgumentNullException("linkGenerator");
+
+            LinkGenerator = linkGenerator;
+        }
+
+        protected virtual OpdsNames CreateOpdsNamesMapping()
+        {
+            return new OpdsNames();
+        }
+
+        protected virtual IAccessorFactory CreateAccessorFactory()
+        {
+            return AdaptedAccessorFactory.Instance;
+        }
+
+        protected virtual IDataTypeDetector CreateDataTypeDetector()
+        {
+            return new OpdsDataDetector();
+        }
+
+        protected virtual IOpdsLinkGenerator CreateLinkGenerator()
+        {
+            return null;
         }
 
         /// <summary>
@@ -83,12 +125,12 @@ namespace Opds4Net.Server
             // PropertyAdapter should be retreived for every item.
             foreach (var item in data.Data ?? new IOpdsDataTypeHost[] { })
             {
-                var accessor = ComponentFactory.AdapterFactory.GetAccessor(item);
-                var dataType = ComponentFactory.TypeDetector.DetectType(item);
+                var accessor = AccessorFactory.GetAccessor(item);
+                var dataType = TypeDetector.DetectType(item);
                 if (dataType == OpdsDataType.Category)
                 {
                     var syndicationItem = CreateBasicDataItems(accessor, item);
-                    var navigationLink = ComponentFactory.LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
+                    var navigationLink = LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
                     if (navigationLink != null)
                     {
                         var count = item.GetProperty(Names.Count, accessor);
@@ -121,7 +163,7 @@ namespace Opds4Net.Server
                 if (price != null)
                 {
                     var buyLinkId = item.GetProperty(Names.BuyLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                    var buyLink = ComponentFactory.LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
+                    var buyLink = LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
                     if (buyLink != null)
                     {
                         buyLink.Prices.Single().CurrencyCode = item.GetProperty(Names.CurrencyCode, accessor).ToNullableString() ?? "CNY";
@@ -131,7 +173,7 @@ namespace Opds4Net.Server
 
                 // 下载链接
                 var downloadLinkId = item.GetProperty(Names.DownloadLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                var downloadLink = ComponentFactory.LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
+                var downloadLink = LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
                 if (downloadLink != null)
                 {
                     downloadLink.MediaType = item.GetProperty(Names.MimeType, accessor).ToNullableString();
@@ -183,7 +225,7 @@ namespace Opds4Net.Server
             {
                 // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
                 var detailLinkId = item.GetProperty(Names.DetailLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                var detailLink = ComponentFactory.LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
+                var detailLink = LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
                 if (detailLink != null)
                     syndicationItem.Links.Add(detailLink);
                 else
