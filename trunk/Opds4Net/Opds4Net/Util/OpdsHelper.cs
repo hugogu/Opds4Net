@@ -224,6 +224,23 @@ namespace Opds4Net.Util
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="links"></param>
+        /// <param name="relation"></param>
+        /// <param name="mediaType"></param>
+        public static void RemoveLinkValue(this Collection<SyndicationLink> links, string relation, string mediaType)
+        {
+            var matchLinks = links.Where(l => relation.Equals(l.RelationshipType, StringComparison.OrdinalIgnoreCase) ||
+                                         (mediaType != null && mediaType.Equals(l.MediaType, StringComparison.OrdinalIgnoreCase))).ToList();
+
+            foreach (var link in matchLinks)
+            {
+                links.Remove(link);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="feed"></param>
         /// <param name="response"></param>
         /// <param name="mediaType"></param>

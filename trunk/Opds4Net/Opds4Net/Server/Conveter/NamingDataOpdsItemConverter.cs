@@ -93,16 +93,28 @@ namespace Opds4Net.Server
             LinkGenerator = linkGenerator;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected virtual IAccessorFactory CreateAccessorFactory()
         {
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected virtual IDataTypeDetector CreateDataTypeDetector()
         {
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected virtual IOpdsLinkGenerator CreateLinkGenerator()
         {
             return null;
