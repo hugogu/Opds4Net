@@ -28,6 +28,32 @@ namespace Opds4Net.Reflection.Extension
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="accessor"></param>
+        /// <param name="propertyNames"></param>
+        /// <returns></returns>
+        public static object GetProperty(this object instance, IPropertyAccessor accessor = null, params string[] propertyNames)
+        {
+            if (propertyNames == null || propertyNames.Length == 0)
+                throw new ArgumentNullException("propertyName");
+
+            accessor = accessor ?? AdaptedAccessorFactory.Instance.GetAccessor(instance);
+
+            foreach (var propertyName in propertyNames)
+            {
+                var value = accessor.GetProperty(instance, propertyName);
+                if (value != null)
+                {
+                    return value;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
         /// <param name="propertyName"></param>

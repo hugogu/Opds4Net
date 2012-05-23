@@ -168,7 +168,7 @@ namespace Opds4Net.Server
                 if (dataType == OpdsDataType.Category)
                 {
                     var syndicationItem = CreateBasicDataItems(accessor, item);
-                    var navigationLink = LinkGenerator.GetNavigationLink(syndicationItem.Id, String.Empty);
+                    var navigationLink = LinkGenerator.Generate(item, OpdsRelations.Alternate, OpdsMediaType.NavigationFeed, accessor, Names);
                     if (navigationLink != null)
                     {
                         var count = item.GetProperty(Names.Count, accessor);
@@ -184,7 +184,7 @@ namespace Opds4Net.Server
                 }
                 else
                 {
-                    yield return  new KeyValuePair<object, SyndicationItem>(item, BuildEntity(data, accessor, item, dataType == OpdsDataType.Detial));
+                    yield return new KeyValuePair<object, SyndicationItem>(item, BuildEntity(data, accessor, item, dataType == OpdsDataType.Detial));
                 }
             }
         }
@@ -197,21 +197,15 @@ namespace Opds4Net.Server
             if (withDetail)
             {
                 // 购买链接
-                var price = item.GetProperty(Names.Price, accessor);
-                if (price != null)
+                var buyLink = LinkGenerator.Generate(item, OpdsRelations.Buy, null, accessor, Names);
+                if (buyLink != null)
                 {
-                    var buyLinkId = item.GetProperty(Names.BuyLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                    var buyLink = LinkGenerator.GetBuyLink(buyLinkId, String.Empty, Convert.ToDecimal(price));
-                    if (buyLink != null)
-                    {
-                        buyLink.Prices.Single().CurrencyCode = item.GetProperty(Names.CurrencyCode, accessor).ToNullableString() ?? "CNY";
-                        syndicationItem.Links.Add(buyLink);
-                    }
+                    buyLink.Prices.Single().CurrencyCode = item.GetProperty(Names.CurrencyCode, accessor).ToNullableString() ?? "CNY";
+                    syndicationItem.Links.Add(buyLink);
                 }
 
                 // 下载链接
-                var downloadLinkId = item.GetProperty(Names.DownloadLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                var downloadLink = LinkGenerator.GetDownloadLink(downloadLinkId, String.Empty);
+                var downloadLink = LinkGenerator.Generate(item, OpdsRelations.OpenAcquisition, null, accessor, Names);
                 if (downloadLink != null)
                 {
                     downloadLink.MediaType = item.GetProperty(Names.MimeType, accessor).ToNullableString();
@@ -262,9 +256,7 @@ namespace Opds4Net.Server
             // 是否有详细页链接，与是否显示详细信息没有直接关系。
             if (data.MediaType == OpdsMediaType.AcquisitionFeed)
             {
-                // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
-                var detailLinkId = item.GetProperty(Names.DetailLinkId, accessor).ToNullableString() ?? syndicationItem.Id;
-                var detailLink = LinkGenerator.GetDetailLink(detailLinkId, String.Empty);
+                var detailLink = LinkGenerator.Generate(item, OpdsRelations.Alternate, OpdsMediaType.Entry, accessor, Names); 
                 if (detailLink != null)
                     syndicationItem.Links.Add(detailLink);
                 else

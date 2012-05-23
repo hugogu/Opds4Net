@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Opds4Net.Model;
+using Opds4Net.Reflection;
+using Opds4Net.Reflection.Extension;
 using Opds4Net.Util;
 
 namespace Opds4Net.Server
@@ -54,10 +56,74 @@ namespace Opds4Net.Server
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="data"></param>
+        /// <param name="opdsLinkRelation"></param>
+        /// <param name="opdsLinkMediaType"></param>
+        /// <param name="propertyAccessor"></param>
+        /// <param name="nameMapping"></param>
+        /// <returns></returns>
+        public virtual OpdsLink Generate(object data, string opdsLinkRelation, string opdsLinkMediaType, IPropertyAccessor propertyAccessor, OpdsNames nameMapping)
+        {
+            if (nameMapping == null)
+                nameMapping = new OpdsNames();
+
+            switch (opdsLinkRelation)
+            {
+                // Download
+                case OpdsRelations.OpenAcquisition:
+                    {
+                        return GetDownloadLink(
+                            data.GetProperty(propertyAccessor, nameMapping.DownloadLinkId, nameMapping.Id).ToNullableString(),
+                            data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                    }
+                case OpdsRelations.Buy:
+                    {
+                        var price = data.GetProperty(nameMapping.Price, propertyAccessor);
+                        if (price != null)
+                        {
+                            return GetBuyLink(
+                                data.GetProperty(propertyAccessor, nameMapping.BuyLinkId, nameMapping.Id).ToNullableString(),
+                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString(),
+                                Convert.ToDecimal(price));
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                case OpdsRelations.Alternate:
+                    {
+                        if (OpdsMediaType.AcquisitionFeed == opdsLinkMediaType ||
+                            OpdsMediaType.NavigationFeed == opdsLinkMediaType)
+                        {
+                            return GetNavigationLink(
+                                data.GetProperty(nameMapping.Id, propertyAccessor).ToNullableString(),
+                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                        }
+                        else if (OpdsMediaType.Entry == opdsLinkMediaType)
+                        {
+                            // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
+                            return GetDetailLink(
+                                data.GetProperty(propertyAccessor, nameMapping.DetailLinkId, nameMapping.Id).ToNullableString(),
+                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                    }
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public OpdsLink GetNavigationLink(string id, string title)
+        private OpdsLink GetNavigationLink(string id, string title)
         {
             if (String.IsNullOrEmpty(NavigationLinkPattern))
                 throw new InvalidOperationException("NavigationLinkPattern is not set.");
@@ -82,7 +148,7 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public OpdsLink GetDetailLink(string id, string title)
+        private OpdsLink GetDetailLink(string id, string title)
         {
             if (String.IsNullOrEmpty(DetailLinkPattern))
                 throw new InvalidOperationException("DetailLinkPattern is not set.");
@@ -105,7 +171,7 @@ namespace Opds4Net.Server
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public OpdsLink GetDownloadLink(string id, string title)
+        private OpdsLink GetDownloadLink(string id, string title)
         {
             if (String.IsNullOrEmpty(DownloadLinkPattern))
                 return null;
@@ -128,7 +194,7 @@ namespace Opds4Net.Server
         /// <param name="title"></param>
         /// <param name="price"></param>
         /// <returns></returns>
-        public OpdsLink GetBuyLink(string id, string title, decimal price)
+        private OpdsLink GetBuyLink(string id, string title, decimal price)
         {
             if (String.IsNullOrEmpty(BuyLinkPattern))
                 return null;
