@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.IO;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Opds4Net.Util;
 
 namespace Opds4Net.Test
@@ -20,6 +22,16 @@ namespace Opds4Net.Test
             url = "http://snda.com/?page=2";
             newUrl = WebRequestHelper.UpdateUrlParameter(url, "page", "1");
             Assert.AreEqual("http://snda.com/?page=1", newUrl);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void Md5HashTest()
+        {
+            var md5 = RangeFileResult.GetMd5Hash(new MemoryStream(Encoding.Default.GetBytes("Hello world")));
+            Assert.AreEqual("3e25960a79dbc69b674cd4ec67a72c62", md5);
         }
     }
 }

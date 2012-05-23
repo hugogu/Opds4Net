@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -40,7 +41,7 @@ namespace Opds4Net.Util
         {
             #region--验证：HttpMethod，请求的文件是否存在
             switch (request.HttpMethod.ToUpper())
-            { //目前只支持GET和HEAD方法  
+            { 
                 case "GET":
                 case "HEAD":
                     break;
@@ -59,12 +60,10 @@ namespace Opds4Net.Util
             #region 定义局部变量
             var startBytes = 0L;
             //分块读取，每块10K bytes
-            var packSize = 1024 * 10; 
+            var packSize = 1024 * 10;
             var fileName = Path.GetFileName(filePath);
             var file = MemoryMappedFile.CreateFromFile(filePath).CreateViewStream();
-            var br = new BinaryReader(file);
             var fileLength = file.Length;
-
             var sleep = 0;
             var lastUpdateTiemStr = File.GetLastWriteTimeUtc(filePath).ToString("r");
             //便于恢复下载时提取请求头;
@@ -89,7 +88,7 @@ namespace Opds4Net.Util
             }
             #endregion
 
-            try
+            using (var br = new BinaryReader(file))
             {
                 #region -------添加重要响应头、解析请求头、相关验证-------------------
                 response.Clear();
@@ -143,38 +142,16 @@ namespace Opds4Net.Util
                 }
                 #endregion
             }
-            finally
-            {
-                br.Close();
-                file.Close();
-            }
         }
 
         /// <summary>
-        /// http://msdn.microsoft.com/en-us/library/system.security.cryptography.md5.aspx
+        /// Simplified form http://msdn.microsoft.com/en-us/library/system.security.cryptography.md5.aspx
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public static string GetMd5Hash(Stream input)
         {
-            var md5Hash = MD5.Create();
-
-            // Convert the input string to a byte array and compute the hash.
-            var data = md5Hash.ComputeHash(input);
-
-            // Create a new Stringbuilder to collect the bytes
-            // and create a string.
-            var sBuilder = new StringBuilder();
-
-            // Loop through each byte of the hashed data 
-            // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-
-            // Return the hexadecimal string.
-            return sBuilder.ToString();
+            return String.Concat(MD5.Create().ComputeHash(input).Select(b => b.ToString("x2")));
         }
     }
 }
