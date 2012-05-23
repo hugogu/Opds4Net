@@ -85,17 +85,17 @@ namespace Opds4Net.Web.Models
             var result = itemConverter.GetItems(new OpdsData(new[] { book })).Items.Single();
             book.OpdsDataType = OpdsDataType.Entity;
 
-            return result;
+            return result.Value;
         }
 
-        private IEnumerable<SyndicationItem> GetItems(IEnumerable<object> categories)
+        private IEnumerable<KeyValuePair<object, SyndicationItem>> GetItems(IEnumerable<object> categories)
         {
             if (categories != null)
             {
                 return itemConverter.GetItems(new OpdsData(categories)).Items;
             }
             else
-                return new SyndicationItem[] { };
+                return new List<KeyValuePair<object, SyndicationItem>>();
         }
     }
 }

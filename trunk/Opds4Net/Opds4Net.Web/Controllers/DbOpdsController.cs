@@ -46,8 +46,8 @@ namespace Opds4Net.Web.Controllers
                 PageIndex = 1,
                 PageSize = 10,
             };
-            var items = DbOpdsData.GetItems(request).Items.OrderByDescending(i => i.LastUpdatedTime);
-            var feed = new OpdsFeed(items);
+            var items = DbOpdsData.GetItems(request).Items.OrderByDescending(i => i.Value.LastUpdatedTime);
+            var feed = new OpdsFeed(items.Select(i => i.Value));
             feed.SearchUri = WebRequestHelper.CurrentHostUri + "/Opds/Search/{keyword}";
 
             return Content(feed.ToXml(), "text/xml");

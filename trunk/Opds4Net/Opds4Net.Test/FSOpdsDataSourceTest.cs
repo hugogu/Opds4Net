@@ -47,12 +47,13 @@ namespace Opds4Net.Test
         {
             var itemFounded = false;
             var result = mockSource.GetItems(new FSCategoryRequest(@"C:\").Process());
-            foreach (var item in result.Items)
+            foreach (var pair in result.Items)
             {
+                var item = pair.Value;
                 if (File.Exists(Path.Combine(@"C:\", item.Id)))
                 {
                     itemFounded = true;
-                    var detail = mockSource.GetItems(new FSDetailRequest(@"C:\") { Id = item.Id }.Process()).Items.Single();
+                    var detail = mockSource.GetItems(new FSDetailRequest(@"C:\") { Id = item.Id }.Process()).Items.Single().Value;
                     Assert.IsNotNull(detail);
                     Assert.IsNotNull(detail.Id);
                     Assert.IsNotNull(detail.Title);

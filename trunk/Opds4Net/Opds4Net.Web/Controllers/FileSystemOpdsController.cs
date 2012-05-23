@@ -27,7 +27,7 @@ namespace Opds4Net.Web.Controllers
                 OrderDirection = true,
                 OrderBy = "LastUpdatedTime",
             };
-            var feed = new OpdsFeed(MvcApplication.Current.OpdsDataConverter.GetItems(request.Process()).Items);
+            var feed = new OpdsFeed(MvcApplication.Current.OpdsDataConverter.GetItems(request.Process()).Items.Select(i => i.Value));
             feed.SearchUri = WebRequestHelper.CurrentHostUri + "/FS/Search/{keyword}";
 
             return Content(feed.ToXml(), "text/xml");
@@ -48,7 +48,7 @@ namespace Opds4Net.Web.Controllers
                 OrderBy = "LastUpdatedTime",
                 KeyWord = String.Format("*{0}*", id),
             };
-            var feed = new OpdsFeed(MvcApplication.Current.OpdsDataConverter.GetItems(request.Process()).Items);
+            var feed = new OpdsFeed(MvcApplication.Current.OpdsDataConverter.GetItems(request.Process()).Items.Select(i => i.Value));
 
             return Content(feed.ToXml(), "text/xml");
         }
@@ -63,7 +63,7 @@ namespace Opds4Net.Web.Controllers
             var request = new FSDetailRequest(MvcApplication.Current.FileSystemBookFolder) { Id = id };
             var item = MvcApplication.Current.OpdsDataConverter.GetItems(request.Process()).Items.Single();
 
-            return Content(item.ToXml(), "text/xml");
+            return Content(item.Value.ToXml(), "text/xml");
         }
 
         /// <summary>

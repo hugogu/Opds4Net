@@ -27,16 +27,21 @@ namespace Opds4Net.Server
         /// <summary>
         /// The data set used to generate SyndicationItem.
         /// </summary>
-        public virtual IEnumerable<object> Data { get; set; }
+        public IEnumerable<object> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the Count of data result.
         /// </summary>
-        public virtual int TotalCount { get; set; }
+        public int TotalCount { get; set; }
 
         /// <summary>
         /// Gets or sets the category name the result data belongs to.
         /// </summary>
         public string CategoryName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the media type of current feed represents.
+        /// </summary>
+        public string MediaType { get; set; }
     }
 }

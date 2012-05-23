@@ -38,7 +38,7 @@ namespace Opds4Net.Test
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Items);
             Assert.IsTrue(result.Items.Count() > 0);
-            Assert.AreEqual(new DateTime(2012, 1, 1), result.Items.First().LastUpdatedTime.DateTime);
+            Assert.AreEqual(new DateTime(2012, 1, 1), result.Items.First().Value.LastUpdatedTime.DateTime);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Opds4Net.Test
             {
                 Data = new [] { MockupNamingDataSource.GetDetailedItems() }
             };
-            var item = mockSource.GetItems(dataSource).Items.Single();
+            var item = mockSource.GetItems(dataSource).Items.Single().Value;
 
             Assert.IsNotNull(item);
             Assert.AreEqual(new DateTime(2012, 1, 1), item.LastUpdatedTime.DateTime);

@@ -157,7 +157,7 @@ namespace Opds4Net.Server
             }
         }
 
-        private IEnumerable<SyndicationItem> ConvertDataItems(OpdsData data)
+        private IEnumerable<KeyValuePair<object, SyndicationItem>> ConvertDataItems(OpdsData data)
         {
             // Assuming every item is of different type.
             // PropertyAdapter should be retreived for every item.
@@ -180,16 +180,16 @@ namespace Opds4Net.Server
                     }
                     OnSyndicationItemCreated(syndicationItem, item);
 
-                    yield return syndicationItem;
+                    yield return new KeyValuePair<object, SyndicationItem>(item, syndicationItem);
                 }
                 else
                 {
-                    yield return BuildEntity(accessor, item, dataType == OpdsDataType.Detial);
+                    yield return  new KeyValuePair<object, SyndicationItem>(item, BuildEntity(data, accessor, item, dataType == OpdsDataType.Detial));
                 }
             }
         }
 
-        private SyndicationItem BuildEntity(IPropertyAccessor accessor, object item, bool withDetail)
+        private SyndicationItem BuildEntity(OpdsData data, IPropertyAccessor accessor, object item, bool withDetail)
         {
             var syndicationItem = CreateBasicDataItems(accessor, item);
 
@@ -258,8 +258,9 @@ namespace Opds4Net.Server
                 }
                 ExtracPersonInfo(item, syndicationItem.Contributors, Names.ContributorPrefix, accessor);
             }
-            // 书籍列表项
-            else
+            // 书籍列表页需要有详细页链接
+            // 是否有详细页链接，与是否显示详细信息没有直接关系。
+            if (data.MediaType == OpdsMediaType.AcquisitionFeed)
             {
                 // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
                 var detailLinkId = item.GetProperty(Names.DetailLinkId, accessor).ToNullableString() ?? syndicationItem.Id;

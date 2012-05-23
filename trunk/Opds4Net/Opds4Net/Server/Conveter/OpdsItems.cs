@@ -13,21 +13,21 @@ namespace Opds4Net.Server
         /// </summary>
         public OpdsItems()
         {
-            Items = new SyndicationItem[] { };
+            Items = new List<KeyValuePair<object, SyndicationItem>>();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="items"></param>
-        public OpdsItems(IEnumerable<SyndicationItem> items)
+        public OpdsItems(IEnumerable<KeyValuePair<object, SyndicationItem>> items)
         {
             Items = items;
         }
 
         /// <summary>
-        /// Gets or sets the generated Syndication Items.
+        /// Gets or sets the generated Syndication Items with original data mapping.
         /// </summary>
-        public virtual IEnumerable<SyndicationItem> Items { get; set; }
+        public IEnumerable<KeyValuePair<object, SyndicationItem>> Items { get; set; }
     }
 }
