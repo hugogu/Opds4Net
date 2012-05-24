@@ -40,7 +40,7 @@ namespace Opds4Net.Server.FileSystem
                 if (OpdsHelper.IsFileSupported(file))
                 {
                     // Path will be used as Id.
-                    var item = FileSystemHelper.GetFileOpdsInfo(file, Path.Combine(id, Path.GetFileName(file)));
+                    var item = GetFileOpdsInfo(file, Path.Combine(id, Path.GetFileName(file)));
                     items.Add(item);
                 }
             }

@@ -1,28 +1,20 @@
 ﻿using System;
 using System.IO;
-using Opds4Net.Util;
 
 namespace Opds4Net.Server.FileSystem
 {
     /// <summary>
     /// 
     /// </summary>
-    public class FSDetailRequest : IDataRequest
+    public class FSDetailRequest : FSDataItemsRequest
     {
-        private string rootFolder;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Id { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rootFolder"></param>
         public FSDetailRequest(string rootFolder)
+            : base(rootFolder)
         {
-            this.rootFolder = rootFolder;
         }
 
         /// <summary>
@@ -32,7 +24,7 @@ namespace Opds4Net.Server.FileSystem
         public OpdsData Process()
         {
             var id = Id ?? String.Empty;
-            var path = Path.Combine(rootFolder, id);
+            var path = Path.Combine(RootFolder, id);
 
             if (!File.Exists(path))
                 throw new ArgumentException("id");
@@ -41,7 +33,7 @@ namespace Opds4Net.Server.FileSystem
             {
                 Data = new []
                 {
-                    FileSystemHelper.GetFileOpdsInfo(path, id)
+                    GetFileOpdsInfo(path, id)
                 },
                 TotalCount = 1
             };

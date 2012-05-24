@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Opds4Net.Util
+namespace Opds4Net
 {
     /// <summary>
     /// 
