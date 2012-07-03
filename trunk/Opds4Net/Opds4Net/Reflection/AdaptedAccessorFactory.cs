@@ -11,8 +11,15 @@ namespace Opds4Net.Reflection
     [Export("Naming", typeof(IAccessorFactory))]
     public class AdaptedAccessorFactory : IAccessorFactory
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private static IAccessorFactory instance = new AdaptedAccessorFactory();
-        private static Dictionary<Type, IPropertyAccessor> propertyAdapters = new Dictionary<Type, IPropertyAccessor>();
+
+        /// <summary>
+        /// Use RuntimeTypeHandle instead of Type to reduce heap memory usage.
+        /// </summary>
+        private static Dictionary<RuntimeTypeHandle, IPropertyAccessor> propertyAdapters = new Dictionary<RuntimeTypeHandle, IPropertyAccessor>();
 
         private AdaptedAccessorFactory() { }
 
@@ -42,7 +49,7 @@ namespace Opds4Net.Reflection
             IPropertyAccessor adapter = null;
             lock (propertyAdapters)
             {
-                if (!propertyAdapters.TryGetValue(type, out adapter))
+                if (!propertyAdapters.TryGetValue(type.TypeHandle, out adapter))
                 {
                     adapter = InitializeAccessor<T>();
                 }
@@ -61,7 +68,7 @@ namespace Opds4Net.Reflection
             IPropertyAccessor adapter = null;
             lock (propertyAdapters)
             {
-                if (!propertyAdapters.TryGetValue(type, out adapter))
+                if (!propertyAdapters.TryGetValue(type.TypeHandle, out adapter))
                 {
                     adapter = InitializeAccessor(type);
                 }
@@ -73,7 +80,7 @@ namespace Opds4Net.Reflection
         private static IPropertyAccessor InitializeAccessor(Type type)
         {
             var adapter = Activator.CreateInstance(typeof(AdaptedPropertyAccessor<>).MakeGenericType(type)) as IPropertyAccessor;
-            propertyAdapters.Add(type, adapter);
+            propertyAdapters.Add(type.TypeHandle, adapter);
 
             return adapter;
         }
@@ -81,7 +88,7 @@ namespace Opds4Net.Reflection
         private static IPropertyAccessor InitializeAccessor<T>()
         {
             var adapter = new AdaptedPropertyAccessor<T>();
-            propertyAdapters.Add(typeof(T), adapter);
+            propertyAdapters.Add(typeof(T).TypeHandle, adapter);
 
             return adapter;
         }

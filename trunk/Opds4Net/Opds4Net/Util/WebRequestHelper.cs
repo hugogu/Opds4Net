@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Configuration;
 using System.Reflection;
 using System.Web;
 
@@ -16,25 +17,25 @@ namespace Opds4Net.Util
         public static bool SetAllowUnsafeHeaderParsing()
         {
             //Get the assembly that contains the internal class
-            Assembly aNetAssembly = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
-            if (aNetAssembly != null)
+            var assembly = Assembly.GetAssembly(typeof(SettingsSection));
+            if (assembly != null)
             {
                 //Use the assembly in order to get the internal type for the internal class
-                Type aSettingsType = aNetAssembly.GetType("System.Net.Configuration.SettingsSectionInternal");
-                if (aSettingsType != null)
+                var settingsType = assembly.GetType("System.Net.Configuration.SettingsSectionInternal");
+                if (settingsType != null)
                 {
                     //Use the internal static property to get an instance of the internal settings class.
                     //If the static instance isn't created allready the property will create it for us.
-                    object anInstance = aSettingsType.InvokeMember("Section",
+                    var instance = settingsType.InvokeMember("Section",
                       BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.NonPublic, null, null, new object[] { });
 
-                    if (anInstance != null)
+                    if (instance != null)
                     {
                         //Locate the private bool field that tells the framework is unsafe header parsing should be allowed or not
-                        FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
-                        if (aUseUnsafeHeaderParsing != null)
+                        var useUnsafeHeaderParsing = settingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (useUnsafeHeaderParsing != null)
                         {
-                            aUseUnsafeHeaderParsing.SetValue(anInstance, true);
+                            useUnsafeHeaderParsing.SetValue(instance, true);
                             return true;
                         }
                     }

@@ -72,45 +72,56 @@ namespace Opds4Net.Server
                 // Download
                 case OpdsRelations.OpenAcquisition:
                     {
-                        return GetDownloadLink(
-                            data.GetProperty(propertyAccessor, nameMapping.DownloadLinkId, nameMapping.Id).ToNullableString(),
-                            data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                        var id = data.GetProperty(propertyAccessor, nameMapping.DownloadLinkId, nameMapping.Id).ToNullableString();
+                        if (!String.IsNullOrEmpty(id))
+                        {
+                            return GetDownloadLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                        }
+
+                        return null;
                     }
                 case OpdsRelations.Buy:
                     {
                         var price = data.GetProperty(nameMapping.Price, propertyAccessor);
                         if (price != null)
                         {
-                            return GetBuyLink(
-                                data.GetProperty(propertyAccessor, nameMapping.BuyLinkId, nameMapping.Id).ToNullableString(),
-                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString(),
-                                Convert.ToDecimal(price));
+                            var id = data.GetProperty(propertyAccessor, nameMapping.BuyLinkId, nameMapping.Id).ToNullableString();
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                return GetBuyLink(id,
+                                    data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString(),
+                                    Convert.ToDecimal(price));
+                            }
                         }
-                        else
-                        {
-                            return null;
-                        }
+
+                        return null;
                     }
                 case OpdsRelations.Alternate:
                     {
                         if (OpdsMediaType.AcquisitionFeed == opdsLinkMediaType ||
                             OpdsMediaType.NavigationFeed == opdsLinkMediaType)
                         {
-                            return GetNavigationLink(
-                                data.GetProperty(nameMapping.Id, propertyAccessor).ToNullableString(),
-                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                            var id = data.GetProperty(nameMapping.Id, propertyAccessor).ToNullableString();
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                return GetNavigationLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                            }
                         }
                         else if (OpdsMediaType.Entry == opdsLinkMediaType)
                         {
-                            // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
-                            return GetDetailLink(
-                                data.GetProperty(propertyAccessor, nameMapping.DetailLinkId, nameMapping.Id).ToNullableString(),
-                                data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                            var id = data.GetProperty(propertyAccessor, nameMapping.DetailLinkId, nameMapping.Id).ToNullableString();
+                            if (!String.IsNullOrEmpty(id))
+                            {
+                                // 详细页链接的Id和书籍的Id可能并没有对应关系。仅当没有提供详细页Id时，使用书籍的Id。
+                                return GetDetailLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
+                            }
                         }
                         else
                         {
                             throw new NotSupportedException();
                         }
+
+                        return null;
                     }
                 default:
                     throw new NotSupportedException();
