@@ -46,7 +46,7 @@ namespace Opds4Net.Reflection
         public IPropertyAccessor GetAccessor<T>()
         {
             var type = typeof(T);
-            IPropertyAccessor adapter = null;
+            IPropertyAccessor adapter;
             lock (propertyAdapters)
             {
                 if (!propertyAdapters.TryGetValue(type.TypeHandle, out adapter))
@@ -65,7 +65,7 @@ namespace Opds4Net.Reflection
         /// <returns></returns>
         private static IPropertyAccessor GetPropertyAccessor(Type type)
         {
-            IPropertyAccessor adapter = null;
+            IPropertyAccessor adapter;
             lock (propertyAdapters)
             {
                 if (!propertyAdapters.TryGetValue(type.TypeHandle, out adapter))

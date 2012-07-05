@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -153,9 +154,9 @@ namespace Opds4Net.Model
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
             if (TotalResults > 0)
-                writer.WriteElementString("totalResults", OpdsNamespaces.OpenSearch.Value, TotalResults.ToString());
+                writer.WriteElementString("totalResults", OpdsNamespaces.OpenSearch.Value, TotalResults.ToString(CultureInfo.InvariantCulture));
             if (ItemsPerPage > 0)
-                writer.WriteElementString("itemsPerPage", OpdsNamespaces.OpenSearch.Value, ItemsPerPage.ToString());
+                writer.WriteElementString("itemsPerPage", OpdsNamespaces.OpenSearch.Value, ItemsPerPage.ToString(CultureInfo.InvariantCulture));
 
             base.WriteElementExtensions(writer, version);
         }

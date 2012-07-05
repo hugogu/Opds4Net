@@ -26,13 +26,7 @@ namespace Opds4Net.Server
         /// </summary>
         public IOpdsLinkGenerator LinkGenerator
         {
-            get
-            {
-                if (linkGenerator == null)
-                    linkGenerator = CreateLinkGenerator();
-
-                return linkGenerator;
-            }
+            get { return linkGenerator ?? (linkGenerator = CreateLinkGenerator()); }
             set { linkGenerator = value; }
         }
 
@@ -41,13 +35,7 @@ namespace Opds4Net.Server
         /// </summary>
         public IDataTypeDetector TypeDetector
         {
-            get
-            {
-                if (dataTypeDetector == null)
-                    dataTypeDetector = CreateDataTypeDetector() ?? new OpdsDataDetector();
-
-                return dataTypeDetector;
-            }
+            get { return dataTypeDetector ?? (dataTypeDetector = CreateDataTypeDetector() ?? new OpdsDataDetector()); }
             set { dataTypeDetector = value; }
         }
 
@@ -56,13 +44,7 @@ namespace Opds4Net.Server
         /// </summary>
         public IAccessorFactory AccessorFactory
         {
-            get
-            {
-                if (accessorFactory == null)
-                    accessorFactory = CreateAccessorFactory() ?? AdaptedAccessorFactory.Instance;
-
-                return accessorFactory;
-            }
+            get { return accessorFactory ?? (accessorFactory = CreateAccessorFactory() ?? AdaptedAccessorFactory.Instance); }
             set { accessorFactory = value; }
         }
 
@@ -135,7 +117,7 @@ namespace Opds4Net.Server
             if (data == null)
                 throw new ArgumentNullException("data");
 
-            return new OpdsItems() { Items = ConvertDataItems(data) };
+            return new OpdsItems { Items = ConvertDataItems(data) };
         }
 
         /// <summary>
@@ -230,16 +212,16 @@ namespace Opds4Net.Server
                 var categories = item.GetProperty(Names.CategoryInfo, accessor);
                 if (categories != null)
                 {
-                    if (categories is IEnumerable)
+                    if (categories is string)
+                    {
+                        syndicationItem.Categories.Add(new SyndicationCategory(categories as string));
+                    }
+                    else if (categories is IEnumerable)
                     {
                         foreach (var category in categories as IEnumerable)
                         {
                             FillInCategoryInfo(syndicationItem, category);
                         }
-                    }
-                    else if (categories is string)
-                    {
-                        syndicationItem.Categories.Add(new SyndicationCategory(categories as string));
                     }
                     else
                     {
@@ -266,14 +248,14 @@ namespace Opds4Net.Server
             // 图片链接
             var thumbnail = item.GetProperty(Names.Thumbnail, accessor).ToNullableString();
             if (thumbnail != null)
-                syndicationItem.Links.Add(new SyndicationLink()
+                syndicationItem.Links.Add(new SyndicationLink
                 {
                     Uri = new Uri(thumbnail),
                     RelationshipType = OpdsRelations.Thumbnail,
                 });
             var cover = item.GetProperty(Names.Cover, accessor).ToNullableString();
             if (cover != null)
-                syndicationItem.Links.Add(new SyndicationLink()
+                syndicationItem.Links.Add(new SyndicationLink
                 {
                     Uri = new Uri(cover),
                     RelationshipType = OpdsRelations.Cover,
@@ -288,7 +270,7 @@ namespace Opds4Net.Server
 
         private OpdsItem CreateBasicDataItems(IPropertyAccessor accessor, object item)
         {
-            var syndicationItem = new OpdsItem()
+            var syndicationItem = new OpdsItem
             {
                 Title = item.GetProperty(Names.Title, accessor).MakeSyndicationContent(),
                 Id = item.GetProperty(Names.Id, accessor).ToNullableString(),
@@ -328,7 +310,7 @@ namespace Opds4Net.Server
             var authorSite = data.GetProperty(propertyPrefix + Names.PersonUrl, accessor).ToNullableString();
             if (authorName != null || authorEmail != null || authorSite != null)
             {
-                persons.Add(new SyndicationPerson()
+                persons.Add(new SyndicationPerson
                 {
                     Name = authorName,
                     Email = authorEmail,

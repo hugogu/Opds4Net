@@ -11,8 +11,8 @@ namespace Opds4Net.Test.Common
     /// </summary>
     public class TestTimer
     {
-        private Action action;
-        private Stopwatch timer = new Stopwatch();
+        private readonly Action action;
+        private readonly Stopwatch timer = new Stopwatch();
         private long times = 0;
 
         public TestTimer(Action action)
@@ -85,7 +85,7 @@ namespace Opds4Net.Test.Common
             action();
 
             timer.Restart();
-            int counter = 0;
+            var counter = 0;
             while (counter++ < times)
             {
                 action();

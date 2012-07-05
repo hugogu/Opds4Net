@@ -94,7 +94,7 @@ namespace Opds4Net.Model
         /// <returns></returns>
         public new static OpdsItem Load(XmlReader reader)
         {
-            return SyndicationItem.Load<OpdsItem>(reader);
+            return Load<OpdsItem>(reader);
         }
 
         /// <summary>

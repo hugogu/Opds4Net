@@ -35,20 +35,13 @@ namespace Opds4Net.Reflection.Extension
         public static object GetProperty(this object instance, IPropertyAccessor accessor = null, params string[] propertyNames)
         {
             if (propertyNames == null || propertyNames.Length == 0)
-                throw new ArgumentNullException("propertyName");
+                throw new ArgumentNullException("propertyNames");
 
             accessor = accessor ?? AdaptedAccessorFactory.Instance.GetAccessor(instance);
 
-            foreach (var propertyName in propertyNames)
-            {
-                var value = accessor.GetProperty(instance, propertyName);
-                if (value != null)
-                {
-                    return value;
-                }
-            }
-
-            return null;
+            return propertyNames
+                .Select(propertyName => accessor.GetProperty(instance, propertyName))
+                .FirstOrDefault(value => value != null);
         }
 
         /// <summary>
@@ -114,24 +107,23 @@ namespace Opds4Net.Reflection.Extension
 
                     types.Add(sub.GetType());
                     var value = GetProperty(sub, propertyName);
-                    if (value != null)
+                    if (value == null)
                     {
-                        var valueType = value.GetType();
-                        // If the required propertyName result in a Primitive value or an IEnumerable.
-                        // It represents a data part. Such as book info or category info set.
-                        if (valueType.IsPrimitive ||
-                            valueType == typeof(DateTime) ||
-                            valueType == typeof(Guid) ||
-                            typeof(IEnumerable).IsAssignableFrom(valueType))
-                        {
-                            return value;
-                        }
-                        // Any stand alone user type value. Such as an instance of Category Info or Author Info.
-                        else
-                        {
-                            values.Add(value);
-                        }
+                        continue;
                     }
+
+                    var valueType = value.GetType();
+                    // If the required propertyName result in a Primitive value or an IEnumerable.
+                    // It represents a data part. Such as book info or category info set.
+                    if (valueType.IsPrimitive ||
+                        valueType == typeof(DateTime) ||
+                        valueType == typeof(Guid) ||
+                        typeof(IEnumerable).IsAssignableFrom(valueType))
+                    {
+                        return value;
+                    }
+                    // Any stand alone user type value. Such as an instance of Category Info or Author Info.
+                    values.Add(value);
                 }
 
                 // Don't return empty set. Empty set wil not provide any real value.
@@ -145,10 +137,7 @@ namespace Opds4Net.Reflection.Extension
                     }
                     // If the values are of difference typs.
                     // It is used as data combination. Such as book info and category info in a same set.
-                    else
-                    {
-                        return values[0];
-                    }
+                    return values[0];
                 }
             }
 

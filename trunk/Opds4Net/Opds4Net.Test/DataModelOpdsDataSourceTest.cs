@@ -37,7 +37,7 @@ namespace Opds4Net.Test
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Items);
-            Assert.IsTrue(result.Items.Count() > 0);
+            Assert.IsTrue(result.Items.Any());
             Assert.AreEqual(new DateTime(2012, 1, 1), result.Items.First().Value.LastUpdatedTime.DateTime);
         }
 
@@ -77,10 +77,10 @@ namespace Opds4Net.Test
             var request = new MockupNamingDataSource();
             var result = mockSource.GetItems(itemsDataSource);
             var timer = new TestTimer(() => Assert.IsTrue(mockSource.GetItems(itemsDataSource).Items.Count() == 10));
-            var timesMT = timer.TimesInTimeParallel(duration, 4);
+            var timesMt = timer.TimesInTimeParallel(duration, 4);
             var times = timer.TimesInTime(duration);
 
-            Assert.IsTrue(timesMT > times * 1.7);
+            Assert.IsTrue(timesMt > times * 1.7);
         }
     }
 }

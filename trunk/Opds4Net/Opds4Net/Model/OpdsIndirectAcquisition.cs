@@ -35,13 +35,7 @@ namespace Opds4Net.Model
         /// </summary>
         public Collection<OpdsIndirectAcquisition> Items
         {
-            get
-            {
-                if (items == null)
-                    items = new Collection<OpdsIndirectAcquisition>();
-
-                return items;
-            }
+            get { return items ?? (items = new Collection<OpdsIndirectAcquisition>()); }
         }
     }
 }

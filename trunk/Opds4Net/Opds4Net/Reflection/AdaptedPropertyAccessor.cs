@@ -75,19 +75,19 @@ namespace Opds4Net.Reflection
             var value = Expression.Parameter(typeof(object), "value");
             var nameHash = Expression.Variable(typeof(int), "nameHash");
             var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-            var cases = new List<SwitchCase>()
-            {
+            var cases = new List<SwitchCase>
+                            {
                 // Add a default case that do nothing.
                 // In case of the class contains no writable properties.
                 Expression.SwitchCase(Expression.Constant(false, typeof(bool)), Expression.Constant(-1, typeof(Int32))),
             };
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(p => GetPropertyOrder(p)))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(GetPropertyOrder))
             {
                 // Property must be writeable.
                 if (!propertyInfo.CanWrite)
                     continue;
 
-                var propertyPairs = GetPropertyNamesHashes(propertyInfo);
+                var propertyPairs = GetPropertyNamesHashes(propertyInfo).ToList();
                 if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
                     throw new InvalidProgramException("Duplicated Property Name detected.");
 
@@ -131,9 +131,9 @@ namespace Opds4Net.Reflection
             //      return instance;
             cases.Add(Expression.SwitchCase(Expression.Convert(instance, typeof(object)),
                 GetClassNamesHashes(type).Select(h => Expression.Constant(h, typeof(int)))));
-            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(p => GetPropertyOrder(p)))
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).OrderBy(GetPropertyOrder))
             {
-                var propertyPairs = GetPropertyNamesHashes(propertyInfo);
+                var propertyPairs = GetPropertyNamesHashes(propertyInfo).ToList();
                 if (propertyPairs.Select(p => p.Key).Distinct().Count() < propertyPairs.Count())
                     throw new InvalidProgramException("Duplicated Property Name detected.");
 
@@ -209,7 +209,7 @@ namespace Opds4Net.Reflection
 
         private static int GetPropertyOrder(PropertyInfo property)
         {
-            var attributes = property.GetCustomAttributes(typeof(AdaptedNameAttribute), true).Cast<AdaptedNameAttribute>();
+            var attributes = property.GetCustomAttributes(typeof(AdaptedNameAttribute), true).Cast<AdaptedNameAttribute>().ToList();
 
             if (attributes.Any())
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using Opds4Net.Util;
@@ -47,7 +48,7 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
-        public OpdsLink() : base() { }
+        public OpdsLink() { }
 
         /// <summary>
         /// 
@@ -92,14 +93,14 @@ namespace Opds4Net.Model
                 if ("count".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
                     OpdsNamespaces.Threading.Value.Equals(extAttribute.Key.Namespace, StringComparison.Ordinal))
                 {
-                    var count = 0;
+                    int count;
                     if (Int32.TryParse(extAttribute.Value, out count))
                         Count = count;
                 }
                 else if ("activeFacet".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
                     OpdsNamespaces.Opds.Value.Equals(extAttribute.Key.Namespace, StringComparison.Ordinal))
                 {
-                    var active = true;
+                    bool active;
                     if (Boolean.TryParse(extAttribute.Value, out active))
                     {
                         if (!active)
@@ -107,7 +108,7 @@ namespace Opds4Net.Model
                             throw new XmlException("opds:activeFacet SOULD not has a value of 'false', just don't provide opds:activeFacet.");
                         }
 
-                        ActiveFacet = active;
+                        ActiveFacet = true;
                     }
                 }
                 else if ("facetGroup".Equals(extAttribute.Key.Name, StringComparison.Ordinal) &&
@@ -185,13 +186,13 @@ namespace Opds4Net.Model
         {
             if (Count.HasValue)
             {
-                writer.WriteAttributeString("count", OpdsNamespaces.Threading.Value, Count.Value.ToString());
+                writer.WriteAttributeString("count", OpdsNamespaces.Threading.Value, Count.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             // ActiveFacet值为true时才生成。
             if (ActiveFacet.HasValue && ActiveFacet.Value)
             {
-                writer.WriteAttributeString("activeFacet", OpdsNamespaces.Opds.Value, ActiveFacet.Value.ToString());
+                writer.WriteAttributeString("activeFacet", OpdsNamespaces.Opds.Value, ActiveFacet.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (FacetGroup != null)
@@ -249,7 +250,6 @@ namespace Opds4Net.Model
                         {
                             // Read the next element.
                             reader.Read();
-                            continue;
                         }
                     }
                 }

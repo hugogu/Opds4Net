@@ -31,19 +31,19 @@ namespace Opds4Net.Test
         /// 
         /// </summary>
         [TestMethod]
-        public void FSRootCategoryTest()
+        public void FsRootCategoryTest()
         {
             var result = mockSource.GetItems(new FSCategoryRequest(@"C:\").Process());
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Items);
-            Assert.IsTrue(result.Items.Count() > 0);
+            Assert.IsTrue(result.Items.Any());
         }
 
         /// <summary>
         /// 
         /// </summary>
         [TestMethod]
-        public void FSFileDetailTest()
+        public void FsFileDetailTest()
         {
             var itemFounded = false;
             var result = mockSource.GetItems(new FSCategoryRequest(@"C:\").Process());

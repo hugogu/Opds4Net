@@ -88,9 +88,7 @@ namespace Opds4Net.Server
                             var id = data.GetProperty(propertyAccessor, nameMapping.BuyLinkId, nameMapping.Id).ToNullableString();
                             if (!String.IsNullOrEmpty(id))
                             {
-                                return GetBuyLink(id,
-                                    data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString(),
-                                    Convert.ToDecimal(price));
+                                return GetBuyLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString(), Convert.ToDecimal(price));
                             }
                         }
 
@@ -107,7 +105,7 @@ namespace Opds4Net.Server
                                 return GetNavigationLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
                             }
                         }
-                        else if (OpdsMediaType.Entry == opdsLinkMediaType)
+                        if (OpdsMediaType.Entry == opdsLinkMediaType)
                         {
                             var id = data.GetProperty(propertyAccessor, nameMapping.DetailLinkId, nameMapping.Id).ToNullableString();
                             if (!String.IsNullOrEmpty(id))
@@ -116,12 +114,7 @@ namespace Opds4Net.Server
                                 return GetDetailLink(id, data.GetProperty(nameMapping.Title, propertyAccessor).ToNullableString());
                             }
                         }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-
-                        return null;
+                        throw new NotSupportedException();
                     }
                 default:
                     throw new NotSupportedException();
@@ -139,7 +132,7 @@ namespace Opds4Net.Server
             if (String.IsNullOrEmpty(NavigationLinkPattern))
                 throw new InvalidOperationException("NavigationLinkPattern is not set.");
 
-            var link = new OpdsLink()
+            var link = new OpdsLink
             {
                 Title = title,
                 // We don't know the media type of Uri point to.
@@ -164,7 +157,7 @@ namespace Opds4Net.Server
             if (String.IsNullOrEmpty(DetailLinkPattern))
                 throw new InvalidOperationException("DetailLinkPattern is not set.");
 
-            var link = new OpdsLink()
+            var link = new OpdsLink
             {
                 Title = title,
                 MediaType = OpdsMediaType.Entry,
@@ -187,7 +180,7 @@ namespace Opds4Net.Server
             if (String.IsNullOrEmpty(DownloadLinkPattern))
                 return null;
 
-            var link = new OpdsLink()
+            var link = new OpdsLink
             {
                 Title = title,
                 RelationshipType = OpdsRelations.OpenAcquisition,
@@ -210,7 +203,7 @@ namespace Opds4Net.Server
             if (String.IsNullOrEmpty(BuyLinkPattern))
                 return null;
 
-            var link = new OpdsLink()
+            var link = new OpdsLink
             {
                 Title = title,
                 RelationshipType = OpdsRelations.Buy,
