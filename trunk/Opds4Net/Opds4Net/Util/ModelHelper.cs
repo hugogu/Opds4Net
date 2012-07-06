@@ -7,7 +7,7 @@ namespace Opds4Net.Util
     /// <summary>
     /// 
     /// </summary>
-    public class ModelHelper<T>
+    internal static class ModelHelper<T>
     {
         private static Dictionary<string, Func<T, object>> keySelectors = new Dictionary<string, Func<T, object>>();
 
@@ -21,9 +21,9 @@ namespace Opds4Net.Util
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public static Func<T, object> FindKeySelector(string propertyName)
+        internal static Func<T, object> FindKeySelector(string propertyName)
         {
-            Func<T, object> result = null;
+            Func<T, object> result;
             keySelectors.TryGetValue(propertyName ?? "__DefaultSelector", out result);
             if (result == null)
             {

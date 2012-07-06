@@ -21,7 +21,7 @@ namespace Opds4Net.Server.FileSystem
         /// 
         /// </summary>
         /// <returns></returns>
-        public OpdsData Process()
+        public override OpdsData Process()
         {
             var id = Id ?? String.Empty;
             var path = Path.Combine(RootFolder, id);

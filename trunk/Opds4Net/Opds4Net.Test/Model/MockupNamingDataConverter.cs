@@ -13,7 +13,6 @@ namespace Opds4Net.Test.Model
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="linkGenerator"></param>
         [ImportingConstructor]
         public MockupNamingDataConverter()
             : base(TestInitializer.Container.GetExportedValue<IOpdsLinkGenerator>())

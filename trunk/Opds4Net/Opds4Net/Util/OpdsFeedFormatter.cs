@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel.Syndication;
+using System.Xml;
 using Opds4Net.Model;
 
 namespace Opds4Net.Util
@@ -12,7 +13,7 @@ namespace Opds4Net.Util
         /// 
         /// </summary>
         /// <param name="reader"></param>
-        public override void ReadFrom(System.Xml.XmlReader reader)
+        public override void ReadFrom(XmlReader reader)
         {
             base.ReadFrom(reader);
 
@@ -33,7 +34,21 @@ namespace Opds4Net.Util
         /// <returns></returns>
         protected override SyndicationFeed CreateFeedInstance()
         {
-            return new OpdsFeed();
+            return InitializeNamespaces(new OpdsFeed());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual T InitializeNamespaces<T>(T feed)
+            where T : SyndicationFeed
+        {
+            foreach (var @namespace in OpdsNamespaces.GetAll())
+            {
+                feed.AttributeExtensions[@namespace.Key] = @namespace.Value;
+            }
+
+            return feed;
         }
     }
 }

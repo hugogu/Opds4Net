@@ -39,9 +39,17 @@ namespace Opds4Net.Reflection.Extension
 
             accessor = accessor ?? AdaptedAccessorFactory.Instance.GetAccessor(instance);
 
-            return propertyNames
-                .Select(propertyName => accessor.GetProperty(instance, propertyName))
-                .FirstOrDefault(value => value != null);
+            foreach (var propertyName in propertyNames)
+            {
+                // Need to Call Handle null value here.
+                var value = instance.GetProperty(propertyName, accessor);
+                if (value != null)
+                {
+                    return value;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

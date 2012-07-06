@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Opds4Net.Util;
+using Opds4Net.Util.Extension;
 using Opds4Net.Web.Models;
 using PagedList;
 
@@ -28,9 +29,9 @@ namespace Opds4Net.Web.Controllers
             ViewBag.Page = page ?? 1;
             IEnumerable<Book> sortedBooks;
             if (direction.HasValue && direction.Value)
-                sortedBooks = db.Books.OrderBy(ModelHelper<Book>.FindKeySelector(orderBy));
+                sortedBooks = db.Books.OrderBy(orderBy);
             else
-                sortedBooks = db.Books.OrderByDescending(ModelHelper<Book>.FindKeySelector(orderBy));
+                sortedBooks = db.Books.OrderByDescending(orderBy);
             var pagedBooks = sortedBooks.ToPagedList(page ?? 1, pageSize.Value);
 
             return View(pagedBooks);

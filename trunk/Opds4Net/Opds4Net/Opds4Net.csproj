@@ -114,6 +114,7 @@
     <Compile Include="Reflection\IPropertyAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\Extension\LinqExtension.cs" />
     <Compile Include="Util\ModelHelper.cs" />
     <Compile Include="Reflection\Extension\ObjectExtension.cs" />
     <Compile Include="Reflection\AdaptedPropertyAccessor.cs" />

@@ -79,20 +79,14 @@ namespace Opds4Net.Model
         /// <summary>
         /// 
         /// </summary>
-        public OpdsFeed()
-        {
-            InitializeOpdsNamespaces();
-        }
+        public OpdsFeed() { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="items"></param>
         public OpdsFeed(IEnumerable<SyndicationItem> items)
-            : base(items)
-        {
-            InitializeOpdsNamespaces();
-        }
+            : base(items) { }
 
         /// <summary>
         /// 
@@ -159,17 +153,6 @@ namespace Opds4Net.Model
                 writer.WriteElementString("itemsPerPage", OpdsNamespaces.OpenSearch.Value, ItemsPerPage.ToString(CultureInfo.InvariantCulture));
 
             base.WriteElementExtensions(writer, version);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual void InitializeOpdsNamespaces()
-        {
-            foreach (var namespaceDefinition in OpdsNamespaces.GetAll())
-            {
-                AttributeExtensions[namespaceDefinition.Key] = namespaceDefinition.Value;
-            }
         }
     }
 }
