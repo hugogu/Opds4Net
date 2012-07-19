@@ -113,17 +113,18 @@ namespace Opds4Net.Web.Controllers
                 {
                     book.UpdateTime = DateTime.Now;
                     db.Entry(book).State = EntityState.Modified;
-                    var guids = selectedCategories.Select(s => new Guid(s));
-                    if (guids.Any())
-                    {
-                        book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
-                        db.SaveChanges();
-
-                        return RedirectToAction("Index");
-                    }
                 }
                 else
                     ViewBag.ErrorInfo = "文件上传失败";
+
+                var guids = selectedCategories.Select(s => new Guid(s));
+                if (guids.Any())
+                {
+                    book.Categories = db.Categories.Where(c => guids.Contains(c.Id)).ToList();
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
             InitializeBookPageViewBag(leaf);
             book = db.Books.Include(b => b.Categories).Single(b => b.Id == book.Id);

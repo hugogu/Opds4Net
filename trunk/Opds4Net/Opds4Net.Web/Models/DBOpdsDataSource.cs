@@ -59,11 +59,12 @@ namespace Opds4Net.Web.Models
                 {
                     result.Items = GetItems(dbContext.Categories.Where(c => c.Parent != null && c.Parent.Id == new Guid(request.Id)));
                 }
+
                 // 无子分类，则取书
-                else
+                current = dbContext.Categories.Include(c => c.Books).Single(c => c.Id == new Guid(request.Id));
+                if (current.Books.Any())
                 {
-                    current = dbContext.Categories.Include(c => c.Books).Single(c => c.Id == new Guid(request.Id));
-                    result.Items = GetItems(current.Books);
+                    result.Items = GetItems(current.Books).Concat(result.Items).ToList();
                 }
             }
 

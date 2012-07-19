@@ -157,6 +157,9 @@ namespace Opds4Net.Model
         /// <param name="version"></param>
         protected override void WriteElementExtensions(XmlWriter writer, string version)
         {
+            // There is no need to provide prefix when writing Element.
+            // As long as the namespaces defined in OpdsFeed properly.
+            // The prefix will be added automatically.
             if (!String.IsNullOrWhiteSpace(Language))
                 writer.WriteElementString("language", OpdsNamespaces.DublinCore.Value, Language);
             if (!String.IsNullOrWhiteSpace(Issued))

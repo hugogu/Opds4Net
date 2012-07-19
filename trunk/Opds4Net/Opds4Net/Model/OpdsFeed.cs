@@ -77,16 +77,27 @@ namespace Opds4Net.Model
         public int ItemsPerPage { get; set; }
 
         /// <summary>
-        /// 
+        /// Initialize an instance of Opds Feed.
         /// </summary>
-        public OpdsFeed() { }
+        public OpdsFeed()
+        {
+            // namespaces must be initialized on construction.
+            // Because:
+            // 1. It is not property for user to do it everytime.
+            // 2. If the namespaces is not inistalized properly,
+            //    the element will contains their own namespaces.
+            InitializeNamespaces(this);
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="items"></param>
         public OpdsFeed(IEnumerable<SyndicationItem> items)
-            : base(items) { }
+            : base(items)
+        {
+            InitializeNamespaces(this);
+        }
 
         /// <summary>
         /// 
@@ -153,6 +164,23 @@ namespace Opds4Net.Model
                 writer.WriteElementString("itemsPerPage", OpdsNamespaces.OpenSearch.Value, ItemsPerPage.ToString(CultureInfo.InvariantCulture));
 
             base.WriteElementExtensions(writer, version);
+        }
+
+        /// <summary>
+        /// If you want to add your own namespaces.
+        /// Use RegistNamespace of OpdsNamespaces.
+        /// Because this method is called from constructor,
+        /// it should not be a virtual method.
+        /// </summary>
+        private static T InitializeNamespaces<T>(T feed)
+            where T : SyndicationFeed
+        {
+            foreach (var @namespace in OpdsNamespaces.GetAll())
+            {
+                feed.AttributeExtensions[@namespace.Key] = @namespace.Value;
+            }
+
+            return feed;
         }
     }
 }

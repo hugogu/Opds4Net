@@ -34,21 +34,7 @@ namespace Opds4Net.Util
         /// <returns></returns>
         protected override SyndicationFeed CreateFeedInstance()
         {
-            return InitializeNamespaces(new OpdsFeed());
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual T InitializeNamespaces<T>(T feed)
-            where T : SyndicationFeed
-        {
-            foreach (var @namespace in OpdsNamespaces.GetAll())
-            {
-                feed.AttributeExtensions[@namespace.Key] = @namespace.Value;
-            }
-
-            return feed;
+            return new OpdsFeed();
         }
     }
 }

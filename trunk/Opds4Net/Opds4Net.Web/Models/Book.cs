@@ -12,7 +12,11 @@ namespace Opds4Net.Web.Models
     /// </summary>
     public class Book : IOpdsDataTypeHost
     {
-        public Book() { OpdsDataType = OpdsDataType.Entity; }
+        public Book()
+        {
+            OpdsDataType = OpdsDataType.Entity;
+            Publisher = "Poleaf Studio";
+        }
 
         public Guid Id { get; set; }
 
