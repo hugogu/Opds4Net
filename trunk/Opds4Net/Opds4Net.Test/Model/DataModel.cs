@@ -1,6 +1,6 @@
 ﻿using System;
-using Opds4Net.Reflection;
 using Opds4Net.Server;
+using Reflection4Net;
 
 namespace Opds4Net.Test.Model
 {
@@ -107,6 +107,11 @@ namespace Opds4Net.Test.Model
         public override OpdsDataType OpdsDataType
         {
             get { return OpdsDataType.Detial; }
+        }
+
+        public string this[int name]
+        {
+            get { return "Index"; }
         }
     }
 }

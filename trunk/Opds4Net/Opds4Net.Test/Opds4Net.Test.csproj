@@ -35,6 +35,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Reflection4Net">
+      <HintPath>..\Opds4Net\Libs\Reflection4Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -59,6 +62,7 @@
     <Compile Include="DetectorTest.cs" />
     <Compile Include="FSOpdsDataSourceTest.cs" />
     <Compile Include="ModelHelperTest.cs" />
+    <Compile Include="Model\Book.cs" />
     <Compile Include="Model\CategoryInfo.cs" />
     <Compile Include="Model\DataModel.cs" />
     <Compile Include="Model\MockupNamingDataConverter.cs" />

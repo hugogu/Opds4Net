@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Opds4Net.Reflection;
-using Opds4Net.Reflection.Extension;
 using Opds4Net.Test.Common;
 using Opds4Net.Test.Model;
 using Opds4Net.Util;
+using Reflection4Net;
+using Reflection4Net.Extension;
 
 namespace Opds4Net.Test
 {

@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Commons.Xml.Relaxng.dll</HintPath>
     </Reference>
+    <Reference Include="Reflection4Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Reflection4Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -60,8 +64,6 @@
     <Compile Include="Model\Validation\OpdsValidateReader.cs" />
     <Compile Include="Model\Validation\OpdsValidationErrorLevel.cs" />
     <Compile Include="Model\Validation\OpdsValidationEventArgs.cs" />
-    <Compile Include="Reflection\IAccessorFactory.cs" />
-    <Compile Include="Reflection\AdaptedAccessorFactory.cs" />
     <Compile Include="Server\ItemGeneratedEventArgs.cs" />
     <Compile Include="Server\Conveter\OpdsNames.cs" />
     <Compile Include="Server\DataSource\FileSystem\FSDetailRequest.cs">
@@ -71,10 +73,6 @@
     <Compile Include="Server\DataSource\ItemDetailRequest.cs" />
     <Compile Include="Server\Conveter\Detection\IOpdsDataTypeHost.cs" />
     <Compile Include="Server\Conveter\OpdsDataType.cs" />
-    <Compile Include="Reflection\AdaptedNameIgnoreAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Reflection\AdaptedNameAttribute.cs" />
     <Compile Include="OpdsRelations.cs" />
     <Compile Include="Model\OpdsIndirectAcquisition.cs" />
     <Compile Include="OpdsMediaType.cs" />
@@ -111,13 +109,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="DefaultKeySelectorAttribute.cs" />
-    <Compile Include="Reflection\IPropertyAccessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Util\Extension\LinqExtension.cs" />
     <Compile Include="Util\ModelHelper.cs" />
-    <Compile Include="Reflection\Extension\ObjectExtension.cs" />
-    <Compile Include="Reflection\AdaptedPropertyAccessor.cs" />
     <Compile Include="Util\OpdsFeedFormatter.cs" />
     <Compile Include="Util\OpdsHelper.cs" />
     <Compile Include="Util\RangeFileResult.cs">
@@ -140,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libs\Commons.Xml.Relaxng.dll" />
+    <Content Include="Libs\Reflection4Net.dll" />
     <Content Include="Schemas\atom.rng">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

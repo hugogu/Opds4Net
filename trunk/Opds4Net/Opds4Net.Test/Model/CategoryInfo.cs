@@ -1,4 +1,4 @@
-﻿using Opds4Net.Reflection;
+﻿using Reflection4Net;
 
 namespace Opds4Net.Test.Model
 {

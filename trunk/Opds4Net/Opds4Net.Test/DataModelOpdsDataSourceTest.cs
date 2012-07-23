@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Opds4Net.Model;
@@ -46,7 +47,7 @@ namespace Opds4Net.Test
         {
             var dataSource = new OpdsData()
             {
-                Data = new [] { MockupNamingDataSource.GetDetailedItems() }
+                Data = new[] { MockupNamingDataSource.GetDetailedItems() }
             };
             var item = mockSource.GetItems(dataSource).Items.Single().Value;
 
@@ -81,6 +82,17 @@ namespace Opds4Net.Test
             var times = timer.TimesInTime(duration);
 
             Assert.IsTrue(timesMt > times * 1.7);
+        }
+
+        [TestMethod]
+        public void SimpleItemsGenerationTest()
+        {
+            // Initialize data.
+            var data = new List<Book>() { new Book() { } };
+            // Create converter
+            var converter = new NamingDataOpdsItemConverter();
+            // Convert data to opds items
+            var items = converter.GetItems(new OpdsData(data));
         }
     }
 }
