@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 
 namespace Opds4Net.Web.Models
 {
     public abstract class AbstractBookDBContext : DbContext
     {
-        private static PickerCategory emptyCategory = new PickerCategory() { Id = Guid.Empty, FullName = String.Empty };
+        private static readonly PickerCategory emptyCategory = new PickerCategory { Id = Guid.Empty, FullName = String.Empty };
 
         /// <summary>
         /// 

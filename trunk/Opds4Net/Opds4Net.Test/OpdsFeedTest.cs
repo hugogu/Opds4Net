@@ -21,7 +21,7 @@ namespace Opds4Net.Test
         [DeploymentItem("Opds4Net.dll.config")]
         public void LoadingTest()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/category.atom"));
+            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/?format=opds"));
             Assert.IsNotNull(feed);
             Assert.IsInstanceOfType(feed, typeof(OpdsFeed));
         }
@@ -29,7 +29,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void LoadingDetailPageTest()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/detail/1724.atom"));
+            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/22945.opds"));
             Assert.IsNotNull(feed);
             Assert.IsInstanceOfType(feed, typeof(OpdsFeed));
             Assert.IsInstanceOfType(feed.Items.First(), typeof(OpdsItem));
@@ -46,7 +46,7 @@ namespace Opds4Net.Test
         [TestMethod]
         public void OpdsPriceGenerationTest()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/detail/1724.atom"));
+            var feed = OpdsItem.Load(new XmlTextReader("http://www.feedbooks.com/item/220817.atom"));
             var xml = feed.ToXml();
             Trace.Write(xml);
             Assert.IsTrue(xml.Contains("opds:price"));
@@ -55,34 +55,33 @@ namespace Opds4Net.Test
         [TestMethod]
         public void IndirectAcquisitionReadingTest()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/detail/1724.atom"));
-            var entry = feed.Items.First();
+            var entry = OpdsItem.Load(new XmlTextReader("http://www.feedbooks.com/item/220817.atom"));
             var link = entry.Links.Single(l => (l as OpdsLink).Prices.Count > 0) as OpdsLink;
             var indirectAcquisition = new OpdsIndirectAcquisition("application/zip");
             indirectAcquisition.Items.Add(new OpdsIndirectAcquisition("application/epub+zip"));
             indirectAcquisition.Items.Add(new OpdsIndirectAcquisition("application/pdf"));
             indirectAcquisition.Items.Add(new OpdsIndirectAcquisition("application/msword"));
+            link.IndirectAcquisitions.Clear();
             link.IndirectAcquisitions.Add(indirectAcquisition);
 
-            var xml = feed.ToXml();
+            var xml = entry.ToXml();
 
-            feed = OpdsFeed.Load(new XmlTextReader(new StringReader(xml)));
-            entry = feed.Items.First();
+            entry = OpdsItem.Load(new XmlTextReader(new StringReader(xml)));
             link = entry.Links.Single(l => (l as OpdsLink).Prices.Count > 0) as OpdsLink;
             Assert.AreEqual(1, link.IndirectAcquisitions.Count);
             Assert.AreEqual(3, link.IndirectAcquisitions.First().Items.Count);
-            Assert.AreEqual(xml, feed.ToXml());
+            Assert.AreEqual(xml, entry.ToXml());
         }
 
         [TestMethod()]
         public void FindLinkTest()
         {
-            var feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/category.atom"));
-            Assert.AreEqual("http://opds.9yue.com/category.atom?site=", feed.FindLink("self").Uri.ToString());
-            Assert.AreEqual("http://opds.9yue.com/search.atom?key={searchTerms}&site=", feed.FindLink("search").Uri.ToString());
-            feed = OpdsFeed.Load(new XmlTextReader("http://opds.9yue.com/popular.atom"));
-            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=2", feed.FindLink("next").Uri.ToString());
-            Assert.AreEqual("http://opds.9yue.com/popular.atom?site=&page=5", feed.FindLink("last").Uri.ToString());
+            var feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/?format=opds"));
+            Assert.AreEqual("/ebooks.opds/", feed.FindLink("self").Uri.ToString());
+            Assert.AreEqual("http://m.gutenberg.org/catalog/osd-books.xml", feed.FindLink("search").Uri.ToString());
+
+            feed = OpdsFeed.Load(new XmlTextReader("http://m.gutenberg.org/ebooks/search.opds/?sort_order=downloads"));
+            Assert.AreEqual("/ebooks/search.opds/?sort_order=downloads&start_index=26", feed.FindLink("next").Uri.ToString());
         }
 
         [TestMethod]
@@ -106,8 +105,9 @@ namespace Opds4Net.Test
             var entry = feed.Items.FirstOrDefault();
             Assert.IsNotNull(entry);
             Assert.IsTrue(entry.Links.Count > 0);
-            var link = entry.Links.Last();
-            Assert.AreEqual("data", link.Uri.Scheme);
+            var link = entry.Links.FirstOrDefault(l => l.RelationshipType == OpdsRelations.Thumbnail);
+            Assert.IsNotNull(link);
+            Assert.AreEqual("http", link.Uri.Scheme);
         }
 
         [TestMethod]

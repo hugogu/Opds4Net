@@ -12,7 +12,7 @@ namespace Opds4Net.Model.Validation
         /// <summary>
         /// Don't expose this pattern, otherwise the user have to reference to the Commons.Xml.Relaxng.dll
         /// </summary>
-        private RelaxngPattern relaxPattern = null;
+        private RelaxngPattern relaxPattern;
 
         /// <summary>
         /// 

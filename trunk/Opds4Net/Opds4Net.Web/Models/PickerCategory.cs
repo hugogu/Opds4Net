@@ -56,8 +56,8 @@ namespace Opds4Net.Web.Models
             {
                 return (obj as PickerCategory).Id == Id;
             }
-            else
-                return false;
+
+            return false;
         }
 
         /// <summary>

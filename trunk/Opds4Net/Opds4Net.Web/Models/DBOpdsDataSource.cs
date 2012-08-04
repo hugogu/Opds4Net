@@ -19,6 +19,7 @@ namespace Opds4Net.Web.Models
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="dbContext"></param>
         /// <param name="itemConverter"></param>
         [ImportingConstructor]
         public DBOpdsDataSource(
@@ -95,8 +96,8 @@ namespace Opds4Net.Web.Models
             {
                 return itemConverter.GetItems(new OpdsData(categories)).Items;
             }
-            else
-                return new List<KeyValuePair<object, SyndicationItem>>();
+
+            return new List<KeyValuePair<object, SyndicationItem>>();
         }
     }
 }
